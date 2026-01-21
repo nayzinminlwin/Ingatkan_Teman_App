@@ -6,18 +6,34 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
-    <title>Custom Input</title>
+    <title>Add Schedule</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <main class="page">
+    <main class="page form-page">
       <header class="page-header">
-        <h1>Custom Input</h1>
+        <a href="medReminderHome.html" class="back-btn">← Back</a>
+        <h1>Add New Schedule</h1>
       </header>
 
-      <form class="form-container" id="manualInputForm">
+      <!-- Adik Ahmad Helper Scene -->
+      <section class="scene">
+        <img src="../assets/Adik_Ahmad.png" alt="Adik Ahmad" class="avatar" />
+        <div class="bubble">
+          <p>Tell me about your medicine, Nenek. I'll help you remember!</p>
+        </div>
+      </section>
+
+      <form class="form-container" id="scheduleForm">
         <div class="input-wrapper" id="inputWrapper">
           <div class="input-card">
+            <header class="card-header">
+              <span class="card-number">Medicine #1</span>
+              <button type="button" class="remove-card-btn" aria-label="Remove">
+                ×
+              </button>
+            </header>
+
             <div class="field-group">
               <label for="med-name-1">Medicine Name</label>
               <input
@@ -25,73 +41,149 @@
                 name="medicineName[]"
                 type="text"
                 list="medNames"
-                placeholder="Select or type"
+                placeholder="e.g., Paracetamol"
+                required
               />
               <datalist id="medNames">
                 <option value="Paracetamol"></option>
                 <option value="Aspirin"></option>
                 <option value="Amoxicillin"></option>
                 <option value="Vitamin C"></option>
+                <option value="Vitamin D"></option>
+                <option value="Blood Pressure Med"></option>
+                <option value="Diabetes Med"></option>
               </datalist>
             </div>
 
             <div class="field-group">
-              <label for="quantity-1">Quantity</label>
-              <input id="quantity-1" name="quantity[]" type="number" min="1" />
+              <label for="dosage-1">Dosage</label>
+              <input
+                id="dosage-1"
+                name="dosage[]"
+                type="text"
+                placeholder="e.g., 2 tablets"
+                required
+              />
             </div>
 
             <div class="field-group">
-              <label for="time-1">Time/Date</label>
-              <input id="time-1" name="time[]" type="datetime-local" />
+              <label for="time-1">Reminder Time</label>
+              <input id="time-1" name="time[]" type="time" required />
+            </div>
+
+            <div class="field-group">
+              <label for="instruction-1">Instructions</label>
+              <select id="instruction-1" name="instruction[]">
+                <option value="after-breakfast">After Breakfast</option>
+                <option value="before-breakfast">Before Breakfast</option>
+                <option value="after-lunch">After Lunch</option>
+                <option value="before-lunch">Before Lunch</option>
+                <option value="after-dinner">After Dinner</option>
+                <option value="before-dinner">Before Dinner</option>
+                <option value="before-sleep">Before Sleep</option>
+              </select>
             </div>
 
             <div class="field-group">
               <label for="repeat-1">Repeat</label>
               <select id="repeat-1" name="repeat[]">
-                <option value="daily">Daily</option>
+                <option value="daily">Every Day</option>
+                <option value="weekdays">Weekdays Only</option>
                 <option value="weekly">Weekly</option>
                 <option value="monthly">Monthly</option>
+                <option value="once">One Time Only</option>
               </select>
             </div>
           </div>
         </div>
 
         <button class="btn-secondary" type="button" id="addMoreBtn">
-          + Add More
+          + Add Another Medicine
         </button>
 
-        <button class="btn-primary" type="submit">Add</button>
+        <button class="btn-primary" type="submit">✓ Save Schedule</button>
       </form>
     </main>
 
     <script>
       const addMoreBtn = document.getElementById("addMoreBtn");
       const inputWrapper = document.getElementById("inputWrapper");
+      let cardCount = 1;
 
       addMoreBtn.addEventListener("click", () => {
+        cardCount++;
         const firstCard = inputWrapper.querySelector(".input-card");
         if (!firstCard) return;
 
         const clone = firstCard.cloneNode(true);
-        const inputs = clone.querySelectorAll("input");
 
+        // Update card number
+        const cardNumber = clone.querySelector(".card-number");
+        cardNumber.textContent = `Medicine #${cardCount}`;
+
+        // Show remove button
+        const removeBtn = clone.querySelector(".remove-card-btn");
+        removeBtn.classList.add("visible");
+        removeBtn.addEventListener("click", function () {
+          clone.remove();
+          updateCardNumbers();
+        });
+
+        // Clear and update IDs
+        const inputs = clone.querySelectorAll("input, select");
         inputs.forEach((input) => {
-          input.value = "";
+          if (input.type !== "datalist") {
+            input.value = "";
+          }
           if (input.id) {
-            input.id = `${input.id}-copy-${Date.now()}`;
+            input.id = input.id.replace(/-\d+$/, `-${cardCount}`);
           }
         });
 
         const labels = clone.querySelectorAll("label");
-        labels.forEach((label, index) => {
-          const correspondingInput = inputs[index];
-          if (correspondingInput && correspondingInput.id) {
-            label.setAttribute("for", correspondingInput.id);
+        labels.forEach((label) => {
+          const forAttr = label.getAttribute("for");
+          if (forAttr) {
+            label.setAttribute(
+              "for",
+              forAttr.replace(/-\d+$/, `-${cardCount}`),
+            );
           }
         });
 
         inputWrapper.appendChild(clone);
       });
+
+      function updateCardNumbers() {
+        const cards = inputWrapper.querySelectorAll(".input-card");
+        cards.forEach((card, index) => {
+          const cardNumber = card.querySelector(".card-number");
+          cardNumber.textContent = `Medicine #${index + 1}`;
+
+          // Hide remove button on first card
+          const removeBtn = card.querySelector(".remove-card-btn");
+          if (index === 0) {
+            removeBtn.classList.remove("visible");
+          }
+        });
+        cardCount = cards.length;
+      }
+
+      // Form submission
+      document
+        .getElementById("scheduleForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          // Demo: Show success and redirect
+          const bubble = document.querySelector(".bubble p");
+          bubble.textContent =
+            "Great! I've saved your schedule. I'll remind you on time!";
+
+          setTimeout(() => {
+            window.location.href = "medReminderHome.html";
+          }, 2000);
+        });
     </script>
   </body>
 </html>

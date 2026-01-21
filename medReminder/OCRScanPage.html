@@ -6,20 +6,25 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
-    <title>OCR Scan</title>
+    <title>Scan Prescription</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body class="ocr-page">
+    <a href="medReminderHome.html" class="back-btn ocr-back">← Back</a>
+
     <main class="camera">
+      <!-- Header Instructions -->
       <header class="camera-header">
-        <p>Align document in frame</p>
+        <p>📄 Align prescription in frame</p>
       </header>
 
+      <!-- Camera Viewfinder -->
       <section class="viewfinder">
         <img
-          src="https://placehold.co/300x400?text=Prescription%0APaper"
+          src="https://placehold.co/400x500/1a1a1a/666666?text=Camera%0APreview"
           alt="Prescription paper preview"
           class="paper-preview"
+          id="cameraPreview"
         />
         <div class="overlay">
           <div class="focus-box"></div>
@@ -27,9 +32,10 @@
         </div>
       </section>
 
+      <!-- Camera Controls -->
       <footer class="camera-controls">
         <button class="camera-btn scan" id="scanBtn" type="button">
-          TextTract
+          📸 Capture & Scan
         </button>
         <button class="camera-btn cancel" id="cancelBtn" type="button">
           Cancel
@@ -37,24 +43,98 @@
       </footer>
     </main>
 
+    <!-- Processing Overlay (hidden by default) -->
+    <div
+      class="processing-overlay"
+      id="processingOverlay"
+      style="display: none"
+    >
+      <div class="processing-content">
+        <div class="processing-spinner"></div>
+        <p>Reading prescription...</p>
+      </div>
+    </div>
+
+    <style>
+      /* Processing Overlay */
+      .processing-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.85);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 200;
+      }
+
+      .processing-content {
+        text-align: center;
+        color: #ffffff;
+      }
+
+      .processing-spinner {
+        width: 60px;
+        height: 60px;
+        border: 4px solid rgba(255, 255, 255, 0.2);
+        border-top-color: var(--blue-primary);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 16px;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .processing-content p {
+        font-size: 18px;
+        font-weight: 600;
+      }
+    </style>
+
     <script>
       const scanBtn = document.getElementById("scanBtn");
       const cancelBtn = document.getElementById("cancelBtn");
       const scanLine = document.getElementById("scanLine");
+      const processingOverlay = document.getElementById("processingOverlay");
 
       scanBtn.addEventListener("click", () => {
-        scanBtn.textContent = "Scanning...";
+        // Start scan animation
+        scanBtn.textContent = "⏳ Scanning...";
         scanBtn.disabled = true;
+        cancelBtn.disabled = true;
         scanLine.classList.add("active");
 
+        // Simulate scan progress
+        setTimeout(() => {
+          scanLine.classList.remove("active");
+          processingOverlay.style.display = "flex";
+        }, 2500);
+
+        // Navigate to input page with pre-filled data
         setTimeout(() => {
           window.location.href = "manualInput.html";
-        }, 3000);
+        }, 4000);
       });
 
       cancelBtn.addEventListener("click", () => {
         window.history.back();
       });
+
+      // Camera permission request (for real implementation)
+      async function initCamera() {
+        try {
+          // In real app, would request camera access
+          // const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+          console.log("Camera initialized");
+        } catch (err) {
+          console.log("Camera access not available in demo");
+        }
+      }
+
+      initCamera();
     </script>
   </body>
 </html>

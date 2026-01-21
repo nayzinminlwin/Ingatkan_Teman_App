@@ -1,14 +1,18 @@
-/* Home Dashboard Styles */
+/* ============================================
+   HOME DASHBOARD STYLES
+   Ingatkan Teman - Senior-First Design
+   ============================================ */
 
+/* ========== 1. PAGE LAYOUT ========== */
 body {
   display: flex;
   flex-direction: column;
   padding: var(--space-lg);
-  padding-top: 100px; /* Space for fixed navbar */
+  padding-top: 100px;
   min-height: 100vh;
 }
 
-/* ========== APP NAVBAR ========== */
+/* ========== 2. APP NAVBAR ========== */
 .app-navbar {
   position: fixed;
   top: 0;
@@ -32,14 +36,13 @@ body {
 }
 
 .navbar-title {
+  flex: 1;
   font-size: var(--size-h1);
   font-weight: 700;
   color: var(--text-primary);
   letter-spacing: -0.5px;
-  flex: 1;
 }
 
-/* Logout Button in Navbar */
 .logout-btn {
   position: absolute;
   right: var(--space-lg);
@@ -62,147 +65,50 @@ body {
   transform: scale(0.95);
 }
 
-/* Welcome Header */
+/* ========== 3. WELCOME HEADER ========== */
 .dashboard-header {
   text-align: center;
   margin-bottom: var(--space-lg);
-  position: relative;
 }
 
 .dashboard-header h1 {
   font-size: var(--size-h2);
-  color: var(--text-primary);
   font-weight: bold;
+  color: var(--text-primary);
 }
 
-/* Feature Grid Layout */
+/* ========== 4. FEATURE GRID ========== */
 .feature-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   column-gap: var(--space-lg);
   row-gap: 4px;
-  align-content: start;
   width: 100%;
-  margin: 0 auto 24px;
+  margin: 0 auto var(--space-lg);
 }
 
-/* Feature Card - Stage/Diorama Style - Override global .btn */
+/* ========== 5. FEATURE CARD (3D Stage Style) ========== */
 .feature-card {
-  background: transparent !important;
-  border-radius: 0;
-  text-decoration: none;
-  cursor: pointer;
-  transition: all 0.15s ease;
+  position: relative;
   display: block !important;
   min-height: 110px;
   max-height: 110px;
-  position: relative;
-  padding: 0 !important;
+  background: transparent !important;
   border: none;
+  border-radius: 0;
+  padding: 0 !important;
   box-shadow: none !important;
+  text-decoration: none;
+  cursor: pointer;
   overflow: visible;
+  transition: transform 0.15s ease;
 }
 
-/* The 3D Platform (Layer A) - Bottom colored block */
-.card-platform {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 70%;
-  border-radius: var(--radius-card);
-  border-bottom: 8px solid rgba(0, 0, 0, 0.3);
-  transition: all 0.15s ease;
-  z-index: 1;
-}
-
-/* Platform Colors - Persona Specific */
-.feature-card[data-theme="meds"] .card-platform {
-  background: #2d7ff9;
-  border-bottom-color: #1a5bb8;
-}
-
-.feature-card[data-theme="inventory"] .card-platform {
-  background: #2e7d32;
-  border-bottom-color: #1e5921;
-}
-
-.feature-card[data-theme="health"] .card-platform {
-  background: #009688;
-  border-bottom-color: #006b5f;
-}
-
-.feature-card[data-theme="chat"] .card-platform {
-  background: #ff6f61;
-  border-bottom-color: #cc4a3f;
-}
-
-.feature-card[data-theme="consult"] .card-platform {
-  background: #34495e;
-  border-bottom-color: #24334a;
-}
-
-/* Full Width Card (Health Recorder) */
 .feature-card.full-width {
   grid-column: 1 / -1;
 }
 
-/* Card Content (Layer B) - Actors standing on platform */
-.card-content {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center; /* Center the group horizontally */
-  gap: 4px; /* Small gap between avatar and label */
-  z-index: 2;
-  position: absolute;
-  bottom: 10%; /* Position to keep text inside platform */
-  left: 0;
-  right: 0;
-  width: 100%;
-  padding: 0;
-}
-
-/* Avatar Image - Standing firmly on platform */
-.avatar {
-  height: 100px;
-  width: 100px;
-  object-fit: contain;
-  flex-shrink: 0;
-}
-
-/* Dual Avatar Layout */
-.card-content.dual-avatar {
-  flex-direction: row;
-  align-items: center;
-  gap: 4px;
-  justify-content: center;
-  padding: 0;
-}
-
-.card-content.dual-avatar .avatar {
-  height: 85px;
-  width: 85px;
-}
-
-/* Card Title - White text on the platform */
-.card-title {
-  font-size: 16px;
-  font-weight: bold;
-  color: #ffffff;
-  margin: 0;
-  text-align: center; /* Center text within title */
-  line-height: 1.15;
-  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.45);
-  word-break: keep-all;
-  overflow-wrap: break-word;
-  overflow: visible;
-  align-self: center;
-  position: relative;
-  top: 10px;
-}
-
-/* Physical Button Press Effect */
+/* Press Effect */
 .feature-card:active {
   transform: translateY(4px);
 }
@@ -211,10 +117,97 @@ body {
   border-bottom-width: 2px;
 }
 
-/* Footer */
+/* ========== 6. CARD PLATFORM (3D Base) ========== */
+.card-platform {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 70%;
+  border-radius: var(--radius-card);
+  border-bottom: 8px solid rgba(0, 0, 0, 0.3);
+  z-index: 1;
+  transition: all 0.15s ease;
+}
+
+/* Platform Theme Colors */
+.feature-card[data-theme="meds"] .card-platform {
+  background: var(--color-meds);
+  border-bottom-color: #1a5bb8;
+}
+
+.feature-card[data-theme="inventory"] .card-platform {
+  background: var(--color-inventory);
+  border-bottom-color: #1e5921;
+}
+
+.feature-card[data-theme="health"] .card-platform {
+  background: var(--color-health);
+  border-bottom-color: #006b5f;
+}
+
+.feature-card[data-theme="chat"] .card-platform {
+  background: var(--color-chat);
+  border-bottom-color: #cc4a3f;
+}
+
+.feature-card[data-theme="consult"] .card-platform {
+  background: var(--color-consult);
+  border-bottom-color: #24334a;
+}
+
+/* ========== 7. CARD CONTENT (Avatar + Label Group) ========== */
+.card-content {
+  position: absolute;
+  bottom: 10%;
+  left: 50%;
+  transform: translateX(-60%);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 0;
+  z-index: 2;
+}
+
+.card-content.dual-avatar {
+  transform: translateX(-50%);
+  gap: 4px;
+}
+
+/* ========== 8. AVATAR ========== */
+.avatar {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.card-content.dual-avatar .avatar {
+  width: 85px;
+  height: 85px;
+}
+
+/* ========== 9. CARD TITLE ========== */
+.card-title {
+  position: relative;
+  top: 10px;
+  margin: 0;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 1.15;
+  color: #ffffff;
+  text-align: center;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.45);
+  word-break: keep-all;
+}
+
+/* ========== 10. FOOTER ========== */
 .dashboard-footer {
   text-align: center;
   padding-top: var(--space-md);
+  margin-top: auto;
 }
 
 .dashboard-footer p {
@@ -222,12 +215,14 @@ body {
   color: var(--text-secondary);
 }
 
+/* ========== 11. RESPONSIVE: TABLET (768px+) ========== */
 @media (min-width: 768px) {
   .feature-grid {
     max-width: 820px;
   }
 }
 
+/* ========== 12. RESPONSIVE: DESKTOP (1200px+) ========== */
 @media (min-width: 1200px) {
   .feature-grid {
     max-width: 980px;
@@ -236,6 +231,7 @@ body {
 
   .feature-card {
     min-height: 150px;
+    max-height: 150px;
   }
 
   .card-platform {
@@ -244,53 +240,59 @@ body {
   }
 
   .avatar {
-    height: 130px;
     width: 130px;
+    height: 130px;
   }
 
   .card-content.dual-avatar .avatar {
-    height: 110px;
     width: 110px;
+    height: 110px;
   }
 
   .card-title {
     font-size: 20px;
-    max-width: calc(100% - 150px);
   }
 }
 
-@media (max-width: 420px) {
+/* ========== 13. RESPONSIVE: MOBILE PHONES (480px-) ========== */
+/* Covers iPhone 14 Pro Max (430px) and smaller phones */
+@media (max-width: 480px) {
   .feature-grid {
     grid-template-columns: 1fr;
     row-gap: 16px;
   }
 
   .feature-card {
-    min-height: 180px;
-    max-height: none;
+    min-height: 140px;
+    max-height: 140px;
+  }
+
+  .feature-card.full-width {
+    min-height: 140px;
+    max-height: 140px;
   }
 
   .card-platform {
-    height: 75%;
+    height: 70%;
     border-bottom-width: 10px;
   }
 
   .card-content {
     bottom: 12%;
+    gap: 12px;
   }
 
   .avatar {
-    height: 130px;
-    width: 130px;
+    width: 120px;
+    height: 120px;
   }
 
   .card-content.dual-avatar .avatar {
-    height: 110px;
-    width: 110px;
+    width: 100px;
+    height: 100px;
   }
 
   .card-title {
     font-size: 20px;
-    max-width: calc(100% - 140px);
   }
 }
