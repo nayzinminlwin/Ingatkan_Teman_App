@@ -1,0 +1,44 @@
+[
+  {
+    "MedName": "Paracetamol",
+    "Qty": 20,
+    "Batch": "3",
+    "ExpDate": "12.12.2026"
+  },
+  {
+    "MedName": "Amoxicillin",
+    "Qty": 12,
+    "Batch": "3",
+    "ExpDate": "02.11.2028"
+  },
+  {
+    "MedName": "Paracetamol",
+    "Qty": 32,
+    "Batch": "4",
+    "ExpDate": "02.12.2029"
+  },
+  {
+    "MedName": "Metformin",
+    "Qty": 45,
+    "Batch": "5",
+    "ExpDate": "15.03.2026"
+  },
+  {
+    "MedName": "Amlodipine",
+    "Qty": 5,
+    "Batch": "2",
+    "ExpDate": "01.05.2026"
+  },
+  {
+    "MedName": "Atorvastatin",
+    "Qty": 2,
+    "Batch": "9",
+    "ExpDate": "20.11.2026"
+  },
+  {
+    "MedName": "Vitamin C",
+    "Qty": 10,
+    "Batch": "1",
+    "ExpDate": "10.02.2026"
+  }
+]

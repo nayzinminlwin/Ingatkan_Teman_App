@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>Edit Inventory</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="page form-page">
+      <header class="page-header">
+        <a href="inventoryHome.html" class="back-btn">← Back</a>
+        <h1>Edit Inventory</h1>
+      </header>
+
+      <!-- Instructions -->
+      <div class="edit-instructions">
+        <p>
+          📝 Adjust the quantity for each medicine using <strong>+</strong> and
+          <strong>−</strong> buttons.
+        </p>
+      </div>
+
+      <!-- Medicine Edit Cards - Dynamically Loaded -->
+      <div class="edit-list" id="editList">
+        <!-- Cards injected by JavaScript -->
+      </div>
+
+      <!-- Pagination -->
+      <div class="pagination" id="pagination">
+        <button class="btn-page" id="seeMoreBtn" type="button">
+          <span>👇</span> See More
+        </button>
+      </div>
+
+      <!-- Submit -->
+      <button class="btn-submit" id="confirmBtn" type="button">
+        <span class="submit-icon">✅</span>
+        Confirm Edit
+      </button>
+    </main>
+
+    <!-- Shared Utilities -->
+    <script src="inventoryUtils.js"></script>
+
+    <script>
+      const ITEMS_PER_PAGE = 5;
+      let currentPage = 1;
+      let inventory = [];
+      let editedQuantities = {}; // Track changes: { index: newQty }
+
+      // Create edit card HTML for a medicine
+      function createEditCard(med, index) {
+        const currentQty =
+          editedQuantities[index] !== undefined
+            ? editedQuantities[index]
+            : med.Qty;
+        const isChanged =
+          editedQuantities[index] !== undefined &&
+          editedQuantities[index] !== med.Qty;
+
+        return `
+          <article class="edit-card ${isChanged ? "changed" : ""}" data-index="${index}">
+            <div class="edit-card-header">
+              <h3 class="med-name">${med.MedName}</h3>
+              <span class="batch-tag">Batch #${med.Batch}</span>
+            </div>
+            
+            <div class="edit-card-body">
+              <div class="info-row">
+                <span class="info-label">📅 Expires:</span>
+                <span class="info-value">${med.ExpDate}</span>
+              </div>
+              
+              <div class="qty-editor">
+                <span class="qty-label">Quantity:</span>
+                <div class="qty-controls">
+                  <button type="button" class="qty-btn minus" data-index="${index}" ${currentQty <= 0 ? "disabled" : ""}>−</button>
+                  <input 
+                    type="number" 
+                    class="qty-input" 
+                    data-index="${index}"
+                    value="${currentQty}" 
+                    min="0"
+                    inputmode="numeric"
+                  />
+                  <button type="button" class="qty-btn plus" data-index="${index}">+</button>
+                </div>
+                ${isChanged ? `<span class="original-qty">Was: ${med.Qty}</span>` : ""}
+              </div>
+            </div>
+          </article>
+        `;
+      }
+
+      // Render visible medicine cards
+      function renderEditList() {
+        const editList = document.getElementById("editList");
+        const visibleItems = inventory.slice(0, currentPage * ITEMS_PER_PAGE);
+
+        let html = "";
+        visibleItems.forEach((med, index) => {
+          html += createEditCard(med, index);
+        });
+
+        editList.innerHTML = html;
+
+        // Update pagination
+        const seeMoreBtn = document.getElementById("seeMoreBtn");
+        const pagination = document.getElementById("pagination");
+
+        if (currentPage * ITEMS_PER_PAGE >= inventory.length) {
+          pagination.style.display = "none";
+        } else {
+          pagination.style.display = "block";
+          const remaining = inventory.length - currentPage * ITEMS_PER_PAGE;
+          seeMoreBtn.innerHTML = `<span>👇</span> See More (${remaining} left)`;
+        }
+
+        // Update confirm button text
+        updateConfirmButton();
+      }
+
+      // Update confirm button to show change count
+      function updateConfirmButton() {
+        const changeCount = Object.keys(editedQuantities).filter(
+          (idx) => editedQuantities[idx] !== inventory[idx].Qty,
+        ).length;
+
+        const confirmBtn = document.getElementById("confirmBtn");
+        if (changeCount > 0) {
+          confirmBtn.innerHTML = `<span class="submit-icon">✅</span> Confirm ${changeCount} Change${changeCount > 1 ? "s" : ""}`;
+          confirmBtn.classList.add("has-changes");
+        } else {
+          confirmBtn.innerHTML = `<span class="submit-icon">✅</span> Confirm Edit`;
+          confirmBtn.classList.remove("has-changes");
+        }
+      }
+
+      // Handle quantity change
+      function updateQuantity(index, newQty) {
+        newQty = Math.max(0, parseInt(newQty) || 0);
+        editedQuantities[index] = newQty;
+        renderEditList();
+      }
+
+      // Event delegation for buttons and inputs
+      document.getElementById("editList").addEventListener("click", (e) => {
+        const target = e.target;
+
+        if (target.classList.contains("qty-btn")) {
+          const index = parseInt(target.dataset.index);
+          const currentQty =
+            editedQuantities[index] !== undefined
+              ? editedQuantities[index]
+              : inventory[index].Qty;
+
+          if (target.classList.contains("plus")) {
+            updateQuantity(index, currentQty + 1);
+          } else if (target.classList.contains("minus")) {
+            updateQuantity(index, currentQty - 1);
+          }
+        }
+      });
+
+      // Handle direct input changes
+      document.getElementById("editList").addEventListener("change", (e) => {
+        if (e.target.classList.contains("qty-input")) {
+          const index = parseInt(e.target.dataset.index);
+          updateQuantity(index, e.target.value);
+        }
+      });
+
+      // See More pagination
+      document.getElementById("seeMoreBtn").addEventListener("click", () => {
+        currentPage++;
+        renderEditList();
+      });
+
+      // Confirm edit
+      document.getElementById("confirmBtn").addEventListener("click", () => {
+        const changeCount = Object.keys(editedQuantities).filter(
+          (idx) => editedQuantities[idx] !== inventory[idx].Qty,
+        ).length;
+
+        if (changeCount === 0) {
+          alert("No changes to save.");
+          return;
+        }
+
+        // Apply changes to inventory
+        Object.keys(editedQuantities).forEach((index) => {
+          inventory[index].Qty = editedQuantities[index];
+        });
+
+        // Save to localStorage
+        saveInventory(inventory);
+
+        console.log("✅ Updated inventory:", inventory);
+        alert(
+          `✅ ${changeCount} medicine${changeCount > 1 ? "s" : ""} updated!`,
+        );
+        window.location.href = "inventoryHome.html";
+      });
+
+      // Initialize
+      async function init() {
+        inventory = await loadInventory();
+
+        if (inventory.length === 0) {
+          document.getElementById("editList").innerHTML = `
+            <div class="empty-state">
+              <p>No medicines to edit.</p>
+              <p><a href="newMed.html">Add some medicines</a> first!</p>
+            </div>
+          `;
+          document.getElementById("pagination").style.display = "none";
+          document.getElementById("confirmBtn").style.display = "none";
+          return;
+        }
+
+        renderEditList();
+      }
+
+      init();
+    </script>
+  </body>
+</html>

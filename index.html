@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>Ingatkan Teman - Login</title>
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#FF6F61" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Ingatkan Teman" />
+    <link rel="apple-touch-icon" href="assets/Ingatkan_Teman_Logo.PNG" />
+    <link rel="stylesheet" href="styles/global.css" />
+    <link rel="stylesheet" href="styles/indexStyle.css" />
+  </head>
+  <body>
+    <!-- ========== NAV BAR HEADER ========== -->
+    <header class="app-navbar">
+      <img
+        src="assets/Ingatkan_Teman_Logo.PNG"
+        alt="Logo"
+        class="navbar-logo"
+      />
+      <span class="navbar-title">Ingatkan Teman</span>
+    </header>
+
+    <!-- STAGE A: FaceID Simulation -->
+    <div id="stageA">
+      <img
+        src="assets/Ingatkan_Teman_Logo.PNG"
+        alt="Ingatkan Teman Logo"
+        class="logo"
+      />
+      <div class="scan-icon">👤</div>
+      <p class="scan-text">Scanning your face...</p>
+    </div>
+
+    <!-- STAGE B: PIN Entry -->
+    <div id="stageB">
+      <div class="welcome-header">
+        <h1>Welcome Back!</h1>
+        <p>Please enter your PIN</p>
+      </div>
+
+      <!-- PIN Display -->
+      <div class="pin-display">
+        <div class="pin-box" id="box1"></div>
+        <div class="pin-box" id="box2"></div>
+        <div class="pin-box" id="box3"></div>
+        <div class="pin-box" id="box4"></div>
+      </div>
+
+      <!-- Custom Keypad -->
+      <div class="keypad">
+        <button class="key-btn" data-key="1">1</button>
+        <button class="key-btn" data-key="2">2</button>
+        <button class="key-btn" data-key="3">3</button>
+        <button class="key-btn" data-key="4">4</button>
+        <button class="key-btn" data-key="5">5</button>
+        <button class="key-btn" data-key="6">6</button>
+        <button class="key-btn" data-key="7">7</button>
+        <button class="key-btn" data-key="8">8</button>
+        <button class="key-btn" data-key="9">9</button>
+        <button class="key-btn empty"></button>
+        <button class="key-btn" data-key="0">0</button>
+        <button class="key-btn delete" data-key="delete">⌫</button>
+      </div>
+    </div>
+
+    <script>
+      // Stage Transition Logic
+      let currentPin = "";
+      const pinBoxes = [
+        document.getElementById("box1"),
+        document.getElementById("box2"),
+        document.getElementById("box3"),
+        document.getElementById("box4"),
+      ];
+
+      // Auto-transition from Stage A to Stage B after 3 seconds
+      setTimeout(() => {
+        document.getElementById("stageA").classList.add("hidden");
+        document.getElementById("stageB").classList.add("active");
+      }, 3000);
+
+      // Keypad Logic
+      document.querySelectorAll(".key-btn[data-key]").forEach((btn) => {
+        btn.addEventListener("click", function () {
+          const key = this.getAttribute("data-key");
+
+          if (key === "delete") {
+            // Remove last digit
+            if (currentPin.length > 0) {
+              currentPin = currentPin.slice(0, -1);
+              updatePinDisplay();
+            }
+          } else {
+            // Add digit (max 4)
+            if (currentPin.length < 4) {
+              currentPin += key;
+              updatePinDisplay();
+
+              // Auto-redirect when 4 digits entered
+              if (currentPin.length === 4) {
+                // Set login session
+                sessionStorage.setItem("isLoggedIn", "true");
+                sessionStorage.setItem("loginTime", Date.now().toString());
+                setTimeout(() => {
+                  window.location.href = "main/homePage.html";
+                }, 300);
+              }
+            }
+          }
+        });
+      });
+
+      function updatePinDisplay() {
+        pinBoxes.forEach((box, index) => {
+          if (index < currentPin.length) {
+            box.textContent = "•";
+            box.classList.add("filled");
+          } else {
+            box.textContent = "";
+            box.classList.remove("filled");
+          }
+        });
+      }
+    </script>
+  </body>
+</html>

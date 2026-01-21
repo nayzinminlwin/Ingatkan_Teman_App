@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>Nearby Pharmacy</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="page pharmacy-page">
+      <header class="page-header">
+        <a href="inventoryHome.html" class="back-btn">← Back</a>
+        <h1>🗺️ Nearby Pharmacy</h1>
+      </header>
+
+      <!-- Location Status -->
+      <div class="location-banner" id="locationBanner">
+        <span class="location-icon">📍</span>
+        <span class="location-text" id="locationText"
+          >Finding your location...</span
+        >
+      </div>
+
+      <!-- Map Container -->
+      <div class="map-container" id="mapContainer">
+        <div class="map-placeholder" id="mapPlaceholder">
+          <div class="map-loading">
+            <span class="map-spinner">🔄</span>
+            <p>Loading map...</p>
+          </div>
+        </div>
+        <!-- Interactive map will be injected here -->
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="quick-actions">
+        <button class="action-btn" id="refreshBtn" type="button">
+          <span class="action-icon">🔄</span>
+          <span>Refresh</span>
+        </button>
+        <button class="action-btn" id="listViewBtn" type="button">
+          <span class="action-icon">📋</span>
+          <span>List View</span>
+        </button>
+      </div>
+
+      <!-- Pharmacy List -->
+      <section class="pharmacy-section">
+        <h2 class="section-title">Pharmacies Near You</h2>
+        <div class="pharmacy-list" id="pharmacyList">
+          <!-- Pharmacy cards injected by JavaScript -->
+        </div>
+      </section>
+
+      <!-- Call/Navigate Tip -->
+      <div class="tip-banner">
+        <p>
+          💡 <strong>Tip:</strong> Tap a pharmacy to call or get directions!
+        </p>
+      </div>
+    </main>
+
+    <script>
+      // Dummy pharmacy data (would be replaced by real API like Google Places)
+      const pharmacies = [
+        {
+          name: "Farmasi Guardian",
+          address: "Lot 12, Jalan Merdeka, Serdang",
+          distance: "0.8 km",
+          status: "open",
+          phone: "03-89123456",
+          hours: "9:00 AM - 10:00 PM",
+        },
+        {
+          name: "Watsons Pharmacy",
+          address: "Giant Hypermarket, Seri Kembangan",
+          distance: "1.2 km",
+          status: "open",
+          phone: "03-89456789",
+          hours: "10:00 AM - 9:30 PM",
+        },
+        {
+          name: "Farmasi Klinik Rahim",
+          address: "No. 5, Lorong Setia, Bangi",
+          distance: "2.1 km",
+          status: "closing-soon",
+          phone: "03-89012345",
+          hours: "8:00 AM - 5:00 PM",
+        },
+        {
+          name: "Big Pharmacy",
+          address: "AEON Mall, Cheras Selatan",
+          distance: "3.5 km",
+          status: "open",
+          phone: "03-90123456",
+          hours: "10:00 AM - 10:00 PM",
+        },
+        {
+          name: "Caring Pharmacy",
+          address: "Tesco Extra, Kajang",
+          distance: "4.2 km",
+          status: "closed",
+          phone: "03-87654321",
+          hours: "9:00 AM - 9:00 PM",
+        },
+      ];
+
+      // Get status badge HTML
+      function getStatusBadge(status) {
+        switch (status) {
+          case "open":
+            return '<span class="status-badge open">🟢 Open</span>';
+          case "closing-soon":
+            return '<span class="status-badge closing">🟡 Closing Soon</span>';
+          case "closed":
+            return '<span class="status-badge closed">🔴 Closed</span>';
+          default:
+            return "";
+        }
+      }
+
+      // Create pharmacy card HTML
+      function createPharmacyCard(pharmacy) {
+        return `
+          <article class="pharmacy-card ${pharmacy.status === "closed" ? "is-closed" : ""}">
+            <div class="pharmacy-header">
+              <h3 class="pharmacy-name">${pharmacy.name}</h3>
+              ${getStatusBadge(pharmacy.status)}
+            </div>
+            
+            <div class="pharmacy-details">
+              <p class="pharmacy-address">
+                <span class="detail-icon">📍</span>
+                ${pharmacy.address}
+              </p>
+              <p class="pharmacy-distance">
+                <span class="detail-icon">🚶</span>
+                <strong>${pharmacy.distance}</strong> away
+              </p>
+              <p class="pharmacy-hours">
+                <span class="detail-icon">🕐</span>
+                ${pharmacy.hours}
+              </p>
+            </div>
+
+            <div class="pharmacy-actions">
+              <a href="tel:${pharmacy.phone}" class="pharmacy-btn call">
+                <span>📞</span> Call
+              </a>
+              <button class="pharmacy-btn directions" onclick="openDirections('${pharmacy.address}')">
+                <span>🧭</span> Directions
+              </button>
+            </div>
+          </article>
+        `;
+      }
+
+      // Render pharmacy list
+      function renderPharmacyList() {
+        const pharmacyList = document.getElementById("pharmacyList");
+        let html = "";
+
+        // Sort by distance (open first, then closed)
+        const sorted = [...pharmacies].sort((a, b) => {
+          if (a.status === "closed" && b.status !== "closed") return 1;
+          if (a.status !== "closed" && b.status === "closed") return -1;
+          return parseFloat(a.distance) - parseFloat(b.distance);
+        });
+
+        sorted.forEach((pharmacy) => {
+          html += createPharmacyCard(pharmacy);
+        });
+
+        pharmacyList.innerHTML = html;
+      }
+
+      // Open directions (would integrate with Google Maps / Waze)
+      function openDirections(address) {
+        const encoded = encodeURIComponent(address);
+        // Try Google Maps first
+        window.open(
+          `https://www.google.com/maps/search/?api=1&query=${encoded}`,
+          "_blank",
+        );
+      }
+
+      // Simulate location finding
+      function findLocation() {
+        const locationText = document.getElementById("locationText");
+        const locationBanner = document.getElementById("locationBanner");
+        const mapPlaceholder = document.getElementById("mapPlaceholder");
+
+        locationText.textContent = "Finding your location...";
+        locationBanner.classList.remove("found");
+
+        setTimeout(() => {
+          locationText.textContent = "Serdang, Selangor";
+          locationBanner.classList.add("found");
+
+          // Show map placeholder with location
+          mapPlaceholder.innerHTML = `
+            <div class="map-ready">
+              <span class="map-pin">📍</span>
+              <p class="map-location">Your Location</p>
+              <p class="map-address">Serdang, Selangor</p>
+              <p class="map-note">Map integration coming soon!</p>
+            </div>
+          `;
+        }, 1500);
+      }
+
+      // Refresh button handler
+      document.getElementById("refreshBtn").addEventListener("click", () => {
+        findLocation();
+        renderPharmacyList();
+      });
+
+      // List view toggle (scroll to list)
+      document.getElementById("listViewBtn").addEventListener("click", () => {
+        document.querySelector(".pharmacy-section").scrollIntoView({
+          behavior: "smooth",
+        });
+      });
+
+      // Initialize
+      findLocation();
+      renderPharmacyList();
+    </script>
+  </body>
+</html>

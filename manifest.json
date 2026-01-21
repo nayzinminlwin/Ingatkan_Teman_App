@@ -1,0 +1,26 @@
+{
+  "name": "Ingatkan Teman",
+  "short_name": "Ingatkan Teman",
+  "description": "A companion app for elderly Malaysians to manage health and stay connected with AI grandchildren and doctors.",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FFFBF7",
+  "theme_color": "#FF6F61",
+  "icons": [
+    {
+      "src": "assets/Ingatkan_Teman_Logo.PNG",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/Ingatkan_Teman_Logo.PNG",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "lang": "en",
+  "categories": ["health", "lifestyle", "medical"]
+}

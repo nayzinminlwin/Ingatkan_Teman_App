@@ -1,0 +1,936 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <!-- BM: Rakaman Kesihatan Harian -->
+    <title>Daily Health Recorder</title>
+    <link rel="stylesheet" href="../styles/global.css" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- ========== HEADER ========== -->
+    <header class="chat-header">
+      <a href="../main/homePage.html" class="back-btn" aria-label="Back">←</a>
+      <div class="header-content">
+        <div class="header-avatars">
+          <img
+            src="../assets/Dr_Fatimah.png"
+            alt="Dr. Fatimah"
+            class="header-avatar primary"
+          />
+          <img
+            src="../assets/Nurse_Alia.png"
+            alt="Nurse Alia"
+            class="header-avatar secondary"
+          />
+        </div>
+        <div class="header-info">
+          <!-- BM: Pasukan Kesihatan Anda -->
+          <h1>Your Health Team</h1>
+          <p class="status-online">
+            <!-- BM: Sedia Membantu -->
+            <span class="status-dot"></span> Ready to Help
+          </p>
+        </div>
+      </div>
+      <button class="menu-btn" id="menuBtn" aria-label="Menu">⋮</button>
+    </header>
+
+    <!-- ========== MENU DROPDOWN ========== -->
+    <div class="menu-dropdown" id="menuDropdown">
+      <button class="menu-item" id="resetConversation">
+        🔄 Start New Conversation
+      </button>
+      <button class="menu-item" id="generateReport">
+        📊 Generate Health Report
+      </button>
+    </div>
+
+    <!-- ========== HEALTH REPORT MODAL ========== -->
+    <div class="health-report-modal" id="healthReportModal">
+      <div class="health-report-card">
+        <div class="report-header">
+          <h2 id="reportTitle">📊 Health Report</h2>
+          <p id="reportSubtitle">Your recent health readings</p>
+        </div>
+
+        <!-- Averages Section -->
+        <div class="report-averages" id="reportAverages">
+          <h3 id="averagesTitle">7-Day Averages</h3>
+          <div class="averages-grid" id="averagesGrid">
+            <!-- Filled dynamically -->
+          </div>
+        </div>
+
+        <!-- Records List -->
+        <div class="report-records" id="reportRecords">
+          <!-- Filled dynamically -->
+        </div>
+
+        <button class="report-close-btn" id="closeReportBtn">Close</button>
+      </div>
+    </div>
+
+    <!-- ========== DATE BANNER ========== -->
+    <div class="date-banner">
+      <span class="date-icon">📅</span>
+      <!-- BM: Hari Ini -->
+      <span id="currentDate">Today</span>
+    </div>
+
+    <!-- ========== CHAT CONTAINER ========== -->
+    <main class="chat-container" id="chatContainer">
+      <!-- Messages will be inserted here dynamically -->
+    </main>
+
+    <!-- ========== QUICK RESPONSE BUTTONS ========== -->
+    <div class="quick-responses" id="quickResponses">
+      <!-- Dynamic quick response buttons appear here -->
+    </div>
+
+    <!-- ========== INPUT AREA ========== -->
+    <footer class="input-area">
+      <div class="input-wrapper">
+        <button class="voice-btn" id="voiceBtn" aria-label="Voice Input">
+          🎤
+        </button>
+        <!-- BM placeholder: Taip mesej anda... -->
+        <input
+          type="text"
+          id="messageInput"
+          placeholder="Type your message..."
+          class="message-input"
+        />
+        <button class="send-btn" id="sendBtn" aria-label="Send Message">
+          ➤
+        </button>
+      </div>
+    </footer>
+
+    <script>
+      // ========== CONFIGURATION ==========
+      const DATA_PATH = "../assets/dummyData/healthChat.JSON";
+      const RECORDS_PATH = "../assets/dummyData/healthRecords.JSON";
+      const LANG = "en"; // Change to "bm" for Bahasa Melayu
+
+      // Data containers (loaded from JSON)
+      let PERSONAS = {};
+      let CONVERSATION_FLOW = [];
+      let UI = {};
+      let HEALTH_RECORDS = {};
+
+      // ========== STATE ==========
+      let currentStep = 0;
+      let conversationData = {};
+      let isTyping = false;
+
+      // ========== DOM ELEMENTS ==========
+      const chatContainer = document.getElementById("chatContainer");
+      const quickResponses = document.getElementById("quickResponses");
+      const messageInput = document.getElementById("messageInput");
+      const sendBtn = document.getElementById("sendBtn");
+      const voiceBtn = document.getElementById("voiceBtn");
+
+      // ========== LANGUAGE HELPER ==========
+      function getText(obj, key) {
+        if (LANG === "bm" && obj[key + "_BM"]) {
+          return obj[key + "_BM"];
+        }
+        return obj[key] || obj[key.replace("_BM", "")];
+      }
+
+      function getTextDirect(obj, suffix = "") {
+        const bmKey = suffix ? suffix + "_BM" : "text_BM";
+        const enKey = suffix || "text";
+        if (LANG === "bm" && obj[bmKey]) {
+          return obj[bmKey];
+        }
+        return obj[enKey] || obj[bmKey.replace("_BM", "")];
+      }
+
+      // ========== INITIALIZE ==========
+      document.addEventListener("DOMContentLoaded", async () => {
+        await loadChatData();
+        applyUIText();
+        setCurrentDate();
+        loadSavedConversation();
+        startConversation();
+      });
+
+      async function loadChatData() {
+        try {
+          const response = await fetch(DATA_PATH);
+          const data = await response.json();
+
+          PERSONAS = data.personas;
+          CONVERSATION_FLOW = data.conversationFlow;
+          UI = data.ui;
+        } catch (error) {
+          console.error("Failed to load chat data:", error);
+        }
+      }
+
+      async function loadHealthRecords() {
+        try {
+          const response = await fetch(RECORDS_PATH);
+          HEALTH_RECORDS = await response.json();
+          return true;
+        } catch (error) {
+          console.error("Failed to load health records:", error);
+          return false;
+        }
+      }
+
+      function applyUIText() {
+        // Apply UI text from JSON
+        document.querySelector(".header-info h1").textContent = getText(
+          UI.header,
+          "title",
+        );
+        document.querySelector(".status-online").innerHTML =
+          `<span class="status-dot"></span> ${getText(UI.header, "status")}`;
+        document.getElementById("messageInput").placeholder = getText(
+          UI.input,
+          "placeholder",
+        );
+      }
+
+      function setCurrentDate() {
+        const options = {
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        };
+        const locale = LANG === "bm" ? "ms-MY" : "en-US";
+        const today = new Date().toLocaleDateString(locale, options);
+        document.getElementById("currentDate").textContent = today;
+      }
+
+      function loadSavedConversation() {
+        const saved = localStorage.getItem("healthChat_today");
+        if (saved) {
+          const data = JSON.parse(saved);
+          const savedDate = new Date(data.date).toDateString();
+          const today = new Date().toDateString();
+          if (savedDate === today) {
+            conversationData = data.responses || {};
+            currentStep = data.step || 0;
+          }
+        }
+      }
+
+      function saveConversation() {
+        localStorage.setItem(
+          "healthChat_today",
+          JSON.stringify({
+            date: new Date().toISOString(),
+            step: currentStep,
+            responses: conversationData,
+          }),
+        );
+      }
+
+      // ========== MESSAGE RENDERING ==========
+      function addMessage(persona, text, isUser = false) {
+        const messageDiv = document.createElement("div");
+        messageDiv.className = `message ${isUser ? "user-message" : "ai-message"}`;
+
+        if (!isUser) {
+          const personaInfo = PERSONAS[persona];
+          messageDiv.innerHTML = `
+            <img src="${personaInfo.avatar}" alt="${personaInfo.name}" class="message-avatar" />
+            <div class="message-content">
+              <span class="message-sender">${personaInfo.name}</span>
+              <div class="message-bubble">${text}</div>
+            </div>
+          `;
+        } else {
+          messageDiv.innerHTML = `
+            <div class="message-content">
+              <div class="message-bubble">${text}</div>
+            </div>
+          `;
+        }
+
+        chatContainer.appendChild(messageDiv);
+        scrollToBottom();
+      }
+
+      function addTypingIndicator(persona) {
+        const personaInfo = PERSONAS[persona];
+        const typingDiv = document.createElement("div");
+        typingDiv.className = "message ai-message typing-indicator";
+        typingDiv.id = "typingIndicator";
+        typingDiv.innerHTML = `
+          <img src="${personaInfo.avatar}" alt="${personaInfo.name}" class="message-avatar" />
+          <div class="message-content">
+            <span class="message-sender">${personaInfo.name}</span>
+            <div class="message-bubble typing">
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+            </div>
+          </div>
+        `;
+        chatContainer.appendChild(typingDiv);
+        scrollToBottom();
+      }
+
+      function removeTypingIndicator() {
+        const indicator = document.getElementById("typingIndicator");
+        if (indicator) indicator.remove();
+      }
+
+      function scrollToBottom() {
+        // Use setTimeout to ensure DOM is updated before scrolling
+        setTimeout(() => {
+          chatContainer.scrollTop = chatContainer.scrollHeight + 200;
+        }, 50);
+      }
+
+      // ========== QUICK RESPONSES ==========
+      function showQuickResponses(options, multiSelect = false) {
+        quickResponses.innerHTML = "";
+        quickResponses.className = `quick-responses ${multiSelect ? "multi-select" : ""}`;
+
+        if (multiSelect) {
+          const selectedValues = [];
+
+          options.forEach((opt) => {
+            const btn = document.createElement("button");
+            btn.className = "quick-btn";
+            btn.textContent = getTextDirect(opt);
+            btn.dataset.value = opt.value;
+            btn.addEventListener("click", () => {
+              btn.classList.toggle("selected");
+              const idx = selectedValues.indexOf(opt.value);
+              if (idx > -1) {
+                selectedValues.splice(idx, 1);
+              } else {
+                selectedValues.push(opt.value);
+              }
+            });
+            quickResponses.appendChild(btn);
+          });
+
+          // Add confirm button for multi-select
+          const confirmBtn = document.createElement("button");
+          confirmBtn.className = "quick-btn confirm-btn";
+          confirmBtn.textContent = getText(UI.buttons, "confirm");
+          confirmBtn.addEventListener("click", () => {
+            const response =
+              selectedValues.length > 0 ? selectedValues.join(", ") : "none";
+            handleUserResponse(response);
+          });
+          quickResponses.appendChild(confirmBtn);
+        } else {
+          options.forEach((opt) => {
+            const btn = document.createElement("button");
+            btn.className = "quick-btn";
+            btn.textContent = getTextDirect(opt);
+            btn.addEventListener("click", () => {
+              if (opt.action === "bp") {
+                showBloodPressureInput();
+              } else if (opt.action === "hr") {
+                showHeartRateInput();
+              } else if (opt.action === "bs") {
+                showBloodSugarInput();
+              } else {
+                handleUserResponse(opt.value, getTextDirect(opt));
+              }
+            });
+            quickResponses.appendChild(btn);
+          });
+        }
+
+        quickResponses.classList.add("visible");
+      }
+
+      function hideQuickResponses() {
+        quickResponses.classList.remove("visible");
+        setTimeout(() => {
+          quickResponses.innerHTML = "";
+        }, 300);
+      }
+
+      function showBloodPressureInput() {
+        hideQuickResponses();
+
+        const bpModal = document.createElement("div");
+        bpModal.className = "bp-input-modal";
+        bpModal.innerHTML = `
+          <div class="bp-input-card">
+            <h3>${getText(UI.bpModal, "title")}</h3>
+            <div class="bp-input-group">
+              <div class="bp-field">
+                <label>${getText(UI.bpModal, "systolicLabel")}</label>
+                <input type="number" id="bpSystolic" placeholder="120" inputmode="numeric" min="60" max="250" />
+              </div>
+              <span class="bp-separator">/</span>
+              <div class="bp-field">
+                <label>${getText(UI.bpModal, "diastolicLabel")}</label>
+                <input type="number" id="bpDiastolic" placeholder="80" inputmode="numeric" min="40" max="150" />
+              </div>
+            </div>
+            <div class="bp-buttons">
+              <button class="bp-cancel-btn" id="bpCancel">${getText(UI.buttons, "cancel")}</button>
+              <button class="bp-submit-btn" id="bpSubmit">${getText(UI.buttons, "record")}</button>
+            </div>
+          </div>
+        `;
+        document.body.appendChild(bpModal);
+
+        document.getElementById("bpCancel").addEventListener("click", () => {
+          bpModal.remove();
+          handleUserResponse("skip_bp", getText(UI.buttons, "skip"));
+        });
+
+        document.getElementById("bpSubmit").addEventListener("click", () => {
+          const sys = document.getElementById("bpSystolic").value;
+          const dia = document.getElementById("bpDiastolic").value;
+          if (sys && dia) {
+            const reading = `${sys}/${dia} mmHg`;
+            bpModal.remove();
+            handleUserResponse(reading, reading);
+          }
+        });
+      }
+
+      function showHeartRateInput() {
+        hideQuickResponses();
+
+        const hrModal = document.createElement("div");
+        hrModal.className = "bp-input-modal"; // Reuse BP modal styles
+        hrModal.innerHTML = `
+          <div class="bp-input-card">
+            <h3>${getText(UI.hrModal, "title")}</h3>
+            <div class="single-input-group">
+              <div class="bp-field full-width">
+                <label>${getText(UI.hrModal, "hrLabel")}</label>
+                <input type="number" id="hrValue" placeholder="${UI.hrModal.placeholder}" inputmode="numeric" min="40" max="200" />
+              </div>
+            </div>
+            <div class="bp-buttons">
+              <button class="bp-cancel-btn" id="hrCancel">${getText(UI.buttons, "cancel")}</button>
+              <button class="bp-submit-btn" id="hrSubmit">${getText(UI.buttons, "record")}</button>
+            </div>
+          </div>
+        `;
+        document.body.appendChild(hrModal);
+
+        document.getElementById("hrCancel").addEventListener("click", () => {
+          hrModal.remove();
+          handleUserResponse("skip_hr", getText(UI.buttons, "skip"));
+        });
+
+        document.getElementById("hrSubmit").addEventListener("click", () => {
+          const hr = document.getElementById("hrValue").value;
+          if (hr) {
+            const reading = `${hr} bpm`;
+            hrModal.remove();
+            handleUserResponse(reading, reading);
+          }
+        });
+      }
+
+      function showBloodSugarInput() {
+        hideQuickResponses();
+
+        const bsModal = document.createElement("div");
+        bsModal.className = "bp-input-modal"; // Reuse BP modal styles
+        bsModal.innerHTML = `
+          <div class="bp-input-card">
+            <h3>${getText(UI.bsModal, "title")}</h3>
+            <div class="single-input-group">
+              <div class="bp-field full-width">
+                <label>${getText(UI.bsModal, "bsLabel")} (${UI.bsModal.unitLabel})</label>
+                <input type="number" id="bsValue" placeholder="${UI.bsModal.placeholder}" inputmode="numeric" min="20" max="600" />
+              </div>
+              <div class="bp-field full-width">
+                <label>${getText(UI.bsModal, "typeLabel")}</label>
+                <div class="bs-type-buttons">
+                  <button class="bs-type-btn active" data-type="fasting">${getText(UI.bsModal, "fasting")}</button>
+                  <button class="bs-type-btn" data-type="afterMeal">${getText(UI.bsModal, "afterMeal")}</button>
+                </div>
+              </div>
+            </div>
+            <div class="bp-buttons">
+              <button class="bp-cancel-btn" id="bsCancel">${getText(UI.buttons, "cancel")}</button>
+              <button class="bp-submit-btn" id="bsSubmit">${getText(UI.buttons, "record")}</button>
+            </div>
+          </div>
+        `;
+        document.body.appendChild(bsModal);
+
+        // Toggle blood sugar type
+        let selectedType = "fasting";
+        bsModal.querySelectorAll(".bs-type-btn").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            bsModal
+              .querySelectorAll(".bs-type-btn")
+              .forEach((b) => b.classList.remove("active"));
+            btn.classList.add("active");
+            selectedType = btn.dataset.type;
+          });
+        });
+
+        document.getElementById("bsCancel").addEventListener("click", () => {
+          bsModal.remove();
+          handleUserResponse("skip_bs", getText(UI.buttons, "skip"));
+        });
+
+        document.getElementById("bsSubmit").addEventListener("click", () => {
+          const bs = document.getElementById("bsValue").value;
+          if (bs) {
+            const typeLabel =
+              selectedType === "fasting"
+                ? getText(UI.bsModal, "fasting")
+                : getText(UI.bsModal, "afterMeal");
+            const reading = `${bs} mg/dL (${typeLabel})`;
+            bsModal.remove();
+            handleUserResponse(reading, reading);
+          }
+        });
+      }
+
+      // ========== CONVERSATION FLOW ==========
+      function startConversation() {
+        // If resuming a saved conversation, reset to start fresh for today
+        // (The saved step might be mid-conversation which causes issues)
+        if (currentStep > 0 && currentStep < CONVERSATION_FLOW.length) {
+          // Resume: show current step
+          processStep(CONVERSATION_FLOW[currentStep]);
+        } else if (currentStep >= CONVERSATION_FLOW.length) {
+          // Conversation completed today - show summary message
+          addMessage(
+            "drFatimah",
+            getText(CONVERSATION_FLOW[CONVERSATION_FLOW.length - 1], "message"),
+          );
+          showDailySummary();
+        } else {
+          // Fresh start
+          processStep(CONVERSATION_FLOW[0]);
+        }
+      }
+
+      function getDynamicMessage(step, prevResponse) {
+        if (!step.dynamicMessages) return null;
+
+        const suffix = LANG === "bm" ? "_BM" : "";
+
+        // Handle BP recording
+        if (step.waitForInput === "bp") {
+          if (prevResponse === "skip_bp") {
+            return (
+              step.dynamicMessages["skip_bp" + suffix] ||
+              step.dynamicMessages.skip_bp
+            );
+          }
+          const template =
+            step.dynamicMessages["recorded" + suffix] ||
+            step.dynamicMessages.recorded;
+          return template.replace("{value}", prevResponse);
+        }
+
+        // Handle Heart Rate recording
+        if (step.waitForInput === "hr") {
+          if (prevResponse === "skip_hr") {
+            return (
+              step.dynamicMessages["skip_hr" + suffix] ||
+              step.dynamicMessages.skip_hr
+            );
+          }
+          const template =
+            step.dynamicMessages["recorded" + suffix] ||
+            step.dynamicMessages.recorded;
+          return template.replace("{value}", prevResponse);
+        }
+
+        // Handle Blood Sugar recording
+        if (step.waitForInput === "bs") {
+          if (prevResponse === "skip_bs") {
+            return (
+              step.dynamicMessages["skip_bs" + suffix] ||
+              step.dynamicMessages.skip_bs
+            );
+          }
+          const template =
+            step.dynamicMessages["recorded" + suffix] ||
+            step.dynamicMessages.recorded;
+          return template.replace("{value}", prevResponse);
+        }
+
+        // Handle symptoms (now step 6)
+        if (step.id === 6) {
+          if (prevResponse === "none" || !prevResponse) {
+            return (
+              step.dynamicMessages["none" + suffix] || step.dynamicMessages.none
+            );
+          }
+          return (
+            step.dynamicMessages["hasSymptoms" + suffix] ||
+            step.dynamicMessages.hasSymptoms
+          );
+        }
+
+        // Handle mood-based responses
+        const key = prevResponse + suffix;
+        return (
+          step.dynamicMessages[key] ||
+          step.dynamicMessages[prevResponse] ||
+          step.dynamicMessages["default" + suffix] ||
+          step.dynamicMessages.default
+        );
+      }
+
+      function processStep(step) {
+        isTyping = true;
+        addTypingIndicator(step.persona);
+
+        setTimeout(() => {
+          removeTypingIndicator();
+          isTyping = false;
+
+          let message;
+          if (step.dynamicMessages) {
+            const prevKey = `step_${currentStep - 1}`;
+            message = getDynamicMessage(step, conversationData[prevKey]);
+          } else {
+            message = getText(step, "message");
+          }
+
+          if (message) {
+            addMessage(step.persona, message);
+          }
+
+          if (step.quickResponses) {
+            showQuickResponses(step.quickResponses, step.multiSelect);
+          }
+
+          if (step.showSummary) {
+            showDailySummary();
+          }
+        }, step.delay || 800);
+      }
+
+      function handleUserResponse(value, displayText = null) {
+        hideQuickResponses();
+
+        // Show user's response
+        addMessage("user", displayText || value, true);
+
+        // Save response
+        conversationData[`step_${currentStep}`] = value;
+        currentStep++;
+        saveConversation();
+
+        // Continue conversation
+        if (currentStep < CONVERSATION_FLOW.length) {
+          setTimeout(() => {
+            processStep(CONVERSATION_FLOW[currentStep]);
+          }, 400);
+        }
+      }
+
+      // ========== DAILY SUMMARY ==========
+      function showDailySummary() {
+        setTimeout(() => {
+          const summaryDiv = document.createElement("div");
+          summaryDiv.className = "daily-summary";
+
+          // Updated step mappings:
+          // step_0: mood, step_2: BP response, step_3: HR response, step_4: BS response
+          // step_5: symptoms, step_7: medication
+          const mood = conversationData["step_0"] || "N/A";
+          const bpRaw = conversationData["step_2"] || "";
+          const bp = bpRaw.includes("skip")
+            ? getText(UI.summary, "notRecorded")
+            : bpRaw || getText(UI.summary, "notRecorded");
+          const hrRaw = conversationData["step_3"] || "";
+          const hr = hrRaw.includes("skip")
+            ? getText(UI.summary, "notRecorded")
+            : hrRaw || getText(UI.summary, "notRecorded");
+          const bsRaw = conversationData["step_4"] || "";
+          const bs = bsRaw.includes("skip")
+            ? getText(UI.summary, "notRecorded")
+            : bsRaw || getText(UI.summary, "notRecorded");
+          const symptoms =
+            conversationData["step_5"] || getText(UI.summary, "noSymptoms");
+          const meds = conversationData["step_7"] || "N/A";
+
+          const moodEmoji = getText(UI.moodDisplay, mood) || mood;
+          const medsDisplay = getText(UI.medicationDisplay, meds) || meds;
+          const symptomsDisplay =
+            symptoms === "none" ? getText(UI.summary, "noSymptoms") : symptoms;
+
+          summaryDiv.innerHTML = `
+            <h3>${getText(UI.summary, "title")}</h3>
+            <div class="summary-grid">
+              <div class="summary-item">
+                <span class="summary-label">${getText(UI.summary, "moodLabel")}</span>
+                <span class="summary-value">${moodEmoji}</span>
+              </div>
+              <div class="summary-item">
+                <span class="summary-label">${getText(UI.summary, "bpLabel")}</span>
+                <span class="summary-value">${bp}</span>
+              </div>
+              <div class="summary-item">
+                <span class="summary-label">${getText(UI.summary, "hrLabel")}</span>
+                <span class="summary-value">${hr}</span>
+              </div>
+              <div class="summary-item">
+                <span class="summary-label">${getText(UI.summary, "bsLabel")}</span>
+                <span class="summary-value">${bs}</span>
+              </div>
+              <div class="summary-item">
+                <span class="summary-label">${getText(UI.summary, "symptomsLabel")}</span>
+                <span class="summary-value">${symptomsDisplay}</span>
+              </div>
+              <div class="summary-item">
+                <span class="summary-label">${getText(UI.summary, "medicationLabel")}</span>
+                <span class="summary-value">${medsDisplay}</span>
+              </div>
+            </div>
+            <button class="summary-done-btn" onclick="this.parentElement.remove()">
+              ${getText(UI.buttons, "done")}
+            </button>
+          `;
+          chatContainer.appendChild(summaryDiv);
+          scrollToBottom();
+        }, 1000);
+      }
+
+      // ========== TEXT INPUT HANDLING ==========
+      sendBtn.addEventListener("click", sendTextMessage);
+      messageInput.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") sendTextMessage();
+      });
+
+      function sendTextMessage() {
+        const text = messageInput.value.trim();
+        if (!text || isTyping) return;
+
+        addMessage("user", text, true);
+        messageInput.value = "";
+
+        // For now, just acknowledge free text
+        setTimeout(() => {
+          addTypingIndicator("nurseAlia");
+          setTimeout(() => {
+            removeTypingIndicator();
+            addMessage("nurseAlia", getText(UI, "freeTextResponse"));
+          }, 800);
+        }, 300);
+      }
+
+      // ========== VOICE INPUT (Placeholder) ==========
+      voiceBtn.addEventListener("click", () => {
+        voiceBtn.classList.toggle("recording");
+
+        if (voiceBtn.classList.contains("recording")) {
+          // Simulated voice recording feedback
+          voiceBtn.textContent = "🔴";
+
+          // In production, integrate Web Speech API here
+          setTimeout(() => {
+            voiceBtn.classList.remove("recording");
+            voiceBtn.textContent = "🎤";
+            messageInput.value = getText(UI, "voicePlaceholder");
+            messageInput.focus();
+          }, 2000);
+        }
+      });
+
+      // ========== MENU DROPDOWN ==========
+      const menuBtn = document.getElementById("menuBtn");
+      const menuDropdown = document.getElementById("menuDropdown");
+      const resetBtn = document.getElementById("resetConversation");
+
+      menuBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        menuDropdown.classList.toggle("visible");
+      });
+
+      document.addEventListener("click", () => {
+        menuDropdown.classList.remove("visible");
+      });
+
+      resetBtn.addEventListener("click", () => {
+        // Clear saved conversation
+        localStorage.removeItem("healthChat_today");
+        currentStep = 0;
+        conversationData = {};
+
+        // Clear chat container
+        chatContainer.innerHTML = "";
+        hideQuickResponses();
+
+        // Start fresh
+        startConversation();
+        menuDropdown.classList.remove("visible");
+      });
+
+      // ========== HEALTH REPORT ==========
+      const generateReportBtn = document.getElementById("generateReport");
+      const healthReportModal = document.getElementById("healthReportModal");
+      const closeReportBtn = document.getElementById("closeReportBtn");
+
+      generateReportBtn.addEventListener("click", async () => {
+        menuDropdown.classList.remove("visible");
+
+        // Load health records if not already loaded
+        if (!HEALTH_RECORDS.records) {
+          await loadHealthRecords();
+        }
+
+        if (HEALTH_RECORDS.records) {
+          renderHealthReport();
+          healthReportModal.classList.add("visible");
+        }
+      });
+
+      closeReportBtn.addEventListener("click", () => {
+        healthReportModal.classList.remove("visible");
+      });
+
+      // Close modal when clicking outside
+      healthReportModal.addEventListener("click", (e) => {
+        if (e.target === healthReportModal) {
+          healthReportModal.classList.remove("visible");
+        }
+      });
+
+      function getRecordText(obj, key) {
+        // Helper for health records JSON
+        const langKey = LANG === "bm" ? "bm" : "en";
+        if (typeof obj === "object" && obj !== null) {
+          return obj[langKey] || obj["en"] || obj;
+        }
+        return obj;
+      }
+
+      function getRecordUIText(key) {
+        if (!HEALTH_RECORDS.ui) return key;
+        const bmKey = key + "_BM";
+        if (LANG === "bm" && HEALTH_RECORDS.ui[bmKey]) {
+          return HEALTH_RECORDS.ui[bmKey];
+        }
+        return HEALTH_RECORDS.ui[key] || key;
+      }
+
+      function renderHealthReport() {
+        // Apply UI text
+        document.getElementById("reportTitle").textContent =
+          getRecordUIText("reportTitle");
+        document.getElementById("reportSubtitle").textContent =
+          getRecordUIText("subtitle");
+        document.getElementById("averagesTitle").textContent =
+          getRecordUIText("averagesTitle");
+        document.getElementById("closeReportBtn").textContent =
+          getRecordUIText("closeBtn");
+
+        // Calculate averages
+        const records = HEALTH_RECORDS.records.slice(0, 7);
+        const avgBPSystolic = Math.round(
+          records.reduce((sum, r) => sum + r.bloodPressure.systolic, 0) /
+            records.length,
+        );
+        const avgBPDiastolic = Math.round(
+          records.reduce((sum, r) => sum + r.bloodPressure.diastolic, 0) /
+            records.length,
+        );
+        const avgHeartRate = Math.round(
+          records.reduce((sum, r) => sum + r.heartRate.value, 0) /
+            records.length,
+        );
+        const avgBloodSugar = Math.round(
+          records.reduce((sum, r) => sum + r.bloodSugar.value, 0) /
+            records.length,
+        );
+
+        // Render averages
+        const averagesGrid = document.getElementById("averagesGrid");
+        averagesGrid.innerHTML = `
+          <div class="avg-item">
+            <span class="avg-icon">🩺</span>
+            <span class="avg-value">${avgBPSystolic}/${avgBPDiastolic}</span>
+            <span class="avg-label">${getRecordUIText("bloodPressureLabel")}</span>
+            <span class="avg-unit">mmHg</span>
+          </div>
+          <div class="avg-item">
+            <span class="avg-icon">❤️</span>
+            <span class="avg-value">${avgHeartRate}</span>
+            <span class="avg-label">${getRecordUIText("heartRateLabel")}</span>
+            <span class="avg-unit">bpm</span>
+          </div>
+          <div class="avg-item">
+            <span class="avg-icon">🩸</span>
+            <span class="avg-value">${avgBloodSugar}</span>
+            <span class="avg-label">${getRecordUIText("bloodSugarLabel")}</span>
+            <span class="avg-unit">mg/dL</span>
+          </div>
+        `;
+
+        // Render individual records
+        const recordsContainer = document.getElementById("reportRecords");
+        recordsContainer.innerHTML = records
+          .map((record) => {
+            const dateObj = new Date(record.date);
+            const locale = LANG === "bm" ? "ms-MY" : "en-US";
+            const dateStr = dateObj.toLocaleDateString(locale, {
+              weekday: "short",
+              month: "short",
+              day: "numeric",
+            });
+
+            const moodLabel = HEALTH_RECORDS.moodLabels[record.mood];
+            const moodText = getRecordText(moodLabel, LANG);
+
+            const medLabel = HEALTH_RECORDS.medicationLabels[record.medication];
+            const medText = getRecordText(medLabel, LANG);
+
+            let symptomsText = getRecordUIText("noSymptoms");
+            if (record.symptoms && record.symptoms.length > 0) {
+              symptomsText = record.symptoms
+                .map((s) => {
+                  const sym = HEALTH_RECORDS.symptomLabels[s];
+                  return sym ? getRecordText(sym, LANG) : s;
+                })
+                .join(", ");
+            }
+
+            return `
+            <div class="record-item">
+              <div class="record-date">${dateStr}</div>
+              <div class="record-vitals">
+                <div class="vital">
+                  <span class="vital-icon">🩺</span>
+                  <span class="vital-value">${record.bloodPressure.systolic}/${record.bloodPressure.diastolic}</span>
+                </div>
+                <div class="vital">
+                  <span class="vital-icon">❤️</span>
+                  <span class="vital-value">${record.heartRate.value} bpm</span>
+                </div>
+                <div class="vital">
+                  <span class="vital-icon">🩸</span>
+                  <span class="vital-value">${record.bloodSugar.value} mg/dL</span>
+                </div>
+              </div>
+              <div class="record-details">
+                <span class="record-mood">${moodText}</span>
+                <span class="record-meds">${medText}</span>
+              </div>
+              ${record.symptoms && record.symptoms.length > 0 ? `<div class="record-symptoms">${symptomsText}</div>` : ""}
+            </div>
+          `;
+          })
+          .join("");
+      }
+    </script>
+  </body>
+</html>

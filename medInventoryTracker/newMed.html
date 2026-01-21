@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>Add New Medicine</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="page form-page">
+      <header class="page-header">
+        <a href="inventoryHome.html" class="back-btn">← Back</a>
+        <h1>Input New Medicine</h1>
+      </header>
+
+      <form class="form-container" id="newMedForm">
+        <div class="input-wrapper" id="inputWrapper">
+          <!-- Medicine Card 1 -->
+          <div class="input-card">
+            <div class="card-header">
+              <span class="card-number">Medicine #1</span>
+              <button type="button" class="remove-card-btn" aria-label="Remove">
+                ✕
+              </button>
+            </div>
+
+            <div class="field-group">
+              <label for="med-name-1">Medicine Name</label>
+              <input
+                id="med-name-1"
+                name="medicineName[]"
+                type="text"
+                list="medNames"
+                placeholder="Select or type new"
+                required
+              />
+              <datalist id="medNames">
+                <option value="Paracetamol"></option>
+                <option value="Amoxicillin"></option>
+                <option value="Metformin"></option>
+                <option value="Amlodipine"></option>
+                <option value="Atorvastatin"></option>
+                <option value="Vitamin C"></option>
+                <option value="Aspirin"></option>
+                <option value="Omeprazole"></option>
+              </datalist>
+            </div>
+
+            <div class="field-row">
+              <div class="field-group half">
+                <label for="quantity-1">Quantity</label>
+                <input
+                  id="quantity-1"
+                  name="quantity[]"
+                  type="number"
+                  min="1"
+                  placeholder="e.g. 30"
+                  required
+                />
+              </div>
+
+              <div class="field-group half">
+                <label for="batch-1">Batch No.</label>
+                <input
+                  id="batch-1"
+                  name="batch[]"
+                  type="number"
+                  min="1"
+                  placeholder="e.g. 5"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="field-group">
+              <label for="expiry-1">Expiry Date</label>
+              <input id="expiry-1" name="expiry[]" type="date" required />
+            </div>
+          </div>
+        </div>
+
+        <button class="btn-add-more" type="button" id="addMoreBtn">
+          <span class="add-icon">＋</span>
+          <span>Add Another Medicine</span>
+        </button>
+
+        <button class="btn-submit" type="submit">
+          <span class="submit-icon">📦</span>
+          Add to Inventory
+        </button>
+      </form>
+    </main>
+
+    <!-- Shared Utilities -->
+    <script src="inventoryUtils.js"></script>
+
+    <script>
+      const addMoreBtn = document.getElementById("addMoreBtn");
+      const inputWrapper = document.getElementById("inputWrapper");
+      let cardCount = 1;
+
+      // Add more medicine cards
+      addMoreBtn.addEventListener("click", () => {
+        cardCount++;
+        const firstCard = inputWrapper.querySelector(".input-card");
+        if (!firstCard) return;
+
+        const clone = firstCard.cloneNode(true);
+
+        // Update card number
+        clone.querySelector(".card-number").textContent =
+          `Medicine #${cardCount}`;
+
+        // Clear and update input IDs
+        const inputs = clone.querySelectorAll("input");
+        inputs.forEach((input) => {
+          input.value = "";
+          const baseId = input.id.replace(/-\d+$/, "");
+          input.id = `${baseId}-${cardCount}`;
+        });
+
+        // Update labels
+        const labels = clone.querySelectorAll("label");
+        labels.forEach((label) => {
+          const forAttr = label.getAttribute("for");
+          if (forAttr) {
+            const baseFor = forAttr.replace(/-\d+$/, "");
+            label.setAttribute("for", `${baseFor}-${cardCount}`);
+          }
+        });
+
+        // Show remove button on clone
+        clone.querySelector(".remove-card-btn").style.display = "flex";
+
+        inputWrapper.appendChild(clone);
+
+        // Scroll to new card
+        clone.scrollIntoView({ behavior: "smooth", block: "center" });
+      });
+
+      // Remove card handler (delegated)
+      inputWrapper.addEventListener("click", (e) => {
+        if (e.target.classList.contains("remove-card-btn")) {
+          const card = e.target.closest(".input-card");
+          const allCards = inputWrapper.querySelectorAll(".input-card");
+
+          // Don't remove if it's the only card
+          if (allCards.length > 1) {
+            card.remove();
+            updateCardNumbers();
+          }
+        }
+      });
+
+      // Update card numbers after removal
+      function updateCardNumbers() {
+        const cards = inputWrapper.querySelectorAll(".input-card");
+        cards.forEach((card, index) => {
+          card.querySelector(".card-number").textContent =
+            `Medicine #${index + 1}`;
+          // Hide remove button on first card if only one remains
+          const removeBtn = card.querySelector(".remove-card-btn");
+          if (cards.length === 1) {
+            removeBtn.style.display = "none";
+          }
+        });
+        cardCount = cards.length;
+      }
+
+      // Form submission - Save to localStorage
+      document
+        .getElementById("newMedForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          // Collect all medicine cards data
+          const cards = inputWrapper.querySelectorAll(".input-card");
+          const newMedicines = [];
+
+          cards.forEach((card) => {
+            const medName = card
+              .querySelector('input[name="medicineName[]"]')
+              .value.trim();
+            const quantity = parseInt(
+              card.querySelector('input[name="quantity[]"]').value,
+              10,
+            );
+            const batch = card
+              .querySelector('input[name="batch[]"]')
+              .value.trim();
+            const expiry = card.querySelector('input[name="expiry[]"]').value;
+
+            if (medName && quantity && batch && expiry) {
+              newMedicines.push({
+                MedName: medName,
+                Qty: quantity,
+                Batch: batch,
+                ExpDate: formatDateToDisplay(expiry),
+              });
+            }
+          });
+
+          if (newMedicines.length === 0) {
+            alert("Please fill in at least one medicine.");
+            return;
+          }
+
+          // Load current inventory and add new medicines
+          const inventory = await loadInventory();
+          inventory.push(...newMedicines);
+          saveInventory(inventory);
+
+          // Log for debugging (you can view in browser console)
+          console.log("✅ Added medicines:", newMedicines);
+          console.log("📦 Updated inventory:", inventory);
+
+          // Show success and redirect
+          const count = newMedicines.length;
+          alert(
+            `✅ ${count} medicine${count > 1 ? "s" : ""} added to inventory!`,
+          );
+          window.location.href = "inventoryHome.html";
+        });
+
+      // Initialize inventory on page load (pre-fetch from JSON)
+      loadInventory();
+    </script>
+  </body>
+</html>

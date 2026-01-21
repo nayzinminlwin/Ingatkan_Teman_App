@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <!-- BM: Berbual dengan Adik Aisya -->
+    <title>Chit-Chat with Adik Aisya</title>
+    <link rel="stylesheet" href="../styles/global.css" />
+    <link rel="stylesheet" href="chatUI.css" />
+  </head>
+  <body class="theme-chitchat">
+    <!-- ========== HEADER ========== -->
+    <header class="chat-header">
+      <a href="../main/homePage.html" class="back-btn" aria-label="Back">←</a>
+      <div class="header-content">
+        <div class="header-avatars single">
+          <img
+            src="../assets/Adik_Aisya.png"
+            alt="Adik Aisya"
+            class="header-avatar primary"
+          />
+        </div>
+        <div class="header-info">
+          <!-- BM: Adik Aisya -->
+          <h1 id="headerTitle">Adik Aisya</h1>
+          <p class="status-online">
+            <!-- BM: Dalam Talian & Sedia Berbual -->
+            <span class="status-dot"></span>
+            <span id="headerStatus">Online & Ready to Chat</span>
+          </p>
+        </div>
+      </div>
+      <button class="menu-btn" id="menuBtn" aria-label="Menu">⋮</button>
+    </header>
+
+    <!-- ========== MENU DROPDOWN ========== -->
+    <div class="menu-dropdown" id="menuDropdown">
+      <button class="menu-item" id="resetConversation">
+        🔄 Start New Chat
+      </button>
+    </div>
+
+    <!-- ========== TOPIC CHIPS ========== -->
+    <div class="topic-chips" id="topicChips">
+      <!-- Filled dynamically -->
+    </div>
+
+    <!-- ========== CHAT CONTAINER ========== -->
+    <main class="chat-container" id="chatContainer">
+      <!-- Messages will be inserted here dynamically -->
+    </main>
+
+    <!-- ========== QUICK RESPONSE BUTTONS ========== -->
+    <div class="quick-responses" id="quickResponses">
+      <!-- Dynamic quick response buttons appear here -->
+    </div>
+
+    <!-- ========== INPUT AREA ========== -->
+    <footer class="input-area">
+      <div class="input-wrapper">
+        <button class="voice-btn" id="voiceBtn" aria-label="Voice Input">
+          🎤
+        </button>
+        <!-- BM placeholder: Taip mesej anda... -->
+        <input
+          type="text"
+          id="messageInput"
+          placeholder="Type your message..."
+          class="message-input"
+        />
+        <button class="send-btn" id="sendBtn" aria-label="Send Message">
+          ➤
+        </button>
+      </div>
+    </footer>
+
+    <script>
+      // ========== CONFIGURATION ==========
+      const DATA_PATH = "chitChat.JSON";
+      const LANG = "en"; // Change to "bm" for Bahasa Melayu
+
+      // Data containers
+      let PERSONA = {};
+      let TOPICS = [];
+      let GREETINGS = [];
+      let RESPONSES = {};
+      let UI = {};
+
+      // State
+      let currentTopic = null;
+      let conversationHistory = [];
+
+      // ========== DOM ELEMENTS ==========
+      const chatContainer = document.getElementById("chatContainer");
+      const quickResponses = document.getElementById("quickResponses");
+      const messageInput = document.getElementById("messageInput");
+      const sendBtn = document.getElementById("sendBtn");
+      const voiceBtn = document.getElementById("voiceBtn");
+      const topicChips = document.getElementById("topicChips");
+
+      // ========== LANGUAGE HELPER ==========
+      function getText(obj, key) {
+        if (!obj) return key;
+        if (LANG === "bm" && obj[key + "_BM"]) {
+          return obj[key + "_BM"];
+        }
+        return obj[key] || obj[key.replace("_BM", "")];
+      }
+
+      function getTextDirect(obj, suffix = "") {
+        if (!obj) return "";
+        const bmKey = suffix ? suffix + "_BM" : "label_BM";
+        const enKey = suffix || "label";
+        if (LANG === "bm" && obj[bmKey]) {
+          return obj[bmKey];
+        }
+        return obj[enKey] || obj[bmKey.replace("_BM", "")];
+      }
+
+      // ========== INITIALIZE ==========
+      document.addEventListener("DOMContentLoaded", async () => {
+        await loadChatData();
+        applyUIText();
+        renderTopicChips();
+        startConversation();
+      });
+
+      async function loadChatData() {
+        try {
+          const response = await fetch(DATA_PATH);
+          const data = await response.json();
+
+          PERSONA = data.persona;
+          TOPICS = data.topics;
+          GREETINGS = data.greetings;
+          RESPONSES = data.responses;
+          UI = data.ui;
+        } catch (error) {
+          console.error("Failed to load chat data:", error);
+        }
+      }
+
+      function applyUIText() {
+        document.getElementById("headerTitle").textContent = getText(
+          UI.header,
+          "title",
+        );
+        document.getElementById("headerStatus").textContent = getText(
+          UI.header,
+          "status",
+        );
+        document.getElementById("messageInput").placeholder = getText(
+          UI.input,
+          "placeholder",
+        );
+      }
+
+      function renderTopicChips() {
+        topicChips.innerHTML = TOPICS.map(
+          (topic) => `
+          <button class="topic-chip" data-topic="${topic.id}">
+            ${getTextDirect(topic)}
+          </button>
+        `,
+        ).join("");
+
+        // Add click handlers
+        topicChips.querySelectorAll(".topic-chip").forEach((chip) => {
+          chip.addEventListener("click", () => {
+            const topicId = chip.dataset.topic;
+            selectTopic(topicId);
+
+            // Visual feedback
+            topicChips
+              .querySelectorAll(".topic-chip")
+              .forEach((c) => c.classList.remove("active"));
+            chip.classList.add("active");
+          });
+        });
+      }
+
+      function selectTopic(topicId) {
+        const topic = TOPICS.find((t) => t.id === topicId);
+        if (!topic) return;
+
+        currentTopic = topic;
+
+        // Get a random starter from the topic
+        const starters = LANG === "bm" ? topic.starters_BM : topic.starters;
+        const starter = starters[Math.floor(Math.random() * starters.length)];
+
+        // Add typing then message
+        addTypingIndicator();
+        setTimeout(() => {
+          removeTypingIndicator();
+          addMessage(PERSONA.name, starter, PERSONA.avatar);
+        }, 800);
+      }
+
+      // ========== CONVERSATION ==========
+      function startConversation() {
+        // Determine time of day
+        const hour = new Date().getHours();
+        let timeOfDay = "morning";
+        if (hour >= 12 && hour < 17) timeOfDay = "afternoon";
+        else if (hour >= 17) timeOfDay = "evening";
+
+        const greeting = GREETINGS.find((g) => g.time === timeOfDay);
+        const message = LANG === "bm" ? greeting.message_BM : greeting.message;
+
+        // Show greeting after delay
+        setTimeout(() => {
+          addTypingIndicator();
+          setTimeout(() => {
+            removeTypingIndicator();
+            addMessage(PERSONA.name, message, PERSONA.avatar);
+          }, 1000);
+        }, 500);
+      }
+
+      // ========== MESSAGE RENDERING ==========
+      function addMessage(sender, text, avatar = null, isUser = false) {
+        const messageDiv = document.createElement("div");
+        messageDiv.className = `message ${isUser ? "user-message" : "ai-message"}`;
+
+        if (!isUser) {
+          messageDiv.innerHTML = `
+            <img src="${avatar}" alt="${sender}" class="message-avatar" />
+            <div class="message-content">
+              <span class="message-sender">${sender}</span>
+              <div class="message-bubble">${text}</div>
+            </div>
+          `;
+        } else {
+          messageDiv.innerHTML = `
+            <div class="message-content">
+              <div class="message-bubble">${text}</div>
+            </div>
+          `;
+        }
+
+        chatContainer.appendChild(messageDiv);
+        conversationHistory.push({ sender, text, isUser });
+        scrollToBottom();
+      }
+
+      function addTypingIndicator() {
+        const typingDiv = document.createElement("div");
+        typingDiv.className = "message ai-message typing-indicator";
+        typingDiv.id = "typingIndicator";
+        typingDiv.innerHTML = `
+          <img src="${PERSONA.avatar}" alt="${PERSONA.name}" class="message-avatar" />
+          <div class="message-content">
+            <div class="message-bubble typing">
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+            </div>
+          </div>
+        `;
+        chatContainer.appendChild(typingDiv);
+        scrollToBottom();
+      }
+
+      function removeTypingIndicator() {
+        const indicator = document.getElementById("typingIndicator");
+        if (indicator) indicator.remove();
+      }
+
+      function scrollToBottom() {
+        setTimeout(() => {
+          chatContainer.scrollTop = chatContainer.scrollHeight;
+        }, 50);
+      }
+
+      // ========== AI RESPONSE ==========
+      function getAIResponse(userMessage) {
+        // Simple response selection based on keywords
+        const msg = userMessage.toLowerCase();
+
+        // Positive keywords
+        if (
+          msg.includes("good") ||
+          msg.includes("great") ||
+          msg.includes("happy") ||
+          msg.includes("baik") ||
+          msg.includes("bagus") ||
+          msg.includes("gembira")
+        ) {
+          const responses =
+            LANG === "bm" ? RESPONSES.positive_BM : RESPONSES.positive;
+          return responses[Math.floor(Math.random() * responses.length)];
+        }
+
+        // Sad/difficult keywords
+        if (
+          msg.includes("sad") ||
+          msg.includes("difficult") ||
+          msg.includes("hard") ||
+          msg.includes("sedih") ||
+          msg.includes("sukar") ||
+          msg.includes("susah")
+        ) {
+          const responses =
+            LANG === "bm" ? RESPONSES.empathy_BM : RESPONSES.empathy;
+          return responses[Math.floor(Math.random() * responses.length)];
+        }
+
+        // Default: curious response
+        const responses =
+          LANG === "bm" ? RESPONSES.curious_BM : RESPONSES.curious;
+        return responses[Math.floor(Math.random() * responses.length)];
+      }
+
+      // ========== TEXT INPUT HANDLING ==========
+      sendBtn.addEventListener("click", sendTextMessage);
+      messageInput.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") sendTextMessage();
+      });
+
+      function sendTextMessage() {
+        const text = messageInput.value.trim();
+        if (!text) return;
+
+        // Show user message
+        addMessage("You", text, null, true);
+        messageInput.value = "";
+
+        // Generate AI response
+        setTimeout(() => {
+          addTypingIndicator();
+          setTimeout(
+            () => {
+              removeTypingIndicator();
+              const response = getAIResponse(text);
+              addMessage(PERSONA.name, response, PERSONA.avatar);
+            },
+            1000 + Math.random() * 500,
+          );
+        }, 300);
+      }
+
+      // ========== VOICE INPUT (Placeholder) ==========
+      voiceBtn.addEventListener("click", () => {
+        voiceBtn.classList.toggle("recording");
+
+        if (voiceBtn.classList.contains("recording")) {
+          voiceBtn.textContent = "🔴";
+
+          setTimeout(() => {
+            voiceBtn.classList.remove("recording");
+            voiceBtn.textContent = "🎤";
+            messageInput.value = getText(UI, "voicePlaceholder");
+            messageInput.focus();
+          }, 2000);
+        }
+      });
+
+      // ========== MENU DROPDOWN ==========
+      const menuBtn = document.getElementById("menuBtn");
+      const menuDropdown = document.getElementById("menuDropdown");
+      const resetBtn = document.getElementById("resetConversation");
+
+      menuBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        menuDropdown.classList.toggle("visible");
+      });
+
+      document.addEventListener("click", () => {
+        menuDropdown.classList.remove("visible");
+      });
+
+      resetBtn.addEventListener("click", () => {
+        // Clear chat
+        chatContainer.innerHTML = "";
+        conversationHistory = [];
+        currentTopic = null;
+
+        // Reset topic chips
+        topicChips
+          .querySelectorAll(".topic-chip")
+          .forEach((c) => c.classList.remove("active"));
+
+        // Start fresh
+        startConversation();
+        menuDropdown.classList.remove("visible");
+      });
+    </script>
+  </body>
+</html>

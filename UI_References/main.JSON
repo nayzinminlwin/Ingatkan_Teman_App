@@ -1,0 +1,31 @@
+{
+  "description": "The Map: Links to reference images and texts used in the UI design process.",
+  "references": 
+  {
+    "LoginPage": null,
+    "LoadingPage": null,
+    "HomePage": "homeDashboard.txt",
+    "MedicationReminder": {
+      "dashboard": "MedReminder/medReminder_home.jpeg",
+      "manualInput": "MedReminder/manualInput_ui.txt",
+      "ocrScan": "MedReminder/textTract_ui.png"
+    },
+    "MedicationInventory": {
+      "dashboard": "MedInventory/inventoryHome.png",
+      "addMedication": "MedInventory/newMedicine.txt",
+      "editMedication": "MedInventory/editStock.txt",
+      "stockList": "MedInventory/stockReport_ui.png",
+      "pharmacyMap": "MedInventory/PhamarcyMap_ui.png"
+    },
+    "DailyHealthRecorder": {
+      "chatInterface": "HealthRecorder/healthChat.png"
+    },
+    "ChitChat": {
+      "chatInterface": "ChitChat/chitChat.png"
+    },
+    "Consulting": {
+      "chatInterface": "Consulting/consultChat.png"
+    },
+    "Settings": null
+  }
+}

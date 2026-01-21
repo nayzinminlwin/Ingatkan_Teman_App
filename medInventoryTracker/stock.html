@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>Stock Report</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="page report-page">
+      <header class="page-header">
+        <a href="inventoryHome.html" class="back-btn">← Back</a>
+        <h1>📋 Stock Report</h1>
+      </header>
+
+      <!-- Report Header Info -->
+      <div class="report-header">
+        <div class="report-date">
+          <span class="report-label">Report Generated:</span>
+          <span class="report-value" id="reportDate">--</span>
+        </div>
+        <div class="report-summary">
+          <div class="summary-item">
+            <span class="summary-value" id="totalMeds">0</span>
+            <span class="summary-label">Total Items</span>
+          </div>
+          <div class="summary-item warning">
+            <span class="summary-value" id="lowStockMeds">0</span>
+            <span class="summary-label">Low Stock</span>
+          </div>
+          <div class="summary-item danger">
+            <span class="summary-value" id="expiringMeds">0</span>
+            <span class="summary-label">Expiring</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stock Table -->
+      <div class="report-table-container" id="reportContent">
+        <table class="report-table">
+          <thead>
+            <tr>
+              <th>Medicine</th>
+              <th>Qty</th>
+              <th>Batch</th>
+              <th>Expires</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="reportBody">
+            <!-- Rows injected by JavaScript -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Legend -->
+      <div class="report-legend">
+        <p class="legend-title">Status Legend:</p>
+        <div class="legend-items">
+          <span class="legend-item ok">🟢 OK</span>
+          <span class="legend-item low">🟡 Low Stock</span>
+          <span class="legend-item expiring">🟠 Expiring</span>
+          <span class="legend-item expired">🔴 Expired</span>
+        </div>
+      </div>
+
+      <!-- Download Button -->
+      <button class="btn-submit download-btn" id="downloadBtn" type="button">
+        <span class="submit-icon">📥</span>
+        Download Report (PDF)
+      </button>
+    </main>
+
+    <!-- Include html2pdf library for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <!-- Shared Utilities -->
+    <script src="inventoryUtils.js"></script>
+
+    <script>
+      // Create table row HTML
+      function createTableRow(med) {
+        const status = getMedicineStatus(med);
+        return `
+          <tr class="report-row ${status.class}">
+            <td class="med-name-cell">${med.MedName}</td>
+            <td class="qty-cell ${med.Qty <= LOW_STOCK_THRESHOLD ? "low-qty" : ""}">${med.Qty}</td>
+            <td class="batch-cell">#${med.Batch}</td>
+            <td class="exp-cell">${med.ExpDate}</td>
+            <td class="status-cell">
+              <span class="status-badge ${status.class}">${status.icon} ${status.text}</span>
+            </td>
+          </tr>
+        `;
+      }
+
+      // Render the report
+      async function renderReport() {
+        const inventory = await loadInventory();
+        const reportBody = document.getElementById("reportBody");
+
+        // Set report date
+        document.getElementById("reportDate").textContent = formatReportDate();
+
+        // Calculate summaries
+        let lowStockCount = 0;
+        let expiringCount = 0;
+
+        inventory.forEach((med) => {
+          const daysLeft = getDaysUntilExpiry(med.ExpDate);
+          if (med.Qty <= LOW_STOCK_THRESHOLD) lowStockCount++;
+          if (daysLeft <= EXPIRING_SOON_DAYS) expiringCount++;
+        });
+
+        document.getElementById("totalMeds").textContent = inventory.length;
+        document.getElementById("lowStockMeds").textContent = lowStockCount;
+        document.getElementById("expiringMeds").textContent = expiringCount;
+
+        // Sort: Expired/Expiring first, then Low Stock, then OK
+        const sorted = [...inventory].sort((a, b) => {
+          const statusA = getMedicineStatus(a);
+          const statusB = getMedicineStatus(b);
+          const priority = { expired: 0, expiring: 1, low: 2, ok: 3 };
+          return priority[statusA.class] - priority[statusB.class];
+        });
+
+        // Generate rows
+        let html = "";
+        sorted.forEach((med) => {
+          html += createTableRow(med);
+        });
+
+        if (inventory.length === 0) {
+          html = `
+            <tr>
+              <td colspan="5" class="empty-row">
+                No medicines in inventory.<br>
+                <a href="newMed.html">Add some medicines</a> first!
+              </td>
+            </tr>
+          `;
+        }
+
+        reportBody.innerHTML = html;
+      }
+
+      // Download as PDF
+      document.getElementById("downloadBtn").addEventListener("click", () => {
+        const element = document.getElementById("reportContent");
+        const reportDate = document.getElementById("reportDate").textContent;
+
+        // Create a wrapper with header for PDF
+        const pdfContent = document.createElement("div");
+        pdfContent.innerHTML = `
+          <div style="padding: 20px; font-family: Arial, sans-serif;">
+            <h1 style="color: #2E7D32; margin-bottom: 8px;">Medicine Inventory Report</h1>
+            <p style="color: #5A5A5A; margin-bottom: 16px;">Generated: ${reportDate}</p>
+            <div style="margin-bottom: 16px; display: flex; gap: 20px;">
+              <span><strong>Total Items:</strong> ${document.getElementById("totalMeds").textContent}</span>
+              <span><strong>Low Stock:</strong> ${document.getElementById("lowStockMeds").textContent}</span>
+              <span><strong>Expiring:</strong> ${document.getElementById("expiringMeds").textContent}</span>
+            </div>
+            ${element.innerHTML}
+            <p style="margin-top: 20px; font-size: 12px; color: #888;">
+              Report from Ingatkan Teman App - Medicine Inventory Tracker
+            </p>
+          </div>
+        `;
+
+        const opt = {
+          margin: 10,
+          filename: `Stock_Report_${new Date().toISOString().split("T")[0]}.pdf`,
+          image: { type: "jpeg", quality: 0.98 },
+          html2canvas: { scale: 2 },
+          jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+        };
+
+        html2pdf()
+          .set(opt)
+          .from(pdfContent)
+          .save()
+          .then(() => {
+            alert("✅ Report downloaded successfully!");
+          });
+      });
+
+      // Initialize
+      renderReport();
+    </script>
+  </body>
+</html>

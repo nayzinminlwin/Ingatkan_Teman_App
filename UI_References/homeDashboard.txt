@@ -1,0 +1,46 @@
+<body>
+    <h1> Selamat Datang, Nenek <3 <h1>
+    <div>
+        <table>
+            <tr>
+                <td>
+                    <!-- Button card for Medication Reminder -->
+                    <card style = refer to buttonCard.jpeg > 
+                        onAction = medReminderHome.html
+                    </card>
+                </td>
+                <td>
+                    <!-- Button card for Medication Inventory -->
+                    <card style = refer to buttonCard.jpeg>
+                        onAction = inventoryHome.html
+                    </card>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <!-- Button card for Daily Health Recorder -->
+                    <card style = refer to buttonCard.jpeg but dual avatar with one on left and one on the right, align= center>
+                        onAction = healthChat.html
+                    </card>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <!-- Button card for Chit-Chat -->
+                    <card style = refer to buttonCard.jpeg >
+                        onAction = chitChat.html
+                    </card>
+                </td>
+                <td>
+                    <!-- Button card for Consulting Chat -->
+                    <card style = refer to buttonCard.jpeg>
+                        onAction = consultChat.html
+                    </card>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <p> May God be with you <3 </p>
+</body>

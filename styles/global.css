@@ -1,0 +1,113 @@
+/* INGATKAN TEMAN - DESIGN SYSTEM
+   Based on AI_Config.md
+*/
+
+:root {
+    /* 1. COLOR PALETTE */
+    /* Global */
+    --bg-global: #FFFBF7; /* Warm Off-White */
+    --bg-surface: #FFFFFF; /* Pure White */
+    --text-primary: #121212; /* Soft Black */
+    --text-secondary: #5A5A5A; /* AAA Grey */
+    
+    /* Dynamic Personas (Use these via JS classes or feature wrappers) */
+    --color-meds: #2D7FF9;      /* Adik Ahmad */
+    --color-inventory: #2E7D32; /* PakCik Firdaus */
+    --color-health: #009688;    /* Dr. Fatimah */
+    --color-chat: #FF6F61;      /* Adik Aisya */
+    --color-consult: #34495E;   /* Encik Amirul */
+
+    /* Safety Colors */
+    --color-danger: #D32F2F;
+    --color-warning: #FFA000;
+    --color-success: #388E3C;
+
+    /* 2. TYPOGRAPHY (Senior Scale) */
+    --font-main: 'Inter', 'Open Sans', sans-serif;
+    --size-h1: 32px;
+    --size-h2: 26px;
+    --size-h3: 22px;
+    --size-body: 18px; /* Minimum body size */
+    --size-label: 16px;
+
+    /* 3. SPACING & SHAPE */
+    --radius-btn: 12px;
+    --radius-card: 16px;
+    --space-sm: 8px;
+    --space-md: 16px;
+    --space-lg: 24px; /* Standard Padding */
+    --touch-target: 56px; /* Clumsy Finger Rule */
+}
+
+/* RESET & BASE */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background-color: var(--bg-global);
+    color: var(--text-primary);
+    font-family: var(--font-main);
+    font-size: var(--size-body);
+    line-height: 1.5;
+    padding: clamp(16px, 4vw, 24px); /* Prevent edge touching */
+    min-height: 100vh;
+}
+
+img, svg {
+    max-width: 100%;
+    height: auto;
+}
+
+/* SHARED COMPONENTS */
+
+/* Buttons (Solid) */
+.btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: var(--touch-target);
+    border: none;
+    border-radius: var(--radius-btn);
+    font-size: var(--size-body);
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s, opacity 0.2s;
+    text-decoration: none;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.btn:active {
+    transform: scale(0.98);
+}
+
+/* Cards */
+.card {
+    background: var(--bg-surface);
+    border-radius: var(--radius-card);
+    padding: var(--space-lg);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    margin-bottom: var(--space-md);
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+/* Inputs */
+input, select, textarea {
+    width: 100%;
+    height: var(--touch-target);
+    padding: 0 var(--space-md);
+    font-size: var(--size-body);
+    border: 2px solid #E0E0E0;
+    border-radius: var(--radius-btn);
+    background: var(--bg-surface);
+    margin-bottom: var(--space-md);
+}
+
+input:focus {
+    border-color: var(--text-primary);
+    outline: none;
+}

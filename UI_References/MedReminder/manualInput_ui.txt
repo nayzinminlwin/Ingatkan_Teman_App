@@ -1,0 +1,28 @@
+<body> 
+	<H1> Custom Input </H1>
+	<form>
+		<table action = all filled fields save to database. >
+		<tr>
+			<th> <label> Medicine Name </label> </th>
+			<th> <label> Quantity </label> </th>
+			<th> <label> Times </label> </th>
+		</tr>
+		<tr>
+			<!-- can choose a medicine from dropdown or type in to insert new -->
+			<td> <input type = text + dropDown> </td>
+			<td> <input type = number> </td>
+			<td> <input type = date> </td>
+		</tr>
+		<tr>
+			<td> <button text = '+ Add more' > onAction = show one more row like above and move this button to next td row </button> </td>
+		</tr>
+
+		<tr>
+			<td> <button type= submit text = 'Add'> </button> </td>
+		</tr>
+		</table>
+	</form>
+</body>
+	
+			
+			

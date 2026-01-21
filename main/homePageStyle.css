@@ -1,0 +1,296 @@
+/* Home Dashboard Styles */
+
+body {
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-lg);
+  padding-top: 100px; /* Space for fixed navbar */
+  min-height: 100vh;
+}
+
+/* ========== APP NAVBAR ========== */
+.app-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  background: var(--bg-surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 0 var(--space-lg);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  z-index: 100;
+}
+
+.navbar-logo {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+}
+
+.navbar-title {
+  font-size: var(--size-h1);
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.5px;
+  flex: 1;
+}
+
+/* Logout Button in Navbar */
+.logout-btn {
+  position: absolute;
+  right: var(--space-lg);
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(211, 47, 47, 0.1);
+  color: var(--color-danger);
+  border: 2px solid var(--color-danger);
+  border-radius: 50%;
+  font-size: 22px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.logout-btn:active {
+  background: var(--color-danger);
+  transform: scale(0.95);
+}
+
+/* Welcome Header */
+.dashboard-header {
+  text-align: center;
+  margin-bottom: var(--space-lg);
+  position: relative;
+}
+
+.dashboard-header h1 {
+  font-size: var(--size-h2);
+  color: var(--text-primary);
+  font-weight: bold;
+}
+
+/* Feature Grid Layout */
+.feature-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: var(--space-lg);
+  row-gap: 4px;
+  align-content: start;
+  width: 100%;
+  margin: 0 auto 24px;
+}
+
+/* Feature Card - Stage/Diorama Style - Override global .btn */
+.feature-card {
+  background: transparent !important;
+  border-radius: 0;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: block !important;
+  min-height: 110px;
+  max-height: 110px;
+  position: relative;
+  padding: 0 !important;
+  border: none;
+  box-shadow: none !important;
+  overflow: visible;
+}
+
+/* The 3D Platform (Layer A) - Bottom colored block */
+.card-platform {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 70%;
+  border-radius: var(--radius-card);
+  border-bottom: 8px solid rgba(0, 0, 0, 0.3);
+  transition: all 0.15s ease;
+  z-index: 1;
+}
+
+/* Platform Colors - Persona Specific */
+.feature-card[data-theme="meds"] .card-platform {
+  background: #2d7ff9;
+  border-bottom-color: #1a5bb8;
+}
+
+.feature-card[data-theme="inventory"] .card-platform {
+  background: #2e7d32;
+  border-bottom-color: #1e5921;
+}
+
+.feature-card[data-theme="health"] .card-platform {
+  background: #009688;
+  border-bottom-color: #006b5f;
+}
+
+.feature-card[data-theme="chat"] .card-platform {
+  background: #ff6f61;
+  border-bottom-color: #cc4a3f;
+}
+
+.feature-card[data-theme="consult"] .card-platform {
+  background: #34495e;
+  border-bottom-color: #24334a;
+}
+
+/* Full Width Card (Health Recorder) */
+.feature-card.full-width {
+  grid-column: 1 / -1;
+}
+
+/* Card Content (Layer B) - Actors standing on platform */
+.card-content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center; /* Center the group horizontally */
+  gap: 4px; /* Small gap between avatar and label */
+  z-index: 2;
+  position: absolute;
+  bottom: 10%; /* Position to keep text inside platform */
+  left: 0;
+  right: 0;
+  width: 100%;
+  padding: 0;
+}
+
+/* Avatar Image - Standing firmly on platform */
+.avatar {
+  height: 100px;
+  width: 100px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+/* Dual Avatar Layout */
+.card-content.dual-avatar {
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+  justify-content: center;
+  padding: 0;
+}
+
+.card-content.dual-avatar .avatar {
+  height: 85px;
+  width: 85px;
+}
+
+/* Card Title - White text on the platform */
+.card-title {
+  font-size: 16px;
+  font-weight: bold;
+  color: #ffffff;
+  margin: 0;
+  text-align: center; /* Center text within title */
+  line-height: 1.15;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.45);
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  overflow: visible;
+  align-self: center;
+  position: relative;
+  top: 10px;
+}
+
+/* Physical Button Press Effect */
+.feature-card:active {
+  transform: translateY(4px);
+}
+
+.feature-card:active .card-platform {
+  border-bottom-width: 2px;
+}
+
+/* Footer */
+.dashboard-footer {
+  text-align: center;
+  padding-top: var(--space-md);
+}
+
+.dashboard-footer p {
+  font-size: var(--size-body);
+  color: var(--text-secondary);
+}
+
+@media (min-width: 768px) {
+  .feature-grid {
+    max-width: 820px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .feature-grid {
+    max-width: 980px;
+    row-gap: 12px;
+  }
+
+  .feature-card {
+    min-height: 150px;
+  }
+
+  .card-platform {
+    height: 75%;
+    border-bottom-width: 10px;
+  }
+
+  .avatar {
+    height: 130px;
+    width: 130px;
+  }
+
+  .card-content.dual-avatar .avatar {
+    height: 110px;
+    width: 110px;
+  }
+
+  .card-title {
+    font-size: 20px;
+    max-width: calc(100% - 150px);
+  }
+}
+
+@media (max-width: 420px) {
+  .feature-grid {
+    grid-template-columns: 1fr;
+    row-gap: 16px;
+  }
+
+  .feature-card {
+    min-height: 180px;
+    max-height: none;
+  }
+
+  .card-platform {
+    height: 75%;
+    border-bottom-width: 10px;
+  }
+
+  .card-content {
+    bottom: 12%;
+  }
+
+  .avatar {
+    height: 130px;
+    width: 130px;
+  }
+
+  .card-content.dual-avatar .avatar {
+    height: 110px;
+    width: 110px;
+  }
+
+  .card-title {
+    font-size: 20px;
+    max-width: calc(100% - 140px);
+  }
+}

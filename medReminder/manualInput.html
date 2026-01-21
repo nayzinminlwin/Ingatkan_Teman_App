@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>Custom Input</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="page">
+      <header class="page-header">
+        <h1>Custom Input</h1>
+      </header>
+
+      <form class="form-container" id="manualInputForm">
+        <div class="input-wrapper" id="inputWrapper">
+          <div class="input-card">
+            <div class="field-group">
+              <label for="med-name-1">Medicine Name</label>
+              <input
+                id="med-name-1"
+                name="medicineName[]"
+                type="text"
+                list="medNames"
+                placeholder="Select or type"
+              />
+              <datalist id="medNames">
+                <option value="Paracetamol"></option>
+                <option value="Aspirin"></option>
+                <option value="Amoxicillin"></option>
+                <option value="Vitamin C"></option>
+              </datalist>
+            </div>
+
+            <div class="field-group">
+              <label for="quantity-1">Quantity</label>
+              <input id="quantity-1" name="quantity[]" type="number" min="1" />
+            </div>
+
+            <div class="field-group">
+              <label for="time-1">Time/Date</label>
+              <input id="time-1" name="time[]" type="datetime-local" />
+            </div>
+
+            <div class="field-group">
+              <label for="repeat-1">Repeat</label>
+              <select id="repeat-1" name="repeat[]">
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="monthly">Monthly</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn-secondary" type="button" id="addMoreBtn">
+          + Add More
+        </button>
+
+        <button class="btn-primary" type="submit">Add</button>
+      </form>
+    </main>
+
+    <script>
+      const addMoreBtn = document.getElementById("addMoreBtn");
+      const inputWrapper = document.getElementById("inputWrapper");
+
+      addMoreBtn.addEventListener("click", () => {
+        const firstCard = inputWrapper.querySelector(".input-card");
+        if (!firstCard) return;
+
+        const clone = firstCard.cloneNode(true);
+        const inputs = clone.querySelectorAll("input");
+
+        inputs.forEach((input) => {
+          input.value = "";
+          if (input.id) {
+            input.id = `${input.id}-copy-${Date.now()}`;
+          }
+        });
+
+        const labels = clone.querySelectorAll("label");
+        labels.forEach((label, index) => {
+          const correspondingInput = inputs[index];
+          if (correspondingInput && correspondingInput.id) {
+            label.setAttribute("for", correspondingInput.id);
+          }
+        });
+
+        inputWrapper.appendChild(clone);
+      });
+    </script>
+  </body>
+</html>

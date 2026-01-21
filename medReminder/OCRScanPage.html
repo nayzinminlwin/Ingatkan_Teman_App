@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>OCR Scan</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="ocr-page">
+    <main class="camera">
+      <header class="camera-header">
+        <p>Align document in frame</p>
+      </header>
+
+      <section class="viewfinder">
+        <img
+          src="https://placehold.co/300x400?text=Prescription%0APaper"
+          alt="Prescription paper preview"
+          class="paper-preview"
+        />
+        <div class="overlay">
+          <div class="focus-box"></div>
+          <div class="scan-line" id="scanLine"></div>
+        </div>
+      </section>
+
+      <footer class="camera-controls">
+        <button class="camera-btn scan" id="scanBtn" type="button">
+          TextTract
+        </button>
+        <button class="camera-btn cancel" id="cancelBtn" type="button">
+          Cancel
+        </button>
+      </footer>
+    </main>
+
+    <script>
+      const scanBtn = document.getElementById("scanBtn");
+      const cancelBtn = document.getElementById("cancelBtn");
+      const scanLine = document.getElementById("scanLine");
+
+      scanBtn.addEventListener("click", () => {
+        scanBtn.textContent = "Scanning...";
+        scanBtn.disabled = true;
+        scanLine.classList.add("active");
+
+        setTimeout(() => {
+          window.location.href = "manualInput.html";
+        }, 3000);
+      });
+
+      cancelBtn.addEventListener("click", () => {
+        window.history.back();
+      });
+    </script>
+  </body>
+</html>

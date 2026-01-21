@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>Ingatkan Teman - Home</title>
+    <link rel="stylesheet" href="../styles/global.css" />
+    <link rel="stylesheet" href="homePageStyle.css" />
+  </head>
+  <body>
+    <!-- ========== NAV BAR HEADER ========== -->
+    <nav class="app-navbar">
+      <img
+        src="../assets/Ingatkan_Teman_Logo.PNG"
+        alt="Logo"
+        class="navbar-logo"
+      />
+      <span class="navbar-title">Ingatkan Teman</span>
+      <button class="logout-btn" id="logoutBtn" aria-label="Logout">🚪</button>
+    </nav>
+
+    <!-- Welcome Header -->
+    <header class="dashboard-header">
+      <h1>Selamat Datang, Nenek ❤️</h1>
+    </header>
+
+    <!-- Feature Grid -->
+    <div class="feature-grid">
+      <!-- Row 1 Col 1: Medication Reminder -->
+      <a
+        href="../medReminder/medReminderHome.html"
+        class="feature-card"
+        data-theme="meds"
+      >
+        <div class="card-content">
+          <img src="../assets/Adik_Ahmad.png" alt="Adik Ahmad" class="avatar" />
+          <span class="card-title">Medication<br />Reminder</span>
+        </div>
+        <div class="card-platform"></div>
+      </a>
+
+      <!-- Row 1 Col 2: Medication Inventory -->
+      <a
+        href="../medInventoryTracker/inventoryHome.html"
+        class="feature-card"
+        data-theme="inventory"
+      >
+        <div class="card-content">
+          <img
+            src="../assets/PakCik_Firdaus.png"
+            alt="PakCik Firdaus"
+            class="avatar"
+          />
+          <span class="card-title">Medication<br />Inventory</span>
+        </div>
+        <div class="card-platform"></div>
+      </a>
+
+      <!-- Row 2: Health Recorder (Full Width with Dual Avatars) -->
+      <a
+        href="../dailyHealthRecorder/healthChat.html"
+        class="feature-card full-width"
+        data-theme="health"
+      >
+        <div class="card-content dual-avatar">
+          <img
+            src="../assets/Dr_Fatimah.png"
+            alt="Dr. Fatimah"
+            class="avatar"
+          />
+          <span class="card-title">Daily<br />Health<br />Recorder</span>
+          <img src="../assets/Nurse_Alia.png" alt="Nurse Alia" class="avatar" />
+        </div>
+        <div class="card-platform"></div>
+      </a>
+
+      <!-- Row 3 Col 1: Chit-Chat -->
+      <a
+        href="../conversationalUI/chitChat.html"
+        class="feature-card"
+        data-theme="chat"
+      >
+        <div class="card-content">
+          <img src="../assets/Adik_Aisya.png" alt="Adik Aisya" class="avatar" />
+          <span class="card-title">Chit-Chat</span>
+        </div>
+        <div class="card-platform"></div>
+      </a>
+
+      <!-- Row 3 Col 2: Consulting -->
+      <a
+        href="../conversationalUI/consultChat.html"
+        class="feature-card"
+        data-theme="consult"
+      >
+        <div class="card-content">
+          <img
+            src="../assets/Encik_Amirul.png"
+            alt="Encik Amirul"
+            class="avatar"
+          />
+          <span class="card-title">Consulting</span>
+        </div>
+        <div class="card-platform"></div>
+      </a>
+    </div>
+
+    <!-- Footer -->
+    <footer class="dashboard-footer">
+      <p>May God be with you ❤️</p>
+    </footer>
+
+    <script>
+      // ========== SESSION CHECK ==========
+      // Redirect to login if not authenticated
+      (function checkSession() {
+        const isLoggedIn = sessionStorage.getItem("isLoggedIn");
+        if (!isLoggedIn || isLoggedIn !== "true") {
+          window.location.href = "../index.html";
+        }
+      })();
+
+      // ========== LOGOUT ==========
+      document
+        .getElementById("logoutBtn")
+        .addEventListener("click", function () {
+          // Clear session
+          sessionStorage.removeItem("isLoggedIn");
+          sessionStorage.removeItem("loginTime");
+          // Redirect to login page
+          window.location.href = "../index.html";
+        });
+    </script>
+  </body>
+</html>

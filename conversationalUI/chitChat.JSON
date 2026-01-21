@@ -1,0 +1,199 @@
+{
+  "persona": {
+    "name": "Adik Aisya",
+    "avatar": "../assets/Adik_Aisya.png",
+    "role": "Your Friendly Companion",
+    "role_BM": "Teman Mesra Anda"
+  },
+  "greetings": [
+    {
+      "time": "morning",
+      "message": "Good morning! ☀️ How are you feeling today? I'm here to chat with you!",
+      "message_BM": "Selamat pagi! ☀️ Apa khabar hari ini? Aisya sedia untuk berbual dengan anda!"
+    },
+    {
+      "time": "afternoon",
+      "message": "Good afternoon! 🌤️ Hope you're having a lovely day. What would you like to talk about?",
+      "message_BM": "Selamat petang! 🌤️ Harap hari anda indah. Nak berbual tentang apa hari ini?"
+    },
+    {
+      "time": "evening",
+      "message": "Good evening! 🌙 How was your day? I'd love to hear about it!",
+      "message_BM": "Selamat malam! 🌙 Macam mana hari anda? Aisya nak dengar cerita!"
+    }
+  ],
+  "topics": [
+    {
+      "id": "family",
+      "label": "👨‍👩‍👧 Family",
+      "label_BM": "👨‍👩‍👧 Keluarga",
+      "starters": [
+        "Tell me about your grandchildren! 👶 How many do you have?",
+        "Do you have any family visiting soon? 🏠",
+        "What's your favorite memory with your family?"
+      ],
+      "starters_BM": [
+        "Ceritakan tentang cucu-cucu anda! 👶 Berapa ramai?",
+        "Ada keluarga yang nak melawat tak lama lagi? 🏠",
+        "Apakah kenangan paling manis dengan keluarga?"
+      ]
+    },
+    {
+      "id": "food",
+      "label": "🍜 Food",
+      "label_BM": "🍜 Makanan",
+      "starters": [
+        "What did you have for breakfast today? 🍳",
+        "What's your favorite traditional dish? 🍛",
+        "Do you enjoy cooking? What's your specialty?"
+      ],
+      "starters_BM": [
+        "Hari ini sarapan apa? 🍳",
+        "Apakah masakan tradisional kegemaran anda? 🍛",
+        "Anda suka masak? Apa masakan istimewa anda?"
+      ]
+    },
+    {
+      "id": "memories",
+      "label": "📸 Memories",
+      "label_BM": "📸 Kenangan",
+      "starters": [
+        "What was life like when you were young? 👧",
+        "Tell me about your wedding day! 💒",
+        "What's the best advice you've ever received?"
+      ],
+      "starters_BM": [
+        "Macam mana kehidupan semasa muda dulu? 👧",
+        "Ceritakan tentang hari perkahwinan anda! 💒",
+        "Apakah nasihat terbaik yang pernah diterima?"
+      ]
+    },
+    {
+      "id": "hobbies",
+      "label": "🎨 Hobbies",
+      "label_BM": "🎨 Hobi",
+      "starters": [
+        "Do you enjoy gardening? 🌺 What do you grow?",
+        "Do you like watching TV? What shows do you enjoy? 📺",
+        "What do you like to do in your free time?"
+      ],
+      "starters_BM": [
+        "Suka berkebun? 🌺 Apa yang ditanam?",
+        "Suka tengok TV? Program apa yang diminati? 📺",
+        "Apa yang anda suka buat masa lapang?"
+      ]
+    },
+    {
+      "id": "weather",
+      "label": "🌦️ Weather",
+      "label_BM": "🌦️ Cuaca",
+      "starters": [
+        "How's the weather there today? ☀️",
+        "Do you prefer sunny or rainy days? 🌧️",
+        "Is it comfortable at home? Not too hot or cold?"
+      ],
+      "starters_BM": [
+        "Cuaca hari ini macam mana? ☀️",
+        "Anda lebih suka hari panas atau hujan? 🌧️",
+        "Selesa tak di rumah? Tak panas atau sejuk sangat?"
+      ]
+    },
+    {
+      "id": "feelings",
+      "label": "💭 Feelings",
+      "label_BM": "💭 Perasaan",
+      "starters": [
+        "How are you feeling right now? I'm here to listen. 💙",
+        "Is there anything on your mind you'd like to share?",
+        "What made you smile today? 😊"
+      ],
+      "starters_BM": [
+        "Bagaimana perasaan anda sekarang? Aisya sedia mendengar. 💙",
+        "Ada apa-apa dalam fikiran yang ingin dikongsi?",
+        "Apa yang buat anda tersenyum hari ini? 😊"
+      ]
+    }
+  ],
+  "responses": {
+    "positive": [
+      "That's wonderful to hear! 😊",
+      "How lovely! Tell me more!",
+      "That sounds amazing! 🌟",
+      "I'm so happy to hear that! 💕"
+    ],
+    "positive_BM": [
+      "Bagusnya dengar tu! 😊",
+      "Bestnya! Cerita lagi!",
+      "Wah, hebatnya! 🌟",
+      "Aisya gembira dengar tu! 💕"
+    ],
+    "empathy": [
+      "I understand how you feel. 💙",
+      "That must be difficult. I'm here for you.",
+      "Thank you for sharing that with me. 🤗",
+      "It's okay to feel that way."
+    ],
+    "empathy_BM": [
+      "Aisya faham perasaan anda. 💙",
+      "Mesti sukar. Aisya ada di sini.",
+      "Terima kasih kerana berkongsi. 🤗",
+      "Tak apa rasa macam tu."
+    ],
+    "curious": [
+      "That's interesting! Can you tell me more?",
+      "Really? What happened next?",
+      "Wow! How did that make you feel?",
+      "I'd love to hear more about that! 🌸"
+    ],
+    "curious_BM": [
+      "Menariknya! Boleh cerita lagi?",
+      "Betulke? Lepas tu apa jadi?",
+      "Wah! Macam mana perasaan masa tu?",
+      "Aisya nak dengar lebih lanjut! 🌸"
+    ],
+    "encouragement": [
+      "You're doing great! 💪",
+      "That's a wonderful attitude to have!",
+      "I admire your strength! 🌟",
+      "Keep that positive spirit!"
+    ],
+    "encouragement_BM": [
+      "Anda hebat! 💪",
+      "Sikap yang bagus tu!",
+      "Aisya kagum dengan kekuatan anda! 🌟",
+      "Teruskan semangat positif tu!"
+    ],
+    "closing": [
+      "It was lovely chatting with you! Take care! 💕",
+      "Thank you for the wonderful conversation! 🌸",
+      "I enjoyed our chat! Talk to you soon! 😊",
+      "Have a blessed day! Come chat again anytime!"
+    ],
+    "closing_BM": [
+      "Seronok berbual dengan anda! Jaga diri! 💕",
+      "Terima kasih atas perbualan yang indah! 🌸",
+      "Aisya seronok berbual! Jumpa lagi! 😊",
+      "Semoga hari yang diberkati! Jemput berbual lagi!"
+    ]
+  },
+  "ui": {
+    "header": {
+      "title": "Adik Aisya",
+      "title_BM": "Adik Aisya",
+      "status": "Online & Ready to Chat",
+      "status_BM": "Dalam Talian & Sedia Berbual"
+    },
+    "input": {
+      "placeholder": "Type your message...",
+      "placeholder_BM": "Taip mesej anda..."
+    },
+    "topicsHeader": "What would you like to talk about?",
+    "topicsHeader_BM": "Nak berbual tentang apa?",
+    "buttons": {
+      "send": "Send",
+      "send_BM": "Hantar"
+    },
+    "voicePlaceholder": "I want to tell you about...",
+    "voicePlaceholder_BM": "Saya nak ceritakan tentang..."
+  }
+}

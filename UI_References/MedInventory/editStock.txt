@@ -1,0 +1,31 @@
+<body> 
+	<H1> Edit Inventory </H1>
+	<form>
+		<table action = all filled fields save to database. >
+		<tr>
+			<th> <label> Medicine Name </label> </th>
+			<th> <label> Quantity </label> </th>
+			<th> <label> Batch </label> </th>
+			<th> <label> Expire Date </label> </th>
+		</tr>
+		<!-- loop the inventory.JSON to get the medicines -->
+		LOOP
+		<tr>
+			<td> <label text= medName> </td>
+			<td> <input type = number placeHolder = orignalMedNumber ></td>
+			<td> <label text = batch ></td>
+			<td> <label type = date> </td>
+		</tr>
+		IF LOOP_time == 5
+			break;
+		END LOOP
+		<tr>
+			<td> <button text = '+ See more' > onAction = show next 5 rows </button> </td>
+		</tr>
+
+		<tr>
+			<td> <button type= submit text = 'Confirm Edit'> </button> </td>
+		</tr>
+		</table>
+	</form>
+</body>	

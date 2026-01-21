@@ -1,0 +1,245 @@
+{
+  "personas": {
+    "drFatimah": {
+      "name": "Dr. Fatimah",
+      "avatar": "../assets/Dr_Fatimah.png",
+      "role": "Doctor",
+      "role_BM": "Doktor"
+    },
+    "nurseAlia": {
+      "name": "Nurse Alia",
+      "avatar": "../assets/Nurse_Alia.png",
+      "role": "Nurse",
+      "role_BM": "Jururawat"
+    },
+    "user": {
+      "name": "You",
+      "name_BM": "Anda"
+    }
+  },
+  "conversationFlow": [
+    {
+      "id": 0,
+      "persona": "drFatimah",
+      "message": "Good morning! 🌅 I'm Dr. Fatimah. Today we'll record your daily health. How are you feeling today?",
+      "message_BM": "Selamat pagi! 🌅 Saya Dr. Fatimah. Hari ini kita akan rekod kesihatan harian anda. Bagaimana perasaan anda hari ini?",
+      "delay": 500,
+      "quickResponses": [
+        { "text": "😊 Good & Happy", "text_BM": "😊 Sihat & Ceria", "value": "good" },
+        { "text": "😐 So-So", "text_BM": "😐 Biasa-Biasa", "value": "okay" },
+        { "text": "😔 Not Well", "text_BM": "😔 Kurang Sihat", "value": "unwell" }
+      ]
+    },
+    {
+      "id": 1,
+      "persona": "nurseAlia",
+      "message": null,
+      "delay": 800,
+      "dynamicMessages": {
+        "good": "Wonderful! Great to hear. 💚 Let's record your blood pressure today.",
+        "okay": "Thank you for your honesty. Let's check together. 💙 Can you share your blood pressure?",
+        "unwell": "I understand. Don't worry, we're here to help. 🤗 Can you share your blood pressure?",
+        "default": "Let's record your blood pressure today.",
+        "good_BM": "Alhamdulillah! Senang dengar. 💚 Mari kita rekod tekanan darah anda hari ini.",
+        "okay_BM": "Terima kasih atas kejujuran. Mari kita periksa bersama. 💙 Boleh kongsi tekanan darah anda?",
+        "unwell_BM": "Saya faham. Jangan risau, kami di sini untuk bantu. 🤗 Boleh kongsi tekanan darah anda?",
+        "default_BM": "Mari kita rekod tekanan darah anda hari ini."
+      },
+      "quickResponses": [
+        { "text": "🩺 Measure Now", "text_BM": "🩺 Ukur Sekarang", "value": "measure_bp", "action": "bp" },
+        { "text": "⏭️ Skip", "text_BM": "⏭️ Langkau", "value": "skip_bp" }
+      ]
+    },
+    {
+      "id": 2,
+      "persona": "drFatimah",
+      "message": null,
+      "delay": 600,
+      "waitForInput": "bp",
+      "dynamicMessages": {
+        "skip_bp": "No problem. Let's check your heart rate next. ❤️",
+        "recorded": "Thank you! Blood pressure recorded: {value}. ✅ Now let's check your heart rate.",
+        "skip_bp_BM": "Tidak mengapa. Mari kita periksa kadar jantung pula. ❤️",
+        "recorded_BM": "Terima kasih! Tekanan darah direkod: {value}. ✅ Sekarang mari kita periksa kadar jantung."
+      },
+      "quickResponses": [
+        { "text": "❤️ Measure Heart Rate", "text_BM": "❤️ Ukur Kadar Jantung", "value": "measure_hr", "action": "hr" },
+        { "text": "⏭️ Skip", "text_BM": "⏭️ Langkau", "value": "skip_hr" }
+      ]
+    },
+    {
+      "id": 3,
+      "persona": "nurseAlia",
+      "message": null,
+      "delay": 600,
+      "waitForInput": "hr",
+      "dynamicMessages": {
+        "skip_hr": "Okay! Let's check your blood sugar level next. 🩸",
+        "recorded": "Heart rate recorded: {value}. 💓 Now let's check your blood sugar.",
+        "skip_hr_BM": "Baik! Mari kita periksa paras gula darah pula. 🩸",
+        "recorded_BM": "Kadar jantung direkod: {value}. 💓 Sekarang mari kita periksa paras gula darah."
+      },
+      "quickResponses": [
+        { "text": "🩸 Measure Blood Sugar", "text_BM": "🩸 Ukur Paras Gula", "value": "measure_bs", "action": "bs" },
+        { "text": "⏭️ Skip", "text_BM": "⏭️ Langkau", "value": "skip_bs" }
+      ]
+    },
+    {
+      "id": 4,
+      "persona": "drFatimah",
+      "message": null,
+      "delay": 600,
+      "waitForInput": "bs",
+      "dynamicMessages": {
+        "skip_bs": "No problem. Remember to measure when you can! 😊 Now, any symptoms today?",
+        "recorded": "Blood sugar recorded: {value}. ✅ Are you experiencing any symptoms today?",
+        "skip_bs_BM": "Tidak mengapa. Ingat untuk ukur bila boleh ya! 😊 Sekarang, ada gejala hari ini?",
+        "recorded_BM": "Paras gula direkod: {value}. ✅ Adakah anda mengalami sebarang gejala hari ini?"
+      }
+    },
+    {
+      "id": 5,
+      "persona": "nurseAlia",
+      "message": "Are you experiencing any symptoms today?",
+      "message_BM": "Adakah anda mengalami sebarang gejala hari ini?",
+      "delay": 700,
+      "multiSelect": true,
+      "quickResponses": [
+        { "text": "🤒 Fever", "text_BM": "🤒 Demam", "value": "fever" },
+        { "text": "🤕 Headache", "text_BM": "🤕 Sakit Kepala", "value": "headache" },
+        { "text": "😵 Dizzy", "text_BM": "😵 Pening", "value": "dizzy" },
+        { "text": "😮‍💨 Breathing Difficulty", "text_BM": "😮‍💨 Sesak Nafas", "value": "breathing" },
+        { "text": "✨ No Symptoms", "text_BM": "✨ Tiada Gejala", "value": "none" }
+      ]
+    },
+    {
+      "id": 6,
+      "persona": "drFatimah",
+      "message": null,
+      "delay": 800,
+      "dynamicMessages": {
+        "none": "Great! No symptoms reported. 🌟 Keep taking care of your health!",
+        "hasSymptoms": "I've noted those symptoms. We'll monitor your condition. 📋",
+        "none_BM": "Bagus! Tiada gejala yang dilaporkan. 🌟 Teruskan menjaga kesihatan!",
+        "hasSymptoms_BM": "Saya dah catatkan gejala tersebut. Kami akan pantau keadaan anda. 📋"
+      }
+    },
+    {
+      "id": 7,
+      "persona": "nurseAlia",
+      "message": "Have you taken your medication today? 💊",
+      "message_BM": "Adakah anda dah makan ubat hari ini? 💊",
+      "delay": 600,
+      "quickResponses": [
+        { "text": "✅ All Taken", "text_BM": "✅ Sudah Semua", "value": "all" },
+        { "text": "⚠️ Some Taken", "text_BM": "⚠️ Sebahagian", "value": "partial" },
+        { "text": "❌ Not Yet", "text_BM": "❌ Belum Lagi", "value": "none" }
+      ]
+    },
+    {
+      "id": 8,
+      "persona": "drFatimah",
+      "message": "Thank you for sharing! 🙏 Your health record for today has been saved. See you again tomorrow!",
+      "message_BM": "Terima kasih kerana berkongsi! 🙏 Rekod kesihatan anda untuk hari ini telah disimpan. Jumpa lagi esok!",
+      "delay": 700,
+      "showSummary": true
+    }
+  ],
+  "ui": {
+    "header": {
+      "title": "Your Health Team",
+      "title_BM": "Pasukan Kesihatan Anda",
+      "status": "Ready to Help",
+      "status_BM": "Sedia Membantu"
+    },
+    "dateBanner": {
+      "placeholder": "Today",
+      "placeholder_BM": "Hari Ini"
+    },
+    "input": {
+      "placeholder": "Type your message...",
+      "placeholder_BM": "Taip mesej anda..."
+    },
+    "buttons": {
+      "confirm": "✓ Confirm",
+      "confirm_BM": "✓ Sahkan",
+      "done": "✓ Done",
+      "done_BM": "✓ Selesai",
+      "cancel": "Cancel",
+      "cancel_BM": "Batal",
+      "record": "Record",
+      "record_BM": "Rekod",
+      "skip": "Skip",
+      "skip_BM": "Langkau"
+    },
+    "bpModal": {
+      "title": "🩺 Record Blood Pressure",
+      "title_BM": "🩺 Rekod Tekanan Darah",
+      "systolicLabel": "Systolic (Top)",
+      "systolicLabel_BM": "Sistolik (Atas)",
+      "diastolicLabel": "Diastolic (Bottom)",
+      "diastolicLabel_BM": "Diastolik (Bawah)"
+    },
+    "hrModal": {
+      "title": "❤️ Record Heart Rate",
+      "title_BM": "❤️ Rekod Kadar Jantung",
+      "hrLabel": "Beats per Minute (BPM)",
+      "hrLabel_BM": "Degupan seminit (BPM)",
+      "placeholder": "72"
+    },
+    "bsModal": {
+      "title": "🩸 Record Blood Sugar",
+      "title_BM": "🩸 Rekod Paras Gula Darah",
+      "bsLabel": "Blood Sugar Level",
+      "bsLabel_BM": "Paras Gula Darah",
+      "unitLabel": "mg/dL",
+      "placeholder": "100",
+      "typeLabel": "Measurement Type",
+      "typeLabel_BM": "Jenis Ukuran",
+      "fasting": "Fasting",
+      "fasting_BM": "Puasa",
+      "afterMeal": "After Meal",
+      "afterMeal_BM": "Selepas Makan"
+    },
+    "summary": {
+      "title": "📋 Today's Summary",
+      "title_BM": "📋 Ringkasan Hari Ini",
+      "moodLabel": "Mood",
+      "moodLabel_BM": "Perasaan",
+      "bpLabel": "Blood Pressure",
+      "bpLabel_BM": "Tekanan Darah",
+      "hrLabel": "Heart Rate",
+      "hrLabel_BM": "Kadar Jantung",
+      "bsLabel": "Blood Sugar",
+      "bsLabel_BM": "Paras Gula",
+      "symptomsLabel": "Symptoms",
+      "symptomsLabel_BM": "Gejala",
+      "medicationLabel": "Medication",
+      "medicationLabel_BM": "Ubat",
+      "notRecorded": "Not recorded",
+      "notRecorded_BM": "Tidak direkod",
+      "noSymptoms": "None",
+      "noSymptoms_BM": "Tiada"
+    },
+    "moodDisplay": {
+      "good": "😊 Good & Happy",
+      "good_BM": "😊 Sihat & Ceria",
+      "okay": "😐 So-So",
+      "okay_BM": "😐 Biasa-Biasa",
+      "unwell": "😔 Not Well",
+      "unwell_BM": "😔 Kurang Sihat"
+    },
+    "medicationDisplay": {
+      "all": "✅ All Taken",
+      "all_BM": "✅ Sudah Semua",
+      "partial": "⚠️ Some Taken",
+      "partial_BM": "⚠️ Sebahagian",
+      "none": "❌ Not Yet",
+      "none_BM": "❌ Belum Lagi"
+    },
+    "freeTextResponse": "Thank you! I've noted your message. 📝",
+    "freeTextResponse_BM": "Terima kasih! Saya dah catatkan mesej anda. 📝",
+    "voicePlaceholder": "I feel healthy today...",
+    "voicePlaceholder_BM": "Saya rasa sihat hari ini..."
+  }
+}

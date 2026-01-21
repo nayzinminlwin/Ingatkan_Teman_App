@@ -1,0 +1,1016 @@
+/* ============================================
+   DAILY HEALTH RECORDER - CHAT INTERFACE
+   Theme: Dr. Fatimah (Calm Teal #009688)
+   ============================================ */
+
+/* ========== VARIABLES ========== */
+:root {
+  --health-primary: #009688;
+  --health-primary-light: #4DB6AC;
+  --health-primary-dark: #00796B;
+  --health-surface: #E0F2F1;
+  --nurse-accent: #7E57C2; /* Nurse Alia's secondary color */
+  --user-bubble: #DCF8C6;
+  --ai-bubble: #FFFFFF;
+  --shadow-soft: 0 2px 12px rgba(0, 0, 0, 0.08);
+  --shadow-medium: 0 4px 20px rgba(0, 0, 0, 0.12);
+}
+
+/* ========== BODY RESET ========== */
+body {
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(180deg, var(--health-surface) 0%, #FFFBF7 30%);
+  height: 100vh;
+  height: 100dvh; /* Dynamic viewport height for mobile */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ========== HEADER ========== */
+.chat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background: var(--health-primary);
+  color: white;
+  box-shadow: var(--shadow-medium);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.back-btn {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  color: white;
+  text-decoration: none;
+  font-size: 24px;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+
+.back-btn:active {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(0.95);
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  padding: 0 12px;
+}
+
+.header-avatars {
+  position: relative;
+  width: 64px;
+  height: 48px;
+}
+
+.header-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 3px solid white;
+  object-fit: cover;
+  object-position: top; /* Show face, not center of body */
+  position: absolute;
+}
+
+.header-avatar.primary {
+  left: 0;
+  z-index: 1; /* Lower z-index so it doesn't cover secondary */
+  border-right-color: transparent; /* Hide right border where it overlaps */
+}
+
+.header-avatar.secondary {
+  left: 24px;
+  z-index: 2; /* Higher z-index so it appears on top */
+  border-left-color: transparent; /* Hide left border where it overlaps */
+}
+
+.header-info h1 {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.status-online {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  opacity: 0.9;
+  margin: 4px 0 0 0;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  background: #4CAF50;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.menu-btn {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 28px;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: background 0.2s;
+}
+
+.menu-btn:active {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* ========== MENU DROPDOWN ========== */
+.menu-dropdown {
+  position: absolute;
+  top: 70px;
+  right: 16px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: var(--shadow-medium);
+  padding: 8px 0;
+  z-index: 150;
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+  transition: all 0.2s ease-out;
+}
+
+.menu-dropdown.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: all;
+}
+
+.menu-item {
+  display: block;
+  width: 100%;
+  padding: 14px 20px;
+  border: none;
+  background: none;
+  font-size: 16px;
+  text-align: left;
+  cursor: pointer;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+.menu-item:active {
+  background: var(--health-surface);
+}
+
+/* ========== DATE BANNER ========== */
+.date-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background: white;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  font-size: 16px;
+  color: var(--text-secondary);
+}
+
+.date-icon {
+  font-size: 18px;
+}
+
+/* ========== CHAT CONTAINER ========== */
+.chat-container {
+  flex: 1;
+  padding: 16px 20px;
+  padding-bottom: 100px; /* Space for fixed input area */
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ========== MESSAGES ========== */
+.message {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  max-width: 85%;
+  animation: messageSlide 0.3s ease-out;
+}
+
+@keyframes messageSlide {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ai-message {
+  align-self: flex-start;
+}
+
+.user-message {
+  align-self: flex-end;
+  flex-direction: row-reverse;
+}
+
+.message-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: top; /* Show face, not center of body */
+  box-shadow: var(--shadow-soft);
+  flex-shrink: 0;
+}
+
+.message-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.message-sender {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--health-primary-dark);
+  padding-left: 4px;
+}
+
+.user-message .message-sender {
+  display: none;
+}
+
+.message-bubble {
+  padding: 14px 18px;
+  border-radius: 20px;
+  font-size: 18px;
+  line-height: 1.5;
+  box-shadow: var(--shadow-soft);
+}
+
+.ai-message .message-bubble {
+  background: var(--ai-bubble);
+  color: var(--text-primary);
+  border-bottom-left-radius: 6px;
+}
+
+.user-message .message-bubble {
+  background: var(--health-primary);
+  color: white;
+  border-bottom-right-radius: 6px;
+}
+
+/* ========== TYPING INDICATOR ========== */
+.typing-indicator .message-bubble.typing {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 16px 20px;
+}
+
+.typing-indicator .dot {
+  width: 10px;
+  height: 10px;
+  background: var(--health-primary);
+  border-radius: 50%;
+  animation: typingBounce 1.4s infinite;
+}
+
+.typing-indicator .dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typing-indicator .dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes typingBounce {
+  0%, 60%, 100% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(-8px);
+  }
+}
+
+/* ========== QUICK RESPONSES ========== */
+.quick-responses {
+  position: fixed;
+  bottom: 84px; /* Height of input area */
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 16px 20px;
+  background: white;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.3s ease-out;
+  pointer-events: none;
+  z-index: 85;
+}
+
+.quick-responses.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: all;
+}
+
+.quick-btn {
+  flex: 1 1 auto;
+  min-width: 120px;
+  min-height: 56px;
+  padding: 14px 20px;
+  background: var(--health-surface);
+  border: 2px solid var(--health-primary);
+  border-radius: 28px;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--health-primary-dark);
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+}
+
+.quick-btn:active {
+  transform: scale(0.97);
+  background: var(--health-primary);
+  color: white;
+}
+
+.quick-btn.selected {
+  background: var(--health-primary);
+  color: white;
+}
+
+.quick-btn.confirm-btn {
+  flex: 1 1 100%;
+  background: var(--health-primary);
+  color: white;
+  margin-top: 6px;
+}
+
+/* ========== INPUT AREA ========== */
+.input-area {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 16px 20px;
+  padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  background: white;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.05);
+  z-index: 90;
+}
+
+.input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #F5F5F5;
+  border-radius: 28px;
+  padding: 6px;
+}
+
+.voice-btn {
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--health-primary);
+  border: none;
+  border-radius: 50%;
+  font-size: 24px;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.voice-btn:active {
+  transform: scale(0.95);
+}
+
+.voice-btn.recording {
+  background: #D32F2F;
+  animation: recordingPulse 1s infinite;
+}
+
+@keyframes recordingPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(211, 47, 47, 0.4); }
+  50% { box-shadow: 0 0 0 12px rgba(211, 47, 47, 0); }
+}
+
+.message-input {
+  flex: 1;
+  height: 48px;
+  border: none;
+  background: transparent;
+  font-size: 18px;
+  padding: 0 12px;
+  margin: 0;
+}
+
+.message-input:focus {
+  outline: none;
+  border: none;
+}
+
+.message-input::placeholder {
+  color: #999;
+}
+
+.send-btn {
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--health-primary);
+  border: none;
+  border-radius: 50%;
+  font-size: 22px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.send-btn:active {
+  transform: scale(0.95);
+  background: var(--health-primary-dark);
+}
+
+/* ========== BLOOD PRESSURE MODAL ========== */
+.bp-input-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  z-index: 200;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.bp-input-card {
+  background: white;
+  border-radius: 24px;
+  padding: 28px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: var(--shadow-medium);
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.bp-input-card h3 {
+  font-size: 22px;
+  text-align: center;
+  margin-bottom: 24px;
+  color: var(--health-primary-dark);
+}
+
+.bp-input-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.bp-field {
+  flex: 1;
+  text-align: center;
+}
+
+.bp-field label {
+  display: block;
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+}
+
+.bp-field input {
+  width: 100%;
+  height: 64px;
+  text-align: center;
+  font-size: 28px;
+  font-weight: 700;
+  border: 3px solid #E0E0E0;
+  border-radius: 16px;
+  margin: 0;
+  color: var(--health-primary-dark);
+}
+
+.bp-field input:focus {
+  border-color: var(--health-primary);
+}
+
+.bp-separator {
+  font-size: 36px;
+  font-weight: bold;
+  color: #999;
+  padding-top: 24px;
+}
+
+.bp-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.bp-cancel-btn,
+.bp-submit-btn {
+  flex: 1;
+  height: 56px;
+  border-radius: 16px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+}
+
+.bp-cancel-btn {
+  background: #F5F5F5;
+  color: var(--text-secondary);
+}
+
+.bp-submit-btn {
+  background: var(--health-primary);
+  color: white;
+}
+
+.bp-cancel-btn:active,
+.bp-submit-btn:active {
+  transform: scale(0.98);
+}
+
+/* ========== SINGLE INPUT MODALS (HR, BS) ========== */
+.single-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.bp-field.full-width {
+  width: 100%;
+}
+
+.bp-field.full-width input {
+  text-align: center;
+  font-size: 32px;
+  height: 64px;
+}
+
+/* Blood Sugar Type Toggle */
+.bs-type-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.bs-type-btn {
+  flex: 1;
+  height: 48px;
+  border: 2px solid #E0E0E0;
+  border-radius: 12px;
+  background: white;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.bs-type-btn.active {
+  border-color: var(--health-primary);
+  background: var(--health-surface);
+  color: var(--health-primary-dark);
+}
+
+.bs-type-btn:active {
+  transform: scale(0.98);
+}
+
+/* ========== DAILY SUMMARY ========== */
+.daily-summary {
+  background: linear-gradient(135deg, var(--health-primary) 0%, var(--health-primary-dark) 100%);
+  border-radius: 24px;
+  padding: 24px;
+  margin-top: 16px;
+  color: white;
+  animation: messageSlide 0.4s ease-out;
+}
+
+.daily-summary h3 {
+  font-size: 20px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.summary-item {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  padding: 16px;
+  text-align: center;
+}
+
+.summary-label {
+  display: block;
+  font-size: 14px;
+  opacity: 0.9;
+  margin-bottom: 6px;
+}
+
+.summary-value {
+  display: block;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.summary-done-btn {
+  width: 100%;
+  height: 56px;
+  background: white;
+  color: var(--health-primary-dark);
+  border: none;
+  border-radius: 16px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.summary-done-btn:active {
+  transform: scale(0.98);
+  background: #F5F5F5;
+}
+
+/* ========== RESPONSIVE ========== */
+
+/* Small phones (< 420px) */
+@media (max-width: 420px) {
+  .header-info h1 {
+    font-size: 16px;
+  }
+  
+  .message-bubble {
+    font-size: 17px;
+    padding: 12px 16px;
+  }
+  
+  .quick-btn {
+    min-width: 100px;
+    padding: 12px 16px;
+    font-size: 15px;
+  }
+  
+  .summary-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Tablets & iPads (768px+) */
+@media (min-width: 768px) {
+  body {
+    max-width: 600px;
+    margin: 0 auto;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.1);
+  }
+  
+  .chat-container {
+    padding: 24px 32px;
+  }
+  
+  .message {
+    max-width: 70%;
+  }
+  
+  .message-bubble {
+    font-size: 19px;
+  }
+  
+  .quick-responses {
+    justify-content: center;
+  }
+  
+  .quick-btn {
+    flex: 0 1 auto;
+    min-width: 140px;
+  }
+}
+
+/* Large screens (1200px+) */
+@media (min-width: 1200px) {
+  body {
+    max-width: 500px;
+    border-radius: 24px;
+    margin-top: 24px;
+    margin-bottom: 24px;
+    min-height: calc(100vh - 48px);
+    overflow: hidden;
+  }
+  
+  .chat-header {
+    border-radius: 24px 24px 0 0;
+  }
+}
+
+/* ========== HEALTH REPORT MODAL ========== */
+.health-report-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.health-report-modal.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.health-report-card {
+  background: white;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 420px;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  animation: reportSlideUp 0.3s ease;
+}
+
+@keyframes reportSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.report-header {
+  background: linear-gradient(135deg, var(--health-primary), var(--health-primary-dark));
+  color: white;
+  padding: 24px;
+  text-align: center;
+  border-radius: 20px 20px 0 0;
+}
+
+.report-header h2 {
+  font-size: 22px;
+  margin: 0 0 8px 0;
+  font-weight: 600;
+}
+
+.report-header p {
+  font-size: 15px;
+  margin: 0;
+  opacity: 0.9;
+}
+
+/* ========== AVERAGES SECTION ========== */
+.report-averages {
+  padding: 20px;
+  background: var(--health-surface);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.report-averages h3 {
+  font-size: 16px;
+  color: var(--text-secondary);
+  margin: 0 0 16px 0;
+  text-align: center;
+}
+
+.averages-grid {
+  display: flex;
+  justify-content: space-around;
+  gap: 12px;
+}
+
+.avg-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  padding: 12px 8px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.avg-icon {
+  font-size: 24px;
+  margin-bottom: 8px;
+}
+
+.avg-value {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--health-primary-dark);
+  line-height: 1.2;
+}
+
+.avg-label {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-top: 4px;
+  text-align: center;
+}
+
+.avg-unit {
+  font-size: 11px;
+  color: var(--text-secondary);
+  opacity: 0.7;
+}
+
+/* ========== RECORDS LIST ========== */
+.report-records {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.record-item {
+  background: #F9FAFB;
+  border-radius: 12px;
+  padding: 14px;
+  border-left: 4px solid var(--health-primary);
+}
+
+.record-date {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--health-primary-dark);
+  margin-bottom: 10px;
+}
+
+.record-vitals {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.vital {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  background: white;
+  padding: 6px 10px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.vital-icon {
+  font-size: 16px;
+}
+
+.vital-value {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.record-details {
+  display: flex;
+  gap: 12px;
+  font-size: 13px;
+}
+
+.record-mood,
+.record-meds {
+  padding: 4px 8px;
+  background: white;
+  border-radius: 6px;
+}
+
+.record-symptoms {
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  padding: 8px;
+  background: rgba(255, 193, 7, 0.1);
+  border-radius: 8px;
+}
+
+/* ========== CLOSE BUTTON ========== */
+.report-close-btn {
+  display: block;
+  width: calc(100% - 32px);
+  margin: 8px 16px 20px 16px;
+  padding: 16px;
+  background: var(--health-primary);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.report-close-btn:active {
+  transform: scale(0.98);
+  background: var(--health-primary-dark);
+}
+
+/* Responsive adjustments for report modal */
+@media (max-width: 420px) {
+  .averages-grid {
+    flex-direction: column;
+  }
+  
+  .avg-item {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 14px 16px;
+  }
+  
+  .avg-icon {
+    margin-bottom: 0;
+    margin-right: 12px;
+  }
+  
+  .avg-value {
+    font-size: 18px;
+  }
+  
+  .avg-label {
+    margin: 0 auto 0 0;
+    flex: 1;
+  }
+  
+  .avg-unit {
+    margin-left: 4px;
+  }
+}

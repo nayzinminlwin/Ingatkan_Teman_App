@@ -1,0 +1,251 @@
+{
+  "metadata": {
+    "patientName": "Mak Cik Aminah",
+    "patientName_BM": "Mak Cik Aminah",
+    "patientId": "MC-2024-001",
+    "lastUpdated": "2026-01-22"
+  },
+  "records": [
+    {
+      "date": "2026-01-22",
+      "mood": "good",
+      "bloodPressure": {
+        "systolic": 128,
+        "diastolic": 82,
+        "unit": "mmHg",
+        "time": "08:30"
+      },
+      "heartRate": {
+        "value": 72,
+        "unit": "bpm",
+        "time": "08:30"
+      },
+      "bloodSugar": {
+        "value": 105,
+        "unit": "mg/dL",
+        "type": "fasting",
+        "type_BM": "puasa",
+        "time": "07:00"
+      },
+      "symptoms": [],
+      "medication": "all",
+      "notes": ""
+    },
+    {
+      "date": "2026-01-21",
+      "mood": "okay",
+      "bloodPressure": {
+        "systolic": 135,
+        "diastolic": 88,
+        "unit": "mmHg",
+        "time": "09:00"
+      },
+      "heartRate": {
+        "value": 78,
+        "unit": "bpm",
+        "time": "09:00"
+      },
+      "bloodSugar": {
+        "value": 112,
+        "unit": "mg/dL",
+        "type": "fasting",
+        "type_BM": "puasa",
+        "time": "07:30"
+      },
+      "symptoms": ["headache"],
+      "medication": "all",
+      "notes": "Mild headache in the morning"
+    },
+    {
+      "date": "2026-01-20",
+      "mood": "good",
+      "bloodPressure": {
+        "systolic": 125,
+        "diastolic": 80,
+        "unit": "mmHg",
+        "time": "08:00"
+      },
+      "heartRate": {
+        "value": 70,
+        "unit": "bpm",
+        "time": "08:00"
+      },
+      "bloodSugar": {
+        "value": 98,
+        "unit": "mg/dL",
+        "type": "fasting",
+        "type_BM": "puasa",
+        "time": "06:45"
+      },
+      "symptoms": [],
+      "medication": "all",
+      "notes": ""
+    },
+    {
+      "date": "2026-01-19",
+      "mood": "unwell",
+      "bloodPressure": {
+        "systolic": 142,
+        "diastolic": 92,
+        "unit": "mmHg",
+        "time": "10:00"
+      },
+      "heartRate": {
+        "value": 85,
+        "unit": "bpm",
+        "time": "10:00"
+      },
+      "bloodSugar": {
+        "value": 128,
+        "unit": "mg/dL",
+        "type": "after meal",
+        "type_BM": "selepas makan",
+        "time": "12:00"
+      },
+      "symptoms": ["dizzy", "fever"],
+      "medication": "partial",
+      "notes": "Feeling unwell, slight fever"
+    },
+    {
+      "date": "2026-01-18",
+      "mood": "good",
+      "bloodPressure": {
+        "systolic": 130,
+        "diastolic": 84,
+        "unit": "mmHg",
+        "time": "08:15"
+      },
+      "heartRate": {
+        "value": 74,
+        "unit": "bpm",
+        "time": "08:15"
+      },
+      "bloodSugar": {
+        "value": 102,
+        "unit": "mg/dL",
+        "type": "fasting",
+        "type_BM": "puasa",
+        "time": "07:00"
+      },
+      "symptoms": [],
+      "medication": "all",
+      "notes": ""
+    },
+    {
+      "date": "2026-01-17",
+      "mood": "okay",
+      "bloodPressure": {
+        "systolic": 132,
+        "diastolic": 85,
+        "unit": "mmHg",
+        "time": "09:30"
+      },
+      "heartRate": {
+        "value": 76,
+        "unit": "bpm",
+        "time": "09:30"
+      },
+      "bloodSugar": {
+        "value": 108,
+        "unit": "mg/dL",
+        "type": "fasting",
+        "type_BM": "puasa",
+        "time": "07:15"
+      },
+      "symptoms": [],
+      "medication": "all",
+      "notes": ""
+    },
+    {
+      "date": "2026-01-16",
+      "mood": "good",
+      "bloodPressure": {
+        "systolic": 126,
+        "diastolic": 81,
+        "unit": "mmHg",
+        "time": "08:00"
+      },
+      "heartRate": {
+        "value": 71,
+        "unit": "bpm",
+        "time": "08:00"
+      },
+      "bloodSugar": {
+        "value": 100,
+        "unit": "mg/dL",
+        "type": "fasting",
+        "type_BM": "puasa",
+        "time": "06:30"
+      },
+      "symptoms": [],
+      "medication": "all",
+      "notes": ""
+    }
+  ],
+  "ui": {
+    "reportTitle": "📊 Health Report",
+    "reportTitle_BM": "📊 Laporan Kesihatan",
+    "subtitle": "Your recent health readings",
+    "subtitle_BM": "Bacaan kesihatan terkini anda",
+    "bloodPressureLabel": "Blood Pressure",
+    "bloodPressureLabel_BM": "Tekanan Darah",
+    "heartRateLabel": "Heart Rate",
+    "heartRateLabel_BM": "Kadar Jantung",
+    "bloodSugarLabel": "Blood Sugar",
+    "bloodSugarLabel_BM": "Paras Gula",
+    "moodLabel": "Mood",
+    "moodLabel_BM": "Perasaan",
+    "symptomsLabel": "Symptoms",
+    "symptomsLabel_BM": "Gejala",
+    "medicationLabel": "Medication",
+    "medicationLabel_BM": "Ubat",
+    "noRecords": "No health records found",
+    "noRecords_BM": "Tiada rekod kesihatan dijumpai",
+    "noSymptoms": "None",
+    "noSymptoms_BM": "Tiada",
+    "closeBtn": "Close",
+    "closeBtn_BM": "Tutup",
+    "averagesTitle": "7-Day Averages",
+    "averagesTitle_BM": "Purata 7 Hari",
+    "trendsTitle": "Recent Trends",
+    "trendsTitle_BM": "Trend Terkini",
+    "normal": "Normal",
+    "normal_BM": "Normal",
+    "elevated": "Elevated",
+    "elevated_BM": "Tinggi",
+    "low": "Low",
+    "low_BM": "Rendah"
+  },
+  "thresholds": {
+    "bloodPressure": {
+      "systolic": { "low": 90, "normal": 120, "elevated": 140 },
+      "diastolic": { "low": 60, "normal": 80, "elevated": 90 }
+    },
+    "heartRate": {
+      "low": 60,
+      "normal": 100,
+      "elevated": 100
+    },
+    "bloodSugar": {
+      "fasting": { "low": 70, "normal": 100, "elevated": 126 },
+      "afterMeal": { "low": 70, "normal": 140, "elevated": 200 }
+    }
+  },
+  "symptomLabels": {
+    "fever": { "en": "🤒 Fever", "bm": "🤒 Demam" },
+    "headache": { "en": "🤕 Headache", "bm": "🤕 Sakit Kepala" },
+    "dizzy": { "en": "😵 Dizzy", "bm": "😵 Pening" },
+    "breathing": { "en": "😮‍💨 Breathing Difficulty", "bm": "😮‍💨 Sesak Nafas" },
+    "none": { "en": "✨ No Symptoms", "bm": "✨ Tiada Gejala" }
+  },
+  "moodLabels": {
+    "good": { "en": "😊 Good", "bm": "😊 Sihat" },
+    "okay": { "en": "😐 So-So", "bm": "😐 Biasa" },
+    "unwell": { "en": "😔 Unwell", "bm": "😔 Kurang Sihat" }
+  },
+  "medicationLabels": {
+    "all": { "en": "✅ All Taken", "bm": "✅ Sudah Semua" },
+    "partial": { "en": "⚠️ Some Taken", "bm": "⚠️ Sebahagian" },
+    "none": { "en": "❌ Not Yet", "bm": "❌ Belum Lagi" }
+  }
+}
