@@ -88,6 +88,8 @@
 
     <!-- i18n Script -->
     <script src="../i18n/i18n.js"></script>
+    <!-- Gemini API Key (local, gitignored) -->
+    <script src="../assets/dummyData/dummy.js"></script>
 
     <script>
       // ========== CONFIGURATION ==========
@@ -296,43 +298,72 @@
         }, 50);
       }
 
-      // ========== AI RESPONSE ==========
-      function getAIResponse(userMessage) {
-        // Simple response selection based on keywords
-        const msg = userMessage.toLowerCase();
-
-        // Positive keywords
-        if (
-          msg.includes("good") ||
-          msg.includes("great") ||
-          msg.includes("happy") ||
-          msg.includes("baik") ||
-          msg.includes("bagus") ||
-          msg.includes("gembira")
-        ) {
-          const responses =
-            getLang() === "bm" ? RESPONSES.positive_BM : RESPONSES.positive;
-          return responses[Math.floor(Math.random() * responses.length)];
+      // ========== GEMINI AI INTEGRATION ==========
+      // API key is loaded from gemini_api_key.js (window.GEMINI_API_KEY)
+      function getGeminiApiUrl() {
+        if (!window.GEMINI_API_KEY || window.GEMINI_API_KEY.length < 10) {
+          alert(
+            "Gemini API key is missing. Please set it in gemini_api_key.js",
+          );
+          throw new Error("Gemini API key missing");
         }
+        return (
+          "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=" +
+          window.GEMINI_API_KEY
+        );
+      }
 
-        // Sad/difficult keywords
-        if (
-          msg.includes("sad") ||
-          msg.includes("difficult") ||
-          msg.includes("hard") ||
-          msg.includes("sedih") ||
-          msg.includes("sukar") ||
-          msg.includes("susah")
-        ) {
-          const responses =
-            getLang() === "bm" ? RESPONSES.empathy_BM : RESPONSES.empathy;
-          return responses[Math.floor(Math.random() * responses.length)];
+      async function getAIResponse(userMessage) {
+        // Persona profile and instructions for Gemini
+        const currentLang = getLang();
+        let languageInstruction = "Please reply in English.";
+        if (currentLang === "bm") {
+          languageInstruction =
+            "Sila balas dalam Bahasa Melayu yang mudah difahami oleh warga emas.";
         }
+        const personaPrompt = `
+You are Adik Aisya, a cheerful, caring, and patient AI granddaughter for elderly Malaysian users (Tok & Nenek, age 70+).
+Your role is to be a friendly companion, always respectful, supportive, and easy to understand.
+You call the user \"Nenek\" (grandmother) or \"Tok\" (grandfather) depending on context, but default to \"Nenek\" unless told otherwise.
+You speak in simple, warm, and encouraging language, mixing English and Bahasa Melayu naturally, but keep sentences short and clear.
+You never use slang, technical terms, or complicated words.
+You always greet the user kindly, ask about their day, and offer gentle reminders or encouragement.
+You never give medical advice, but you can talk about daily life, family, hobbies, and feelings.
+You use lots of emojis (especially ❤️, 😊, 🌸, 🧡) to make your messages friendly and fun.
+You never rush the user, and you always respond with patience and empathy.
+You are always online and ready to chat, and you never mention that you are an AI or a robot.
+${languageInstruction}
+`;
 
-        // Default: curious response
-        const responses =
-          getLang() === "bm" ? RESPONSES.curious_BM : RESPONSES.curious;
-        return responses[Math.floor(Math.random() * responses.length)];
+        // Prepare conversation history for Gemini
+        const messages = [
+          {
+            role: "user",
+            parts: [{ text: personaPrompt }],
+          },
+          ...conversationHistory
+            .filter((msg) => msg.isUser !== undefined)
+            .map((msg) => ({
+              role: msg.isUser ? "user" : "model",
+              parts: [{ text: msg.text }],
+            })),
+          { role: "user", parts: [{ text: userMessage }] },
+        ];
+        const body = { contents: messages };
+        try {
+          const response = await fetch(getGeminiApiUrl(), {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body),
+          });
+          const data = await response.json();
+          return (
+            data.candidates?.[0]?.content?.parts?.[0]?.text ||
+            "Sorry, no response."
+          );
+        } catch (e) {
+          return "Sorry, there was an error connecting to AI.";
+        }
       }
 
       // ========== TEXT INPUT HANDLING ==========
@@ -341,7 +372,7 @@
         if (e.key === "Enter") sendTextMessage();
       });
 
-      function sendTextMessage() {
+      async function sendTextMessage() {
         const text = messageInput.value.trim();
         if (!text) return;
 
@@ -349,18 +380,12 @@
         addMessage("You", text, null, true);
         messageInput.value = "";
 
-        // Generate AI response
-        setTimeout(() => {
-          addTypingIndicator();
-          setTimeout(
-            () => {
-              removeTypingIndicator();
-              const response = getAIResponse(text);
-              addMessage(PERSONA.name, response, PERSONA.avatar);
-            },
-            1000 + Math.random() * 500,
-          );
-        }, 300);
+        // Show typing indicator
+        addTypingIndicator();
+        // Call Gemini AI
+        const response = await getAIResponse(text);
+        removeTypingIndicator();
+        addMessage(PERSONA.name, response, PERSONA.avatar);
       }
 
       // ========== VOICE INPUT (Placeholder) ==========
