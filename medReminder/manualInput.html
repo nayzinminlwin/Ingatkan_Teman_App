@@ -181,9 +181,18 @@
     <script src="../i18n/i18n.js"></script>
 
     <script>
+      // ========== CONFIGURATION ==========
+      const DATA_PATH = "../assets/dummyData/medicationSchedules.JSON";
+      const STORAGE_KEY = "ingatkanTeman_schedules";
+
       const addMoreBtn = document.getElementById("addMoreBtn");
       const inputWrapper = document.getElementById("inputWrapper");
       let cardCount = 1;
+
+      // Get language
+      function getLang() {
+        return I18n.getLanguage() === "bm" ? "bm" : "en";
+      }
 
       addMoreBtn.addEventListener("click", () => {
         cardCount++;
@@ -246,19 +255,149 @@
         cardCount = cards.length;
       }
 
-      // Form submission
+      // ========== LOAD EXISTING SCHEDULES DATA ==========
+      async function loadSchedulesData() {
+        // First check localStorage
+        const savedData = localStorage.getItem(STORAGE_KEY);
+        if (savedData) {
+          try {
+            return JSON.parse(savedData);
+          } catch (e) {
+            console.error("Error parsing saved schedules:", e);
+          }
+        }
+
+        // Load from JSON file
+        try {
+          const response = await fetch(DATA_PATH);
+          return await response.json();
+        } catch (error) {
+          console.error("Failed to load schedules:", error);
+          // Return default structure
+          return {
+            schedules: [],
+            instructionLabels: {
+              "after-breakfast": {
+                en: "After Breakfast",
+                bm: "Selepas Sarapan",
+              },
+              "before-breakfast": {
+                en: "Before Breakfast",
+                bm: "Sebelum Sarapan",
+              },
+              "after-lunch": {
+                en: "After Lunch",
+                bm: "Selepas Makan Tengahari",
+              },
+              "before-lunch": {
+                en: "Before Lunch",
+                bm: "Sebelum Makan Tengahari",
+              },
+              "after-dinner": { en: "After Dinner", bm: "Selepas Makan Malam" },
+              "before-dinner": {
+                en: "Before Dinner",
+                bm: "Sebelum Makan Malam",
+              },
+              "before-sleep": { en: "Before Sleep", bm: "Sebelum Tidur" },
+            },
+            repeatLabels: {
+              daily: { en: "Every Day", bm: "Setiap Hari" },
+              weekdays: { en: "Weekdays Only", bm: "Hari Bekerja Sahaja" },
+              weekly: { en: "Weekly", bm: "Setiap Minggu" },
+              monthly: { en: "Monthly", bm: "Setiap Bulan" },
+              once: { en: "One Time Only", bm: "Sekali Sahaja" },
+            },
+            statusLabels: {
+              taken: { en: "Taken", bm: "Sudah Ambil" },
+              upcoming: { en: "Next", bm: "Seterusnya" },
+              pending: { en: "Pending", bm: "Menunggu" },
+              missed: { en: "Missed", bm: "Terlepas" },
+            },
+          };
+        }
+      }
+
+      // ========== SAVE SCHEDULES ==========
+      function saveSchedules(schedulesData) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(schedulesData));
+      }
+
+      // ========== FORM SUBMISSION ==========
       document
         .getElementById("scheduleForm")
-        .addEventListener("submit", function (e) {
+        .addEventListener("submit", async function (e) {
           e.preventDefault();
 
-          // Demo: Show success and redirect
+          // Load existing data
+          const schedulesData = await loadSchedulesData();
+
+          // Collect all medicine cards
+          const cards = inputWrapper.querySelectorAll(".input-card");
+          const newSchedules = [];
+
+          cards.forEach((card, index) => {
+            const medName = card
+              .querySelector(`[name="medicineName[]"]`)
+              .value.trim();
+            const dosage = card.querySelector(`[name="dosage[]"]`).value.trim();
+            const time = card.querySelector(`[name="time[]"]`).value;
+            const instruction = card.querySelector(
+              `[name="instruction[]"]`,
+            ).value;
+            const repeat = card.querySelector(`[name="repeat[]"]`).value;
+
+            if (medName && dosage && time) {
+              // Generate dosage in BM (simple conversion)
+              const dosageBM = dosage
+                .replace(/tablets?/i, "biji")
+                .replace(/capsules?/i, "kapsul")
+                .replace(/spoons?/i, "sudu");
+
+              newSchedules.push({
+                id: "sched_" + Date.now() + "_" + index,
+                medicineName: medName,
+                dosage: dosage,
+                dosage_BM: dosageBM,
+                time: time,
+                instruction: instruction,
+                repeat: repeat,
+                status: "pending",
+                createdAt: new Date().toISOString(),
+                takenAt: null,
+              });
+            }
+          });
+
+          if (newSchedules.length === 0) {
+            alert(
+              getLang() === "bm"
+                ? "Sila isi sekurang-kurangnya satu ubat."
+                : "Please fill in at least one medicine.",
+            );
+            return;
+          }
+
+          // Add new schedules to existing ones
+          schedulesData.schedules = [
+            ...schedulesData.schedules,
+            ...newSchedules,
+          ];
+          saveSchedules(schedulesData);
+
+          // Show success message
           const bubble = document.querySelector(".bubble p");
           bubble.textContent = I18n.t("addSchedule.savedMessage");
 
+          // Disable form
+          const submitBtn = this.querySelector('[type="submit"]');
+          submitBtn.disabled = true;
+          submitBtn.textContent =
+            getLang() === "bm" ? "✓ Disimpan!" : "✓ Saved!";
+
+          // Redirect after delay
           setTimeout(() => {
             window.location.href = "medReminderHome.html";
-          }, 2000);
+          }, 1500);
         });
     </script>
   </body>

@@ -410,6 +410,40 @@ body {
 /* ========== 13. RESPONSIVE: MOBILE PHONES (480px-) ========== */
 /* Covers iPhone 14 Pro Max (430px) and smaller phones */
 @media (max-width: 480px) {
+  /* Navbar adjustments for mobile */
+  .app-navbar {
+    padding: 0 var(--space-md);
+    gap: 10px;
+  }
+
+  .navbar-logo {
+    width: 48px;
+    height: 48px;
+  }
+
+  .navbar-title {
+    font-size: 22px;
+    flex: 1;
+    text-align: left;
+    margin-right: 96px; /* Reserve space for action buttons */
+  }
+
+  .navbar-actions {
+    right: var(--space-md);
+    gap: 8px;
+  }
+
+  .lang-btn,
+  .logout-btn {
+    width: 42px;
+    height: 42px;
+    font-size: 13px;
+  }
+
+  .logout-btn {
+    font-size: 20px;
+  }
+
   .feature-grid {
     grid-template-columns: 1fr;
     row-gap: 16px;

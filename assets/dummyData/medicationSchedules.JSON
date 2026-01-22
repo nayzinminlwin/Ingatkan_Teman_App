@@ -1,0 +1,86 @@
+{
+  "schedules": [
+    {
+      "id": "sched_001",
+      "medicineName": "Paracetamol",
+      "dosage": "2 tablets",
+      "dosage_BM": "2 biji",
+      "time": "08:00",
+      "instruction": "after-breakfast",
+      "repeat": "daily",
+      "status": "taken",
+      "createdAt": "2026-01-20T10:00:00Z",
+      "takenAt": "2026-01-22T08:05:00Z"
+    },
+    {
+      "id": "sched_002",
+      "medicineName": "Vitamin C",
+      "dosage": "1 tablet",
+      "dosage_BM": "1 biji",
+      "time": "13:00",
+      "instruction": "after-lunch",
+      "repeat": "daily",
+      "status": "upcoming",
+      "createdAt": "2026-01-20T10:00:00Z",
+      "takenAt": null
+    },
+    {
+      "id": "sched_003",
+      "medicineName": "Amlodipine",
+      "dosage": "1 tablet",
+      "dosage_BM": "1 biji",
+      "time": "18:00",
+      "instruction": "before-dinner",
+      "repeat": "daily",
+      "status": "pending",
+      "createdAt": "2026-01-20T10:00:00Z",
+      "takenAt": null
+    },
+    {
+      "id": "sched_004",
+      "medicineName": "Metformin",
+      "dosage": "1 tablet",
+      "dosage_BM": "1 biji",
+      "time": "07:00",
+      "instruction": "before-breakfast",
+      "repeat": "daily",
+      "status": "missed",
+      "createdAt": "2026-01-18T09:00:00Z",
+      "takenAt": null
+    },
+    {
+      "id": "sched_005",
+      "medicineName": "Atorvastatin",
+      "dosage": "1 tablet",
+      "dosage_BM": "1 biji",
+      "time": "21:00",
+      "instruction": "before-sleep",
+      "repeat": "daily",
+      "status": "pending",
+      "createdAt": "2026-01-15T14:00:00Z",
+      "takenAt": null
+    }
+  ],
+  "instructionLabels": {
+    "after-breakfast": { "en": "After Breakfast", "bm": "Selepas Sarapan" },
+    "before-breakfast": { "en": "Before Breakfast", "bm": "Sebelum Sarapan" },
+    "after-lunch": { "en": "After Lunch", "bm": "Selepas Makan Tengahari" },
+    "before-lunch": { "en": "Before Lunch", "bm": "Sebelum Makan Tengahari" },
+    "after-dinner": { "en": "After Dinner", "bm": "Selepas Makan Malam" },
+    "before-dinner": { "en": "Before Dinner", "bm": "Sebelum Makan Malam" },
+    "before-sleep": { "en": "Before Sleep", "bm": "Sebelum Tidur" }
+  },
+  "repeatLabels": {
+    "daily": { "en": "Every Day", "bm": "Setiap Hari" },
+    "weekdays": { "en": "Weekdays Only", "bm": "Hari Bekerja Sahaja" },
+    "weekly": { "en": "Weekly", "bm": "Setiap Minggu" },
+    "monthly": { "en": "Monthly", "bm": "Setiap Bulan" },
+    "once": { "en": "One Time Only", "bm": "Sekali Sahaja" }
+  },
+  "statusLabels": {
+    "taken": { "en": "Taken", "bm": "Sudah Ambil" },
+    "upcoming": { "en": "Next", "bm": "Seterusnya" },
+    "pending": { "en": "Pending", "bm": "Menunggu" },
+    "missed": { "en": "Missed", "bm": "Terlepas" }
+  }
+}

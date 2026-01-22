@@ -65,7 +65,11 @@
       "beforeDinner": "Before dinner",
       "beforeSleep": "Before sleep",
       "tablets": "tablets",
-      "tablet": "tablet"
+      "tablet": "tablet",
+      "noSchedules": "No medication schedules yet. Tap <strong>Add</strong> to create one!",
+      "markTaken": "Mark as taken",
+      "delete": "Delete",
+      "markedTaken": "Great job! {name} marked as taken! 💪"
     },
     "addSchedule": {
       "pageTitle": "Add New Schedule",
@@ -269,7 +273,11 @@
       "beforeDinner": "Sebelum makan malam",
       "beforeSleep": "Sebelum tidur",
       "tablets": "biji",
-      "tablet": "biji"
+      "tablet": "biji",
+      "noSchedules": "Tiada jadual ubat lagi. Ketik <strong>Tambah</strong> untuk mencipta satu!",
+      "markTaken": "Tandakan sudah ambil",
+      "delete": "Padam",
+      "markedTaken": "Bagus! {name} sudah diambil! 💪"
     },
     "addSchedule": {
       "pageTitle": "Tambah Jadual Baru",

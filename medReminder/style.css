@@ -919,4 +919,95 @@ body {
   }
 }
 
+/* =============================================================================
+   SCHEDULE CARD ACTION BUTTONS
+   ============================================================================= */
+.schedule-actions {
+  display: flex;
+  gap: 6px;
+  margin-left: 8px;
+}
 
+.action-btn {
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 50%;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.15s, background 0.15s;
+}
+
+.action-btn:active {
+  transform: scale(0.9);
+}
+
+.take-btn {
+  background: var(--green-light);
+  color: var(--green-positive);
+  border: 2px solid var(--green-positive);
+}
+
+.take-btn:hover,
+.take-btn:active {
+  background: var(--green-positive);
+  color: #ffffff;
+}
+
+.delete-btn {
+  background: var(--red-light);
+  color: var(--red-danger);
+  border: 2px solid var(--red-danger);
+  font-size: 22px;
+}
+
+.delete-btn:hover,
+.delete-btn:active {
+  background: var(--red-danger);
+  color: #ffffff;
+}
+
+/* Hide take button for already taken medications */
+.schedule-card.taken .take-btn {
+  display: none;
+}
+
+/* =============================================================================
+   EMPTY STATE & LOADING
+   ============================================================================= */
+.loading-message {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 16px;
+  padding: 32px 16px;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  background: #ffffff;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+}
+
+.empty-state p {
+  font-size: 18px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* =============================================================================
+   PENDING STATUS (NEW)
+   ============================================================================= */
+.schedule-card.pending {
+  border-left-color: var(--blue-primary);
+}
+
+.status-badge.pending {
+  background: var(--blue-light);
+  color: var(--blue-primary);
+}
