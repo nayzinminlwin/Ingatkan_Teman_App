@@ -6,14 +6,16 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
-    <title>Add New Medicine</title>
+    <title data-i18n-title="inventory.addNewMedicine">Add New Medicine</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <main class="page form-page">
       <header class="page-header">
-        <a href="inventoryHome.html" class="back-btn">← Back</a>
-        <h1>Input New Medicine</h1>
+        <a href="inventoryHome.html" class="back-btn" data-i18n="common.back"
+          >← Back</a
+        >
+        <h1 data-i18n="inventory.inputNewMedicine">Input New Medicine</h1>
       </header>
 
       <form class="form-container" id="newMedForm">
@@ -21,19 +23,25 @@
           <!-- Medicine Card 1 -->
           <div class="input-card">
             <div class="card-header">
-              <span class="card-number">Medicine #1</span>
+              <span class="card-number"
+                ><span data-i18n="inventory.medicineNumber">Medicine #</span
+                >1</span
+              >
               <button type="button" class="remove-card-btn" aria-label="Remove">
                 ✕
               </button>
             </div>
 
             <div class="field-group">
-              <label for="med-name-1">Medicine Name</label>
+              <label for="med-name-1" data-i18n="inventory.medicineName"
+                >Medicine Name</label
+              >
               <input
                 id="med-name-1"
                 name="medicineName[]"
                 type="text"
                 list="medNames"
+                data-i18n-placeholder="inventory.selectOrTypeNew"
                 placeholder="Select or type new"
                 required
               />
@@ -51,24 +59,30 @@
 
             <div class="field-row">
               <div class="field-group half">
-                <label for="quantity-1">Quantity</label>
+                <label for="quantity-1" data-i18n="inventory.quantity"
+                  >Quantity</label
+                >
                 <input
                   id="quantity-1"
                   name="quantity[]"
                   type="number"
                   min="1"
+                  data-i18n-placeholder="inventory.quantityPlaceholder"
                   placeholder="e.g. 30"
                   required
                 />
               </div>
 
               <div class="field-group half">
-                <label for="batch-1">Batch No.</label>
+                <label for="batch-1" data-i18n="inventory.batchNo"
+                  >Batch No.</label
+                >
                 <input
                   id="batch-1"
                   name="batch[]"
                   type="number"
                   min="1"
+                  data-i18n-placeholder="inventory.batchPlaceholder"
                   placeholder="e.g. 5"
                   required
                 />
@@ -76,7 +90,9 @@
             </div>
 
             <div class="field-group">
-              <label for="expiry-1">Expiry Date</label>
+              <label for="expiry-1" data-i18n="inventory.expiryDate"
+                >Expiry Date</label
+              >
               <input id="expiry-1" name="expiry[]" type="date" required />
             </div>
           </div>
@@ -84,15 +100,20 @@
 
         <button class="btn-add-more" type="button" id="addMoreBtn">
           <span class="add-icon">＋</span>
-          <span>Add Another Medicine</span>
+          <span data-i18n="inventory.addAnotherMedicine"
+            >Add Another Medicine</span
+          >
         </button>
 
         <button class="btn-submit" type="submit">
           <span class="submit-icon">📦</span>
-          Add to Inventory
+          <span data-i18n="inventory.addToInventory">Add to Inventory</span>
         </button>
       </form>
     </main>
+
+    <!-- i18n Script -->
+    <script src="../i18n/i18n.js"></script>
 
     <!-- Shared Utilities -->
     <script src="inventoryUtils.js"></script>
@@ -111,8 +132,8 @@
         const clone = firstCard.cloneNode(true);
 
         // Update card number
-        clone.querySelector(".card-number").textContent =
-          `Medicine #${cardCount}`;
+        const prefix = I18n.t("inventory.medicineNumber");
+        clone.querySelector(".card-number").innerHTML = `${prefix}${cardCount}`;
 
         // Clear and update input IDs
         const inputs = clone.querySelectorAll("input");
@@ -158,9 +179,10 @@
       // Update card numbers after removal
       function updateCardNumbers() {
         const cards = inputWrapper.querySelectorAll(".input-card");
+        const prefix = I18n.t("inventory.medicineNumber");
         cards.forEach((card, index) => {
-          card.querySelector(".card-number").textContent =
-            `Medicine #${index + 1}`;
+          card.querySelector(".card-number").innerHTML =
+            `${prefix}${index + 1}`;
           // Hide remove button on first card if only one remains
           const removeBtn = card.querySelector(".remove-card-btn");
           if (cards.length === 1) {
@@ -204,7 +226,7 @@
           });
 
           if (newMedicines.length === 0) {
-            alert("Please fill in at least one medicine.");
+            alert(I18n.t("inventory.pleaseFillin"));
             return;
           }
 
@@ -219,9 +241,11 @@
 
           // Show success and redirect
           const count = newMedicines.length;
-          alert(
-            `✅ ${count} medicine${count > 1 ? "s" : ""} added to inventory!`,
-          );
+          const suffix =
+            count > 1
+              ? I18n.t("inventory.medicinesAdded")
+              : I18n.t("inventory.medicineAdded");
+          alert(`✅ ${count} ${suffix}`);
           window.location.href = "inventoryHome.html";
         });
 

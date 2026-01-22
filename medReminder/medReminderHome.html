@@ -6,26 +6,26 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
-    <title>Medication Reminder</title>
+    <title data-i18n-title="medReminder.pageTitle">Medication Reminder</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <main class="page reminder-home">
       <header class="page-header">
-        <a href="../main/homePage.html" class="back-btn">← Back</a>
-        <h1>Medication Reminder</h1>
+        <a href="../main/homePage.html" class="back-btn" data-i18n="common.back">← Back</a>
+        <h1 data-i18n="medReminder.pageTitle">Medication Reminder</h1>
       </header>
 
       <!-- Adik Ahmad Welcome Scene -->
       <section class="scene">
         <img src="../assets/Adik_Ahmad.png" alt="Adik Ahmad" class="avatar" />
         <div class="bubble">
-          <p>Hi Nenek! Have you taken your medicine this morning?</p>
+          <p data-i18n="medReminder.greeting">Hi Nenek! Have you taken your medicine this morning?</p>
           <div class="response-actions">
-            <button class="btn btn-yes" type="button" id="btnYes">
+            <button class="btn btn-yes" type="button" id="btnYes" data-i18n="medReminder.btnYes">
               ✓ Sudah
             </button>
-            <button class="btn btn-no" type="button" id="btnNo">✗ Belum</button>
+            <button class="btn btn-no" type="button" id="btnNo" data-i18n="medReminder.btnNo">✗ Belum</button>
           </div>
         </div>
       </section>
@@ -35,52 +35,52 @@
         <div class="stat-card success">
           <span class="stat-icon">✅</span>
           <span class="stat-value" id="takenCount">0</span>
-          <span class="stat-label">Taken</span>
+          <span class="stat-label" data-i18n="medReminder.taken">Taken</span>
         </div>
         <div class="stat-card warning">
           <span class="stat-icon">⏰</span>
           <span class="stat-value" id="upcomingCount">0</span>
-          <span class="stat-label">Upcoming</span>
+          <span class="stat-label" data-i18n="medReminder.upcoming">Upcoming</span>
         </div>
         <div class="stat-card danger">
           <span class="stat-icon">⚠️</span>
           <span class="stat-value" id="missedCount">0</span>
-          <span class="stat-label">Missed</span>
+          <span class="stat-label" data-i18n="medReminder.missed">Missed</span>
         </div>
       </section>
 
       <!-- Today's Schedule Section -->
-      <h2 class="section-title">Today's Schedule</h2>
+      <h2 class="section-title" data-i18n="medReminder.todaySchedule">Today's Schedule</h2>
       <section class="schedule-list" id="scheduleList">
         <!-- Schedule cards will be injected here -->
         <article class="schedule-card taken">
           <div class="schedule-info">
             <h3 class="schedule-name">Paracetamol</h3>
-            <p class="schedule-detail">2 tablets • After breakfast</p>
+            <p class="schedule-detail">2 <span data-i18n="medReminder.tablets">tablets</span> • <span data-i18n="medReminder.afterBreakfast">After breakfast</span></p>
           </div>
           <div class="schedule-time">
             <span class="time-value">8:00</span>
             <span class="time-label">AM</span>
           </div>
-          <span class="status-badge taken">Taken</span>
+          <span class="status-badge taken" data-i18n="medReminder.taken">Taken</span>
         </article>
 
         <article class="schedule-card upcoming">
           <div class="schedule-info">
             <h3 class="schedule-name">Vitamin C</h3>
-            <p class="schedule-detail">1 tablet • After lunch</p>
+            <p class="schedule-detail">1 <span data-i18n="medReminder.tablet">tablet</span> • <span data-i18n="medReminder.afterLunch">After lunch</span></p>
           </div>
           <div class="schedule-time">
             <span class="time-value">1:00</span>
             <span class="time-label">PM</span>
           </div>
-          <span class="status-badge upcoming">Next</span>
+          <span class="status-badge upcoming" data-i18n="medReminder.next">Next</span>
         </article>
 
         <article class="schedule-card">
           <div class="schedule-info">
             <h3 class="schedule-name">Blood Pressure Med</h3>
-            <p class="schedule-detail">1 tablet • Before dinner</p>
+            <p class="schedule-detail">1 <span data-i18n="medReminder.tablet">tablet</span> • <span data-i18n="medReminder.beforeDinner">Before dinner</span></p>
           </div>
           <div class="schedule-time">
             <span class="time-value">6:00</span>
@@ -94,21 +94,24 @@
     <footer class="fixed-toolbar">
       <a class="toolbar-btn primary" href="manualInput.html">
         <span class="toolbar-icon">➕</span>
-        <span class="toolbar-label">Add</span>
+        <span class="toolbar-label" data-i18n="medReminder.add">Add</span>
       </a>
       <a class="toolbar-btn" href="OCRScanPage.html">
         <span class="toolbar-icon">📷</span>
-        <span class="toolbar-label">Scan</span>
+        <span class="toolbar-label" data-i18n="medReminder.scan">Scan</span>
       </a>
       <a class="toolbar-btn" href="#">
         <span class="toolbar-icon">📅</span>
-        <span class="toolbar-label">History</span>
+        <span class="toolbar-label" data-i18n="medReminder.history">History</span>
       </a>
       <a class="toolbar-btn" href="#">
         <span class="toolbar-icon">⚙️</span>
-        <span class="toolbar-label">Settings</span>
+        <span class="toolbar-label" data-i18n="medReminder.settings">Settings</span>
       </a>
     </footer>
+
+    <!-- i18n Script -->
+    <script src="../i18n/i18n.js"></script>
 
     <script>
       // Demo: Update stats based on schedule
@@ -133,20 +136,20 @@
       // Response buttons interaction
       document.getElementById("btnYes").addEventListener("click", function () {
         const bubble = document.querySelector(".bubble p");
-        bubble.textContent =
-          "Bagus, Nenek! Keep taking your medicine on time! 💪";
+        bubble.textContent = I18n.t("medReminder.responseTaken");
         this.closest(".response-actions").style.display = "none";
       });
 
       document.getElementById("btnNo").addEventListener("click", function () {
         const bubble = document.querySelector(".bubble p");
-        bubble.textContent =
-          "Jangan lupa ya, Nenek! Your next medicine is at 1:00 PM.";
+        bubble.textContent = I18n.t("medReminder.responseNotTaken");
         this.closest(".response-actions").style.display = "none";
       });
 
       // Initialize
       updateStats();
     </script>
+  </body>
+</html>
   </body>
 </html>

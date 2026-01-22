@@ -6,7 +6,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
-    <title>Ingatkan Teman - Login</title>
+    <title data-i18n-title="login.pageTitle">Ingatkan Teman - Login</title>
     <link rel="manifest" href="manifest.json" />
     <meta name="theme-color" content="#FF6F61" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -35,14 +35,14 @@
         class="logo"
       />
       <div class="scan-icon">👤</div>
-      <p class="scan-text">Scanning your face...</p>
+      <p class="scan-text" data-i18n="login.scanning">Scanning your face...</p>
     </div>
 
     <!-- STAGE B: PIN Entry -->
     <div id="stageB">
       <div class="welcome-header">
-        <h1>Welcome Back!</h1>
-        <p>Please enter your PIN</p>
+        <h1 data-i18n="login.welcomeBack">Welcome Back!</h1>
+        <p data-i18n="login.enterPin">Please enter your PIN</p>
       </div>
 
       <!-- PIN Display -->
@@ -69,6 +69,9 @@
         <button class="key-btn delete" data-key="delete">⌫</button>
       </div>
     </div>
+
+    <!-- i18n Script -->
+    <script src="i18n/i18n.js"></script>
 
     <script>
       // Stage Transition Logic

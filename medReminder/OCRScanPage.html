@@ -6,16 +6,21 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
-    <title>Scan Prescription</title>
+    <title data-i18n-title="ocrScan.pageTitle">Scan Prescription</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body class="ocr-page">
-    <a href="medReminderHome.html" class="back-btn ocr-back">← Back</a>
+    <a
+      href="medReminderHome.html"
+      class="back-btn ocr-back"
+      data-i18n="common.back"
+      >← Back</a
+    >
 
     <main class="camera">
       <!-- Header Instructions -->
       <header class="camera-header">
-        <p>📄 Align prescription in frame</p>
+        <p data-i18n="ocrScan.alignDocument">📄 Align prescription in frame</p>
       </header>
 
       <!-- Camera Viewfinder -->
@@ -34,10 +39,20 @@
 
       <!-- Camera Controls -->
       <footer class="camera-controls">
-        <button class="camera-btn scan" id="scanBtn" type="button">
+        <button
+          class="camera-btn scan"
+          id="scanBtn"
+          type="button"
+          data-i18n="ocrScan.captureAndScan"
+        >
           📸 Capture & Scan
         </button>
-        <button class="camera-btn cancel" id="cancelBtn" type="button">
+        <button
+          class="camera-btn cancel"
+          id="cancelBtn"
+          type="button"
+          data-i18n="ocrScan.cancel"
+        >
           Cancel
         </button>
       </footer>
@@ -51,7 +66,7 @@
     >
       <div class="processing-content">
         <div class="processing-spinner"></div>
-        <p>Reading prescription...</p>
+        <p data-i18n="ocrScan.readingPrescription">Reading prescription...</p>
       </div>
     </div>
 
@@ -102,7 +117,7 @@
 
       scanBtn.addEventListener("click", () => {
         // Start scan animation
-        scanBtn.textContent = "⏳ Scanning...";
+        scanBtn.textContent = I18n.t("ocrScan.scanning");
         scanBtn.disabled = true;
         cancelBtn.disabled = true;
         scanLine.classList.add("active");
@@ -136,5 +151,8 @@
 
       initCamera();
     </script>
+
+    <!-- i18n Script -->
+    <script src="../i18n/i18n.js"></script>
   </body>
 </html>

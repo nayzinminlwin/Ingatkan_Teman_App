@@ -6,20 +6,27 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
-    <title>Nearby Pharmacy</title>
+    <title data-i18n-title="inventory.nearbyPharmacy">Nearby Pharmacy</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <main class="page pharmacy-page">
       <header class="page-header">
-        <a href="inventoryHome.html" class="back-btn">← Back</a>
-        <h1>🗺️ Nearby Pharmacy</h1>
+        <a href="inventoryHome.html" class="back-btn" data-i18n="common.back"
+          >← Back</a
+        >
+        <h1>
+          🗺️ <span data-i18n="inventory.nearbyPharmacy">Nearby Pharmacy</span>
+        </h1>
       </header>
 
       <!-- Location Status -->
       <div class="location-banner" id="locationBanner">
         <span class="location-icon">📍</span>
-        <span class="location-text" id="locationText"
+        <span
+          class="location-text"
+          id="locationText"
+          data-i18n="inventory.findingLocation"
           >Finding your location...</span
         >
       </div>
@@ -29,7 +36,7 @@
         <div class="map-placeholder" id="mapPlaceholder">
           <div class="map-loading">
             <span class="map-spinner">🔄</span>
-            <p>Loading map...</p>
+            <p data-i18n="common.loading">Loading map...</p>
           </div>
         </div>
         <!-- Interactive map will be injected here -->
@@ -39,17 +46,19 @@
       <div class="quick-actions">
         <button class="action-btn" id="refreshBtn" type="button">
           <span class="action-icon">🔄</span>
-          <span>Refresh</span>
+          <span data-i18n="inventory.refresh">Refresh</span>
         </button>
         <button class="action-btn" id="listViewBtn" type="button">
           <span class="action-icon">📋</span>
-          <span>List View</span>
+          <span data-i18n="inventory.listView">List View</span>
         </button>
       </div>
 
       <!-- Pharmacy List -->
       <section class="pharmacy-section">
-        <h2 class="section-title">Pharmacies Near You</h2>
+        <h2 class="section-title" data-i18n="inventory.pharmaciesNearYou">
+          Pharmacies Near You
+        </h2>
         <div class="pharmacy-list" id="pharmacyList">
           <!-- Pharmacy cards injected by JavaScript -->
         </div>
@@ -58,10 +67,16 @@
       <!-- Call/Navigate Tip -->
       <div class="tip-banner">
         <p>
-          💡 <strong>Tip:</strong> Tap a pharmacy to call or get directions!
+          💡 <strong data-i18n="inventory.tip">Tip:</strong>
+          <span data-i18n="inventory.pharmacyTip"
+            >Tap a pharmacy to call or get directions!</span
+          >
         </p>
       </div>
     </main>
+
+    <!-- i18n Script -->
+    <script src="../i18n/i18n.js"></script>
 
     <script>
       // Dummy pharmacy data (would be replaced by real API like Google Places)
@@ -112,11 +127,11 @@
       function getStatusBadge(status) {
         switch (status) {
           case "open":
-            return '<span class="status-badge open">🟢 Open</span>';
+            return `<span class="status-badge open">🟢 ${I18n.t("inventory.open")}</span>`;
           case "closing-soon":
-            return '<span class="status-badge closing">🟡 Closing Soon</span>';
+            return `<span class="status-badge closing">🟡 ${I18n.t("inventory.closingSoon")}</span>`;
           case "closed":
-            return '<span class="status-badge closed">🔴 Closed</span>';
+            return `<span class="status-badge closed">🔴 ${I18n.t("inventory.closed")}</span>`;
           default:
             return "";
         }
@@ -138,7 +153,7 @@
               </p>
               <p class="pharmacy-distance">
                 <span class="detail-icon">🚶</span>
-                <strong>${pharmacy.distance}</strong> away
+                <strong>${pharmacy.distance}</strong> ${I18n.t("inventory.away")}
               </p>
               <p class="pharmacy-hours">
                 <span class="detail-icon">🕐</span>
@@ -148,10 +163,10 @@
 
             <div class="pharmacy-actions">
               <a href="tel:${pharmacy.phone}" class="pharmacy-btn call">
-                <span>📞</span> Call
+                <span>📞</span> ${I18n.t("inventory.call")}
               </a>
               <button class="pharmacy-btn directions" onclick="openDirections('${pharmacy.address}')">
-                <span>🧭</span> Directions
+                <span>🧭</span> ${I18n.t("inventory.directions")}
               </button>
             </div>
           </article>
@@ -193,7 +208,7 @@
         const locationBanner = document.getElementById("locationBanner");
         const mapPlaceholder = document.getElementById("mapPlaceholder");
 
-        locationText.textContent = "Finding your location...";
+        locationText.textContent = I18n.t("inventory.findingLocation");
         locationBanner.classList.remove("found");
 
         setTimeout(() => {
@@ -204,9 +219,9 @@
           mapPlaceholder.innerHTML = `
             <div class="map-ready">
               <span class="map-pin">📍</span>
-              <p class="map-location">Your Location</p>
+              <p class="map-location">${I18n.t("inventory.yourLocation")}</p>
               <p class="map-address">Serdang, Selangor</p>
-              <p class="map-note">Map integration coming soon!</p>
+              <p class="map-note">${I18n.t("inventory.mapComingSoon")}</p>
             </div>
           `;
         }, 1500);
@@ -225,9 +240,11 @@
         });
       });
 
-      // Initialize
-      findLocation();
-      renderPharmacyList();
+      // Initialize - wait for i18n to be ready
+      I18n.init(function () {
+        findLocation();
+        renderPharmacyList();
+      });
     </script>
   </body>
 </html>

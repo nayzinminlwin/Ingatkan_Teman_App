@@ -7,7 +7,9 @@
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
     <!-- BM: Rakaman Kesihatan Harian -->
-    <title>Daily Health Recorder</title>
+    <title data-i18n-title="healthRecorder.pageTitle">
+      Daily Health Recorder
+    </title>
     <link rel="stylesheet" href="../styles/global.css" />
     <link rel="stylesheet" href="style.css" />
   </head>
@@ -30,10 +32,11 @@
         </div>
         <div class="header-info">
           <!-- BM: Pasukan Kesihatan Anda -->
-          <h1>Your Health Team</h1>
+          <h1 data-i18n="healthRecorder.yourHealthTeam">Your Health Team</h1>
           <p class="status-online">
             <!-- BM: Sedia Membantu -->
-            <span class="status-dot"></span> Ready to Help
+            <span class="status-dot"></span>
+            <span data-i18n="healthRecorder.readyToHelp">Ready to Help</span>
           </p>
         </div>
       </div>
@@ -42,10 +45,18 @@
 
     <!-- ========== MENU DROPDOWN ========== -->
     <div class="menu-dropdown" id="menuDropdown">
-      <button class="menu-item" id="resetConversation">
+      <button
+        class="menu-item"
+        id="resetConversation"
+        data-i18n="healthRecorder.startNewConversation"
+      >
         🔄 Start New Conversation
       </button>
-      <button class="menu-item" id="generateReport">
+      <button
+        class="menu-item"
+        id="generateReport"
+        data-i18n="healthRecorder.generateReport"
+      >
         📊 Generate Health Report
       </button>
     </div>
@@ -54,13 +65,19 @@
     <div class="health-report-modal" id="healthReportModal">
       <div class="health-report-card">
         <div class="report-header">
-          <h2 id="reportTitle">📊 Health Report</h2>
-          <p id="reportSubtitle">Your recent health readings</p>
+          <h2 id="reportTitle" data-i18n="healthRecorder.healthReport">
+            📊 Health Report
+          </h2>
+          <p id="reportSubtitle" data-i18n="healthRecorder.yourRecentReadings">
+            Your recent health readings
+          </p>
         </div>
 
         <!-- Averages Section -->
         <div class="report-averages" id="reportAverages">
-          <h3 id="averagesTitle">7-Day Averages</h3>
+          <h3 id="averagesTitle" data-i18n="healthRecorder.sevenDayAverages">
+            7-Day Averages
+          </h3>
           <div class="averages-grid" id="averagesGrid">
             <!-- Filled dynamically -->
           </div>
@@ -71,7 +88,13 @@
           <!-- Filled dynamically -->
         </div>
 
-        <button class="report-close-btn" id="closeReportBtn">Close</button>
+        <button
+          class="report-close-btn"
+          id="closeReportBtn"
+          data-i18n="common.close"
+        >
+          Close
+        </button>
       </div>
     </div>
 
@@ -79,7 +102,7 @@
     <div class="date-banner">
       <span class="date-icon">📅</span>
       <!-- BM: Hari Ini -->
-      <span id="currentDate">Today</span>
+      <span id="currentDate" data-i18n="healthRecorder.today">Today</span>
     </div>
 
     <!-- ========== CHAT CONTAINER ========== -->
@@ -102,6 +125,7 @@
         <input
           type="text"
           id="messageInput"
+          data-i18n-placeholder="healthRecorder.typeMessage"
           placeholder="Type your message..."
           class="message-input"
         />
@@ -111,11 +135,18 @@
       </div>
     </footer>
 
+    <!-- i18n Script -->
+    <script src="../i18n/i18n.js"></script>
+
     <script>
       // ========== CONFIGURATION ==========
       const DATA_PATH = "../assets/dummyData/healthChat.JSON";
       const RECORDS_PATH = "../assets/dummyData/healthRecords.JSON";
-      const LANG = "en"; // Change to "bm" for Bahasa Melayu
+
+      // Get language from i18n system
+      function getLang() {
+        return I18n.getLanguage() === "bm" ? "bm" : "en";
+      }
 
       // Data containers (loaded from JSON)
       let PERSONAS = {};
@@ -137,6 +168,7 @@
 
       // ========== LANGUAGE HELPER ==========
       function getText(obj, key) {
+        const LANG = getLang();
         if (LANG === "bm" && obj[key + "_BM"]) {
           return obj[key + "_BM"];
         }
@@ -144,6 +176,7 @@
       }
 
       function getTextDirect(obj, suffix = "") {
+        const LANG = getLang();
         const bmKey = suffix ? suffix + "_BM" : "text_BM";
         const enKey = suffix || "text";
         if (LANG === "bm" && obj[bmKey]) {
@@ -206,7 +239,7 @@
           month: "long",
           day: "numeric",
         };
-        const locale = LANG === "bm" ? "ms-MY" : "en-US";
+        const locale = getLang() === "bm" ? "ms-MY" : "en-US";
         const today = new Date().toLocaleDateString(locale, options);
         document.getElementById("currentDate").textContent = today;
       }
@@ -521,7 +554,7 @@
       function getDynamicMessage(step, prevResponse) {
         if (!step.dynamicMessages) return null;
 
-        const suffix = LANG === "bm" ? "_BM" : "";
+        const suffix = getLang() === "bm" ? "_BM" : "";
 
         // Handle BP recording
         if (step.waitForInput === "bp") {
@@ -807,7 +840,7 @@
 
       function getRecordText(obj, key) {
         // Helper for health records JSON
-        const langKey = LANG === "bm" ? "bm" : "en";
+        const langKey = getLang() === "bm" ? "bm" : "en";
         if (typeof obj === "object" && obj !== null) {
           return obj[langKey] || obj["en"] || obj;
         }
@@ -817,7 +850,7 @@
       function getRecordUIText(key) {
         if (!HEALTH_RECORDS.ui) return key;
         const bmKey = key + "_BM";
-        if (LANG === "bm" && HEALTH_RECORDS.ui[bmKey]) {
+        if (getLang() === "bm" && HEALTH_RECORDS.ui[bmKey]) {
           return HEALTH_RECORDS.ui[bmKey];
         }
         return HEALTH_RECORDS.ui[key] || key;
@@ -881,7 +914,7 @@
         recordsContainer.innerHTML = records
           .map((record) => {
             const dateObj = new Date(record.date);
-            const locale = LANG === "bm" ? "ms-MY" : "en-US";
+            const locale = getLang() === "bm" ? "ms-MY" : "en-US";
             const dateStr = dateObj.toLocaleDateString(locale, {
               weekday: "short",
               month: "short",

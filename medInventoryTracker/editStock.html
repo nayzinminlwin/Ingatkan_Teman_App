@@ -6,19 +6,21 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
-    <title>Edit Inventory</title>
+    <title data-i18n-title="inventory.editInventory">Edit Inventory</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <main class="page form-page">
       <header class="page-header">
-        <a href="inventoryHome.html" class="back-btn">← Back</a>
-        <h1>Edit Inventory</h1>
+        <a href="inventoryHome.html" class="back-btn" data-i18n="common.back"
+          >← Back</a
+        >
+        <h1 data-i18n="inventory.editInventory">Edit Inventory</h1>
       </header>
 
       <!-- Instructions -->
       <div class="edit-instructions">
-        <p>
+        <p data-i18n="inventory.editInstructions">
           📝 Adjust the quantity for each medicine using <strong>+</strong> and
           <strong>−</strong> buttons.
         </p>
@@ -32,16 +34,19 @@
       <!-- Pagination -->
       <div class="pagination" id="pagination">
         <button class="btn-page" id="seeMoreBtn" type="button">
-          <span>👇</span> See More
+          <span>👇</span> <span data-i18n="inventory.seeMore">See More</span>
         </button>
       </div>
 
       <!-- Submit -->
       <button class="btn-submit" id="confirmBtn" type="button">
         <span class="submit-icon">✅</span>
-        Confirm Edit
+        <span data-i18n="inventory.confirmEdit">Confirm Edit</span>
       </button>
     </main>
+
+    <!-- i18n Script -->
+    <script src="../i18n/i18n.js"></script>
 
     <!-- Shared Utilities -->
     <script src="inventoryUtils.js"></script>
@@ -71,12 +76,12 @@
             
             <div class="edit-card-body">
               <div class="info-row">
-                <span class="info-label">📅 Expires:</span>
+                <span class="info-label">📅 ${I18n.t("inventory.expires")}</span>
                 <span class="info-value">${med.ExpDate}</span>
               </div>
               
               <div class="qty-editor">
-                <span class="qty-label">Quantity:</span>
+                <span class="qty-label">${I18n.t("inventory.quantity")}:</span>
                 <div class="qty-controls">
                   <button type="button" class="qty-btn minus" data-index="${index}" ${currentQty <= 0 ? "disabled" : ""}>−</button>
                   <input 
@@ -89,7 +94,7 @@
                   />
                   <button type="button" class="qty-btn plus" data-index="${index}">+</button>
                 </div>
-                ${isChanged ? `<span class="original-qty">Was: ${med.Qty}</span>` : ""}
+                ${isChanged ? `<span class="original-qty">${I18n.t("inventory.was")} ${med.Qty}</span>` : ""}
               </div>
             </div>
           </article>
@@ -117,7 +122,7 @@
         } else {
           pagination.style.display = "block";
           const remaining = inventory.length - currentPage * ITEMS_PER_PAGE;
-          seeMoreBtn.innerHTML = `<span>👇</span> See More (${remaining} left)`;
+          seeMoreBtn.innerHTML = `<span>👇</span> ${I18n.t("inventory.seeMore")} (${remaining} ${I18n.t("inventory.left")})`;
         }
 
         // Update confirm button text
@@ -132,10 +137,14 @@
 
         const confirmBtn = document.getElementById("confirmBtn");
         if (changeCount > 0) {
-          confirmBtn.innerHTML = `<span class="submit-icon">✅</span> Confirm ${changeCount} Change${changeCount > 1 ? "s" : ""}`;
+          const changeWord =
+            changeCount > 1
+              ? I18n.t("inventory.changes")
+              : I18n.t("inventory.change");
+          confirmBtn.innerHTML = `<span class="submit-icon">✅</span> ${I18n.t("inventory.confirmChanges")} ${changeCount} ${changeWord}`;
           confirmBtn.classList.add("has-changes");
         } else {
-          confirmBtn.innerHTML = `<span class="submit-icon">✅</span> Confirm Edit`;
+          confirmBtn.innerHTML = `<span class="submit-icon">✅</span> ${I18n.t("inventory.confirmEdit")}`;
           confirmBtn.classList.remove("has-changes");
         }
       }
@@ -187,7 +196,7 @@
         ).length;
 
         if (changeCount === 0) {
-          alert("No changes to save.");
+          alert(I18n.t("inventory.noChangesToSave"));
           return;
         }
 
@@ -200,9 +209,11 @@
         saveInventory(inventory);
 
         console.log("✅ Updated inventory:", inventory);
-        alert(
-          `✅ ${changeCount} medicine${changeCount > 1 ? "s" : ""} updated!`,
-        );
+        const suffix =
+          changeCount > 1
+            ? I18n.t("inventory.medicinesUpdated")
+            : I18n.t("inventory.medicineUpdated");
+        alert(`✅ ${changeCount} ${suffix}`);
         window.location.href = "inventoryHome.html";
       });
 
@@ -213,8 +224,8 @@
         if (inventory.length === 0) {
           document.getElementById("editList").innerHTML = `
             <div class="empty-state">
-              <p>No medicines to edit.</p>
-              <p><a href="newMed.html">Add some medicines</a> first!</p>
+              <p>${I18n.t("inventory.noMedicinesToEdit")}</p>
+              <p><a href="newMed.html">${I18n.t("inventory.addSomeMedicinesFirst")}</a></p>
             </div>
           `;
           document.getElementById("pagination").style.display = "none";
@@ -225,7 +236,10 @@
         renderEditList();
       }
 
-      init();
+      // Wait for i18n to be ready before initializing
+      I18n.init(function () {
+        init();
+      });
     </script>
   </body>
 </html>

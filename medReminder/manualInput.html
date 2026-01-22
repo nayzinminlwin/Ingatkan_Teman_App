@@ -6,21 +6,25 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
-    <title>Add Schedule</title>
+    <title data-i18n-title="addSchedule.pageTitle">Add Schedule</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <main class="page form-page">
       <header class="page-header">
-        <a href="medReminderHome.html" class="back-btn">← Back</a>
-        <h1>Add New Schedule</h1>
+        <a href="medReminderHome.html" class="back-btn" data-i18n="common.back"
+          >← Back</a
+        >
+        <h1 data-i18n="addSchedule.pageTitle">Add New Schedule</h1>
       </header>
 
       <!-- Adik Ahmad Helper Scene -->
       <section class="scene">
         <img src="../assets/Adik_Ahmad.png" alt="Adik Ahmad" class="avatar" />
         <div class="bubble">
-          <p>Tell me about your medicine, Nenek. I'll help you remember!</p>
+          <p data-i18n="addSchedule.helperText">
+            Tell me about your medicine, Nenek. I'll help you remember!
+          </p>
         </div>
       </section>
 
@@ -28,19 +32,25 @@
         <div class="input-wrapper" id="inputWrapper">
           <div class="input-card">
             <header class="card-header">
-              <span class="card-number">Medicine #1</span>
+              <span class="card-number"
+                ><span data-i18n="addSchedule.medicineNumber">Medicine #</span
+                >1</span
+              >
               <button type="button" class="remove-card-btn" aria-label="Remove">
                 ×
               </button>
             </header>
 
             <div class="field-group">
-              <label for="med-name-1">Medicine Name</label>
+              <label for="med-name-1" data-i18n="addSchedule.medicineName"
+                >Medicine Name</label
+              >
               <input
                 id="med-name-1"
                 name="medicineName[]"
                 type="text"
                 list="medNames"
+                data-i18n-placeholder="addSchedule.medicineNamePlaceholder"
                 placeholder="e.g., Paracetamol"
                 required
               />
@@ -56,54 +66,119 @@
             </div>
 
             <div class="field-group">
-              <label for="dosage-1">Dosage</label>
+              <label for="dosage-1" data-i18n="addSchedule.dosage"
+                >Dosage</label
+              >
               <input
                 id="dosage-1"
                 name="dosage[]"
                 type="text"
+                data-i18n-placeholder="addSchedule.dosagePlaceholder"
                 placeholder="e.g., 2 tablets"
                 required
               />
             </div>
 
             <div class="field-group">
-              <label for="time-1">Reminder Time</label>
+              <label for="time-1" data-i18n="addSchedule.reminderTime"
+                >Reminder Time</label
+              >
               <input id="time-1" name="time[]" type="time" required />
             </div>
 
             <div class="field-group">
-              <label for="instruction-1">Instructions</label>
+              <label for="instruction-1" data-i18n="addSchedule.instructions"
+                >Instructions</label
+              >
               <select id="instruction-1" name="instruction[]">
-                <option value="after-breakfast">After Breakfast</option>
-                <option value="before-breakfast">Before Breakfast</option>
-                <option value="after-lunch">After Lunch</option>
-                <option value="before-lunch">Before Lunch</option>
-                <option value="after-dinner">After Dinner</option>
-                <option value="before-dinner">Before Dinner</option>
-                <option value="before-sleep">Before Sleep</option>
+                <option
+                  value="after-breakfast"
+                  data-i18n="addSchedule.afterBreakfast"
+                >
+                  After Breakfast
+                </option>
+                <option
+                  value="before-breakfast"
+                  data-i18n="addSchedule.beforeBreakfast"
+                >
+                  Before Breakfast
+                </option>
+                <option value="after-lunch" data-i18n="addSchedule.afterLunch">
+                  After Lunch
+                </option>
+                <option
+                  value="before-lunch"
+                  data-i18n="addSchedule.beforeLunch"
+                >
+                  Before Lunch
+                </option>
+                <option
+                  value="after-dinner"
+                  data-i18n="addSchedule.afterDinner"
+                >
+                  After Dinner
+                </option>
+                <option
+                  value="before-dinner"
+                  data-i18n="addSchedule.beforeDinner"
+                >
+                  Before Dinner
+                </option>
+                <option
+                  value="before-sleep"
+                  data-i18n="addSchedule.beforeSleep"
+                >
+                  Before Sleep
+                </option>
               </select>
             </div>
 
             <div class="field-group">
-              <label for="repeat-1">Repeat</label>
+              <label for="repeat-1" data-i18n="addSchedule.repeat"
+                >Repeat</label
+              >
               <select id="repeat-1" name="repeat[]">
-                <option value="daily">Every Day</option>
-                <option value="weekdays">Weekdays Only</option>
-                <option value="weekly">Weekly</option>
-                <option value="monthly">Monthly</option>
-                <option value="once">One Time Only</option>
+                <option value="daily" data-i18n="addSchedule.everyDay">
+                  Every Day
+                </option>
+                <option value="weekdays" data-i18n="addSchedule.weekdaysOnly">
+                  Weekdays Only
+                </option>
+                <option value="weekly" data-i18n="addSchedule.weekly">
+                  Weekly
+                </option>
+                <option value="monthly" data-i18n="addSchedule.monthly">
+                  Monthly
+                </option>
+                <option value="once" data-i18n="addSchedule.oneTimeOnly">
+                  One Time Only
+                </option>
               </select>
             </div>
           </div>
         </div>
 
-        <button class="btn-secondary" type="button" id="addMoreBtn">
+        <button
+          class="btn-secondary"
+          type="button"
+          id="addMoreBtn"
+          data-i18n="addSchedule.addAnother"
+        >
           + Add Another Medicine
         </button>
 
-        <button class="btn-primary" type="submit">✓ Save Schedule</button>
+        <button
+          class="btn-primary"
+          type="submit"
+          data-i18n="addSchedule.saveSchedule"
+        >
+          ✓ Save Schedule
+        </button>
       </form>
     </main>
+
+    <!-- i18n Script -->
+    <script src="../i18n/i18n.js"></script>
 
     <script>
       const addMoreBtn = document.getElementById("addMoreBtn");
@@ -119,7 +194,8 @@
 
         // Update card number
         const cardNumber = clone.querySelector(".card-number");
-        cardNumber.textContent = `Medicine #${cardCount}`;
+        const prefix = I18n.t("addSchedule.medicineNumber");
+        cardNumber.innerHTML = `${prefix}${cardCount}`;
 
         // Show remove button
         const removeBtn = clone.querySelector(".remove-card-btn");
@@ -156,9 +232,10 @@
 
       function updateCardNumbers() {
         const cards = inputWrapper.querySelectorAll(".input-card");
+        const prefix = I18n.t("addSchedule.medicineNumber");
         cards.forEach((card, index) => {
           const cardNumber = card.querySelector(".card-number");
-          cardNumber.textContent = `Medicine #${index + 1}`;
+          cardNumber.innerHTML = `${prefix}${index + 1}`;
 
           // Hide remove button on first card
           const removeBtn = card.querySelector(".remove-card-btn");
@@ -177,8 +254,7 @@
 
           // Demo: Show success and redirect
           const bubble = document.querySelector(".bubble p");
-          bubble.textContent =
-            "Great! I've saved your schedule. I'll remind you on time!";
+          bubble.textContent = I18n.t("addSchedule.savedMessage");
 
           setTimeout(() => {
             window.location.href = "medReminderHome.html";

@@ -6,7 +6,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
-    <title>Ingatkan Teman - Home</title>
+    <title data-i18n-title="home.pageTitle">Ingatkan Teman - Home</title>
     <link rel="stylesheet" href="../styles/global.css" />
     <link rel="stylesheet" href="homePageStyle.css" />
   </head>
@@ -19,12 +19,23 @@
         class="navbar-logo"
       />
       <span class="navbar-title">Ingatkan Teman</span>
-      <button class="logout-btn" id="logoutBtn" aria-label="Logout">🚪</button>
+      <div class="navbar-actions">
+        <button
+          class="lang-btn"
+          id="langBtn"
+          aria-label="Switch to Bahasa Melayu"
+        >
+          BM
+        </button>
+        <button class="logout-btn" id="logoutBtn" aria-label="Logout">
+          🚪
+        </button>
+      </div>
     </nav>
 
     <!-- Welcome Header -->
     <header class="dashboard-header">
-      <h1>Selamat Datang, Nenek ❤️</h1>
+      <h1 data-i18n="home.welcome">Selamat Datang, Nenek ❤️</h1>
     </header>
 
     <!-- Feature Grid -->
@@ -37,7 +48,9 @@
       >
         <div class="card-content">
           <img src="../assets/Adik_Ahmad.png" alt="Adik Ahmad" class="avatar" />
-          <span class="card-title">Medication<br />Reminder</span>
+          <span class="card-title" data-i18n="home.medicationReminder"
+            >Medication<br />Reminder</span
+          >
         </div>
         <div class="card-platform"></div>
       </a>
@@ -54,7 +67,9 @@
             alt="PakCik Firdaus"
             class="avatar"
           />
-          <span class="card-title">Medication<br />Inventory</span>
+          <span class="card-title" data-i18n="home.medicationInventory"
+            >Medication<br />Inventory</span
+          >
         </div>
         <div class="card-platform"></div>
       </a>
@@ -71,7 +86,9 @@
             alt="Dr. Fatimah"
             class="avatar"
           />
-          <span class="card-title">Daily<br />Health<br />Recorder</span>
+          <span class="card-title" data-i18n="home.dailyHealthRecorder"
+            >Daily<br />Health<br />Recorder</span
+          >
           <img src="../assets/Nurse_Alia.png" alt="Nurse Alia" class="avatar" />
         </div>
         <div class="card-platform"></div>
@@ -85,7 +102,7 @@
       >
         <div class="card-content">
           <img src="../assets/Adik_Aisya.png" alt="Adik Aisya" class="avatar" />
-          <span class="card-title">Chit-Chat</span>
+          <span class="card-title" data-i18n="home.chitChat">Chit-Chat</span>
         </div>
         <div class="card-platform"></div>
       </a>
@@ -102,7 +119,7 @@
             alt="Encik Amirul"
             class="avatar"
           />
-          <span class="card-title">Consulting</span>
+          <span class="card-title" data-i18n="home.consulting">Consulting</span>
         </div>
         <div class="card-platform"></div>
       </a>
@@ -110,12 +127,14 @@
 
     <!-- Footer -->
     <footer class="dashboard-footer">
-      <p>May God be with you ❤️</p>
+      <p data-i18n="home.footer">May God be with you ❤️</p>
     </footer>
+
+    <!-- i18n Script -->
+    <script src="../i18n/i18n.js"></script>
 
     <script>
       // ========== SESSION CHECK ==========
-      // Redirect to login if not authenticated
       (function checkSession() {
         const isLoggedIn = sessionStorage.getItem("isLoggedIn");
         if (!isLoggedIn || isLoggedIn !== "true") {
@@ -123,14 +142,25 @@
         }
       })();
 
+      // ========== LANGUAGE TOGGLE ==========
+      const langBtn = document.getElementById("langBtn");
+
+      // Initialize button text based on current language
+      I18n.init(function (currentLang) {
+        I18n.updateLangButton(langBtn);
+      });
+
+      langBtn.addEventListener("click", async function () {
+        await I18n.switchLanguage();
+        I18n.updateLangButton(langBtn);
+      });
+
       // ========== LOGOUT ==========
       document
         .getElementById("logoutBtn")
         .addEventListener("click", function () {
-          // Clear session
           sessionStorage.removeItem("isLoggedIn");
           sessionStorage.removeItem("loginTime");
-          // Redirect to login page
           window.location.href = "../index.html";
         });
     </script>

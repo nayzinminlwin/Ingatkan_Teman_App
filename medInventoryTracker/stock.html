@@ -6,34 +6,44 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
-    <title>Stock Report</title>
+    <title data-i18n-title="inventory.stockReport">Stock Report</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <main class="page report-page">
       <header class="page-header">
-        <a href="inventoryHome.html" class="back-btn">← Back</a>
-        <h1>📋 Stock Report</h1>
+        <a href="inventoryHome.html" class="back-btn" data-i18n="common.back"
+          >← Back</a
+        >
+        <h1>📋 <span data-i18n="inventory.stockReport">Stock Report</span></h1>
       </header>
 
       <!-- Report Header Info -->
       <div class="report-header">
         <div class="report-date">
-          <span class="report-label">Report Generated:</span>
+          <span class="report-label" data-i18n="inventory.reportGenerated"
+            >Report Generated:</span
+          >
           <span class="report-value" id="reportDate">--</span>
         </div>
         <div class="report-summary">
           <div class="summary-item">
             <span class="summary-value" id="totalMeds">0</span>
-            <span class="summary-label">Total Items</span>
+            <span class="summary-label" data-i18n="inventory.totalItems"
+              >Total Items</span
+            >
           </div>
           <div class="summary-item warning">
             <span class="summary-value" id="lowStockMeds">0</span>
-            <span class="summary-label">Low Stock</span>
+            <span class="summary-label" data-i18n="inventory.lowStock"
+              >Low Stock</span
+            >
           </div>
           <div class="summary-item danger">
             <span class="summary-value" id="expiringMeds">0</span>
-            <span class="summary-label">Expiring</span>
+            <span class="summary-label" data-i18n="inventory.expiringSoon"
+              >Expiring</span
+            >
           </div>
         </div>
       </div>
@@ -43,11 +53,11 @@
         <table class="report-table">
           <thead>
             <tr>
-              <th>Medicine</th>
-              <th>Qty</th>
-              <th>Batch</th>
+              <th data-i18n="inventory.medicine">Medicine</th>
+              <th data-i18n="inventory.qty">Qty</th>
+              <th data-i18n="inventory.batch">Batch</th>
               <th>Expires</th>
-              <th>Status</th>
+              <th data-i18n="inventory.status">Status</th>
             </tr>
           </thead>
           <tbody id="reportBody">
@@ -58,24 +68,37 @@
 
       <!-- Legend -->
       <div class="report-legend">
-        <p class="legend-title">Status Legend:</p>
+        <p class="legend-title" data-i18n="inventory.statusLegend">
+          Status Legend:
+        </p>
         <div class="legend-items">
-          <span class="legend-item ok">🟢 OK</span>
-          <span class="legend-item low">🟡 Low Stock</span>
-          <span class="legend-item expiring">🟠 Expiring</span>
-          <span class="legend-item expired">🔴 Expired</span>
+          <span class="legend-item ok"
+            >🟢 <span data-i18n="inventory.statusOk">OK</span></span
+          >
+          <span class="legend-item low"
+            >🟡 <span data-i18n="inventory.statusLow">Low Stock</span></span
+          >
+          <span class="legend-item expiring"
+            >🟠 <span data-i18n="inventory.statusExpiring">Expiring</span></span
+          >
+          <span class="legend-item expired"
+            >🔴 <span data-i18n="inventory.statusExpired">Expired</span></span
+          >
         </div>
       </div>
 
       <!-- Download Button -->
       <button class="btn-submit download-btn" id="downloadBtn" type="button">
         <span class="submit-icon">📥</span>
-        Download Report (PDF)
+        <span data-i18n="inventory.downloadReport">Download Report (PDF)</span>
       </button>
     </main>
 
     <!-- Include html2pdf library for PDF generation -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <!-- i18n Script -->
+    <script src="../i18n/i18n.js"></script>
 
     <!-- Shared Utilities -->
     <script src="inventoryUtils.js"></script>
@@ -137,8 +160,8 @@
           html = `
             <tr>
               <td colspan="5" class="empty-row">
-                No medicines in inventory.<br>
-                <a href="newMed.html">Add some medicines</a> first!
+                ${I18n.t("inventory.noMedicines")}<br>
+                <a href="newMed.html">${I18n.t("inventory.addSomeMedicinesFirst")}</a>
               </td>
             </tr>
           `;
@@ -156,12 +179,12 @@
         const pdfContent = document.createElement("div");
         pdfContent.innerHTML = `
           <div style="padding: 20px; font-family: Arial, sans-serif;">
-            <h1 style="color: #2E7D32; margin-bottom: 8px;">Medicine Inventory Report</h1>
-            <p style="color: #5A5A5A; margin-bottom: 16px;">Generated: ${reportDate}</p>
+            <h1 style="color: #2E7D32; margin-bottom: 8px;">${I18n.t("inventory.stockReport")}</h1>
+            <p style="color: #5A5A5A; margin-bottom: 16px;">${I18n.t("inventory.reportGenerated")} ${reportDate}</p>
             <div style="margin-bottom: 16px; display: flex; gap: 20px;">
-              <span><strong>Total Items:</strong> ${document.getElementById("totalMeds").textContent}</span>
-              <span><strong>Low Stock:</strong> ${document.getElementById("lowStockMeds").textContent}</span>
-              <span><strong>Expiring:</strong> ${document.getElementById("expiringMeds").textContent}</span>
+              <span><strong>${I18n.t("inventory.totalItems")}:</strong> ${document.getElementById("totalMeds").textContent}</span>
+              <span><strong>${I18n.t("inventory.lowStock")}:</strong> ${document.getElementById("lowStockMeds").textContent}</span>
+              <span><strong>${I18n.t("inventory.expiringSoon")}:</strong> ${document.getElementById("expiringMeds").textContent}</span>
             </div>
             ${element.innerHTML}
             <p style="margin-top: 20px; font-size: 12px; color: #888;">
@@ -183,12 +206,14 @@
           .from(pdfContent)
           .save()
           .then(() => {
-            alert("✅ Report downloaded successfully!");
+            alert(`✅ ${I18n.t("inventory.reportDownloaded")}`);
           });
       });
 
-      // Initialize
-      renderReport();
+      // Initialize - wait for i18n to be ready
+      I18n.init(function () {
+        renderReport();
+      });
     </script>
   </body>
 </html>
