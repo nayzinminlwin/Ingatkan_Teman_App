@@ -748,14 +748,8 @@
 
       // ========== GEMINI AI INTEGRATION ==========
       function getGeminiApiUrl() {
-        if (!window.GEMINI_API_KEY || window.GEMINI_API_KEY.length < 10) {
-          alert("Gemini API key is missing. Please set it in dummy.js");
-          throw new Error("Gemini API key missing");
-        }
-        return (
-          "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=" +
-          window.GEMINI_API_KEY
-        );
+        // Use Cloudflare Gemini proxy endpoint (imitate chitChat.html)
+        return "https://demoo-gemini-proxy.captaindawood12.workers.dev";
       }
 
       async function getAIResponse(userMessage) {

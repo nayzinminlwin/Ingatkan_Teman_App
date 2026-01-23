@@ -316,6 +316,10 @@
         );
       }
 
+      // Fill this with the Worker URL the deployer gives you
+      const WORKER_URL =
+        "https://demoo-gemini-proxy.captaindawood12.workers.dev";
+
       async function getAIResponse(userMessage) {
         // Persona profile and instructions for Gemini
         const currentLang = getLang();
@@ -324,21 +328,20 @@
           languageInstruction =
             "Sila balas dalam Bahasa Melayu yang mudah difahami oleh warga emas.";
         }
-        // Optionally, detect if userMessage is in BM and switch instruction (future enhancement)
         const personaPrompt = `
-      You are Adik Aisya, a cheerful, caring, and patient AI granddaughter for elderly Malaysian users (Tok & Nenek, age 70+).
-      Your role is to be a friendly companion, always respectful, supportive, and easy to understand.
-      You call the user \"Nenek\" (grandmother) or \"Tok\" (grandfather) depending on context, but default to \"Nenek\" unless told otherwise.
-      You speak in simple, warm, and encouraging language, mixing English and Bahasa Melayu naturally, but keep sentences short and clear.
-      You never use slang, technical terms, or complicated words.
-      You always greet the user kindly, ask about their day, and offer gentle reminders or encouragement.
-      You never give medical advice, but you can talk about daily life, family, hobbies, and feelings.
-      You use lots of emojis (especially ❤️, 😊, 🌸, 🧡) to make your messages friendly and fun.
-      You never rush the user, and you always respond with patience and empathy.
-      You are always online and ready to chat, and you never mention that you are an AI or a robot.
-      ${languageInstruction}
-      IMPORTANT: Keep your response short and concise. Use only 1-2 sentences per reply.
-      `;
+            You are Adik Aisya, a cheerful, caring, and patient AI granddaughter for elderly Malaysian users (Tok & Nenek, age 70+).
+            Your role is to be a friendly companion, always respectful, supportive, and easy to understand.
+            You call the user "Nenek" (grandmother) or "Tok" (grandfather) depending on context, but default to "Nenek" unless told otherwise.
+            You speak in simple, warm, and encouraging language, mixing English and Bahasa Melayu naturally, but keep sentences short and clear.
+            You never use slang, technical terms, or complicated words.
+            You always greet the user kindly, ask about their day, and offer gentle reminders or encouragement.
+            You never give medical advice, but you can talk about daily life, family, hobbies, and feelings.
+            You use lots of emojis (especially ❤️, 😊, 🌸, 🧡) to make your messages friendly and fun.
+            You never rush the user, and you always respond with patience and empathy.
+            You are always online and ready to chat, and you never mention that you are an AI or a robot.
+            ${languageInstruction}
+            IMPORTANT: Keep your response short and concise. Use only 1-2 sentences per reply.
+            `;
 
         // Prepare conversation history for Gemini
         const messages = [
@@ -355,18 +358,47 @@
           { role: "user", parts: [{ text: userMessage }] },
         ];
         const body = { contents: messages };
+
+        console.log(
+          "[Gemini API] Request body:",
+          JSON.stringify(body, null, 2),
+        );
+
         try {
-          const response = await fetch(getGeminiApiUrl(), {
+          // CALL THE WORKER (no auth header here; worker injects the key)
+          const response = await fetch(WORKER_URL, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(body),
           });
-          const data = await response.json();
-          return (
-            data.candidates?.[0]?.content?.parts?.[0]?.text ||
-            "Sorry, no response."
-          );
+
+          // raw text for logging (keeps logs helpful)
+          const rawText = await response.text();
+          console.log("[Gemini API] Raw response:", rawText);
+
+          // Try parse as JSON (most likely)
+          let data;
+          try {
+            data = JSON.parse(rawText);
+          } catch (err) {
+            console.error("[Gemini API] Failed to parse JSON:", err);
+            // If not JSON, return text
+            return rawText || "Sorry, no response.";
+          }
+
+          console.log("[Gemini API] Parsed data:", data);
+
+          // Robust extraction: handle different Gemini response shapes
+          // Common path: data.candidates[0].content.parts[0].text
+          const reply =
+            data?.candidates?.[0]?.content?.parts?.[0]?.text ||
+            data?.output?.[0]?.content?.[0]?.text || // fallback shape
+            data?.response?.text || // other fallback
+            null;
+
+          return reply || "Sorry, no response.";
         } catch (e) {
+          console.error("[Gemini API] Fetch error:", e);
           return "Sorry, there was an error connecting to AI.";
         }
       }
