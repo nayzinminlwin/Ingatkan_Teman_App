@@ -97,7 +97,10 @@
 
       // Get language from i18n system
       function getLang() {
-        return I18n.getLanguage() === "bm" ? "bm" : "en";
+        // Default to English unless user explicitly selects BM
+        const lang = I18n.getLanguage();
+        if (lang === "bm") return "bm";
+        return "en";
       }
 
       // Data containers
@@ -321,6 +324,7 @@
           languageInstruction =
             "Sila balas dalam Bahasa Melayu yang mudah difahami oleh warga emas.";
         }
+        // Optionally, detect if userMessage is in BM and switch instruction (future enhancement)
         const personaPrompt = `
       You are Adik Aisya, a cheerful, caring, and patient AI granddaughter for elderly Malaysian users (Tok & Nenek, age 70+).
       Your role is to be a friendly companion, always respectful, supportive, and easy to understand.
@@ -387,6 +391,7 @@
         const response = await getAIResponse(text);
         removeTypingIndicator();
         addMessage(PERSONA.name, response, PERSONA.avatar);
+        // Optionally, detect BM and switch language (future enhancement)
       }
 
       // ========== VOICE INPUT (Placeholder) ==========
