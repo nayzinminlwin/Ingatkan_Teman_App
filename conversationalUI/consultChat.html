@@ -90,6 +90,8 @@
 
     <!-- i18n Script -->
     <script src="../i18n/i18n.js"></script>
+    <!-- Gemini API Key (local, gitignored) -->
+    <script src="../assets/dummyData/dummy.js"></script>
 
     <script>
       // ========== CONFIGURATION ==========
@@ -322,66 +324,72 @@
         }, 50);
       }
 
-      // ========== AI RESPONSE ==========
-      function getAIResponse(userMessage) {
-        const msg = userMessage.toLowerCase();
-
-        // Check for concerning keywords - suggest doctor
-        if (
-          msg.includes("pain") ||
-          msg.includes("hurt") ||
-          msg.includes("bleed") ||
-          msg.includes("sakit") ||
-          msg.includes("berdarah") ||
-          msg.includes("emergency")
-        ) {
-          const caution =
-            getLang() === "bm" ? RESPONSES.caution_BM : RESPONSES.caution;
-          return caution[Math.floor(Math.random() * caution.length)];
+      // ========== GEMINI AI INTEGRATION ==========
+      // API key is loaded from gemini_api_key.js (window.GEMINI_API_KEY)
+      function getGeminiApiUrl() {
+        if (!window.GEMINI_API_KEY || window.GEMINI_API_KEY.length < 10) {
+          alert(
+            "Gemini API key is missing. Please set it in gemini_api_key.js",
+          );
+          throw new Error("Gemini API key missing");
         }
-
-        // Positive/good progress
-        if (
-          msg.includes("better") ||
-          msg.includes("improve") ||
-          msg.includes("good") ||
-          msg.includes("baik") ||
-          msg.includes("bagus") ||
-          msg.includes("sembuh")
-        ) {
-          const encourage =
-            getLang() === "bm"
-              ? RESPONSES.encouragement_BM
-              : RESPONSES.encouragement;
-          return encourage[Math.floor(Math.random() * encourage.length)];
-        }
-
-        // Worried/anxious
-        if (
-          msg.includes("worried") ||
-          msg.includes("scared") ||
-          msg.includes("anxious") ||
-          msg.includes("risau") ||
-          msg.includes("takut") ||
-          msg.includes("bimbang")
-        ) {
-          const reassure =
-            getLang() === "bm"
-              ? RESPONSES.reassurance_BM
-              : RESPONSES.reassurance;
-          return reassure[Math.floor(Math.random() * reassure.length)];
-        }
-
-        // Default: informative response + follow-up
-        const info =
-          getLang() === "bm" ? RESPONSES.informative_BM : RESPONSES.informative;
-        const followUp =
-          getLang() === "bm" ? RESPONSES.followUp_BM : RESPONSES.followUp;
         return (
-          info[Math.floor(Math.random() * info.length)] +
-          " " +
-          followUp[Math.floor(Math.random() * followUp.length)]
+          "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=" +
+          window.GEMINI_API_KEY
         );
+      }
+
+      async function getAIResponse(userMessage) {
+        // Persona profile and instructions for Gemini
+        const currentLang = getLang();
+        let languageInstruction = "Please reply in English.";
+        if (currentLang === "bm") {
+          languageInstruction =
+            "Sila balas dalam Bahasa Melayu yang mudah difahami oleh warga emas.";
+        }
+        const personaPrompt = `
+      You are Encik Amirul, a wise, calm, and supportive health consultant for elderly Malaysian users (Tok & Nenek, age 70+).
+      Your role is to provide friendly, general health advice, emotional support, and encouragement, but never diagnose or prescribe medication.
+      You call the user \"Nenek\" (grandmother) or \"Tok\" (grandfather) depending on context, but default to \"Nenek\" unless told otherwise.
+      You speak in simple, respectful, and reassuring language, using both English and Bahasa Melayu naturally, but keep sentences short and clear.
+      You never use slang, technical terms, or complicated words.
+      You always remind the user to consult a real doctor for any serious or urgent health issues.
+      You use gentle emojis (😊, 👍, 💙, 🙏) to make your messages friendly and comforting.
+      You never rush the user, and you always respond with patience and empathy.
+      You are always online and ready to help, and you never mention that you are an AI or a robot.
+      ${languageInstruction}
+      IMPORTANT: Keep your response short and concise. Use only 1-2 sentences per reply.
+      `;
+
+        // Prepare conversation history for Gemini
+        const messages = [
+          {
+            role: "user",
+            parts: [{ text: personaPrompt }],
+          },
+          ...conversationHistory
+            .filter((msg) => msg.isUser !== undefined)
+            .map((msg) => ({
+              role: msg.isUser ? "user" : "model",
+              parts: [{ text: msg.text }],
+            })),
+          { role: "user", parts: [{ text: userMessage }] },
+        ];
+        const body = { contents: messages };
+        try {
+          const response = await fetch(getGeminiApiUrl(), {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body),
+          });
+          const data = await response.json();
+          return (
+            data.candidates?.[0]?.content?.parts?.[0]?.text ||
+            "Sorry, no response."
+          );
+        } catch (e) {
+          return "Sorry, there was an error connecting to AI.";
+        }
       }
 
       // ========== TEXT INPUT HANDLING ==========
@@ -390,7 +398,7 @@
         if (e.key === "Enter") sendTextMessage();
       });
 
-      function sendTextMessage() {
+      async function sendTextMessage() {
         const text = messageInput.value.trim();
         if (!text) return;
 
@@ -398,18 +406,12 @@
         addMessage("You", text, null, true);
         messageInput.value = "";
 
-        // Generate AI response
-        setTimeout(() => {
-          addTypingIndicator();
-          setTimeout(
-            () => {
-              removeTypingIndicator();
-              const response = getAIResponse(text);
-              addMessage(PERSONA.name, response, PERSONA.avatar);
-            },
-            1200 + Math.random() * 800,
-          ); // Slightly longer for "thinking"
-        }, 300);
+        // Show typing indicator
+        addTypingIndicator();
+        // Call Gemini AI
+        const response = await getAIResponse(text);
+        removeTypingIndicator();
+        addMessage(PERSONA.name, response, PERSONA.avatar);
       }
 
       // ========== VOICE INPUT (Placeholder) ==========

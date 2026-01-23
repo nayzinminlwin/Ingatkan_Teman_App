@@ -145,6 +145,15 @@
       // ========== LANGUAGE TOGGLE ==========
       const langBtn = document.getElementById("langBtn");
 
+      // Force language to English on first load unless user changes it
+      (function enforceEnglishDefault() {
+        const langKey = "ingatkanTeman_language";
+        const storedLang = localStorage.getItem(langKey);
+        if (storedLang !== "en") {
+          I18n.setLanguage("en");
+        }
+      })();
+
       // Initialize button text based on current language
       I18n.init(function (currentLang) {
         I18n.updateLangButton(langBtn);
