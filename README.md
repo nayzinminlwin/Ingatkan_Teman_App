@@ -10,7 +10,8 @@ A web-based and mobile-first prototype by **Team KATSPAW** that brings personali
 ![Frontend](https://img.shields.io/badge/Frontend-HTML/CSS/JS-E34F26?style=for-the-badge&logo=javascript&logoColor=white)
 ![Backend](https://img.shields.io/badge/Backend-Node.js-339933?style=for-the-badge&logo=node.js&logoColor=white)
 ![Database](https://img.shields.io/badge/Database-Oracle%20DB-F80000?style=for-the-badge&logo=oracle&logoColor=white)
-![AI](https://img.shields.io/badge/AI-Gemini%20:%20Textract%20%26%20Chatbot-8E75B2?style=for-the-badge)
+![AI](https://img.shields.io/badge/AI-Gemini%20:%20Textract%20%26%20Chatbot-8E75B2?style=for-the-badge&logo=gemini&logoColor=white)
+![Map](https://img.shields.io/badge/Map-Google%20Maps-3DDC84?style=for-the-badge&logo=google-maps&logoColor=white)
 ![Status](https://img.shields.io/badge/Status-Demo%20Ready-ED2321?style=for-the-badge)
 
 Healthcare management for the elderly shouldn't feel like navigating a complex spreadsheet.
