@@ -94,6 +94,10 @@ Here are the key personas that guide the elderly users through the application:
 
 _(Note: Please refer to [Diagrams and Demo file](https://github.com/nayzinminlwin/Ingatkan_Teman_App/blob/master/docs/IngatkanTeman_Diagrams_n_Demo.pdf) for detailed visuals.)_
 
+Live demo at : [Ingatkan Teman Web](https://nayzinminlwin.github.io/Ingatkan_Teman_App/)
+
+password: type any digit
+
 ## Architecture
 
 The system utilizes a service-oriented architecture connecting the frontend interface to specific AI services and databases.
