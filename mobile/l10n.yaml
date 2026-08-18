@@ -1,0 +1,17 @@
+# Flutter gen-l10n configuration for Ingatkan Teman
+# Place this file at mobile/l10n.yaml (or copy to project root when creating Flutter app).
+#
+# pubspec.yaml requirements:
+#   dependencies:
+#     flutter:
+#       sdk: flutter
+#     flutter_localizations:
+#       sdk: flutter
+#     intl: any
+#   flutter:
+#     generate: true
+
+arb-dir: l10n
+template-arb-file: app_en.arb
+output-localization-file: app_localizations.dart
+nullable-getter: false

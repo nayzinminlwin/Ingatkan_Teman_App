@@ -1,4 +1,8 @@
 {
+  "scripts": {
+    "i18n:flutter": "node i18n/convert_to_flutter_arb.js",
+    "i18n:flutter:ps1": "powershell -ExecutionPolicy Bypass -File i18n/convert_to_flutter_arb.ps1"
+  },
   "dependencies": {
     "oracledb": "^6.10.0"
   }

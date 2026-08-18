@@ -1,0 +1,753 @@
+{
+    "@@locale":  "en",
+    "@@context":  "Ingatkan Teman UI strings — generated from i18n/translations.json",
+    "commonBack":  "← Back",
+    "@commonBack":  {
+                        "description":  "Web key equivalent in key_map.json"
+                    },
+    "commonCancel":  "Cancel",
+    "@commonCancel":  {
+                          "description":  "Web key equivalent in key_map.json"
+                      },
+    "commonSave":  "Save",
+    "@commonSave":  {
+                        "description":  "Web key equivalent in key_map.json"
+                    },
+    "commonAdd":  "Add",
+    "@commonAdd":  {
+                       "description":  "Web key equivalent in key_map.json"
+                   },
+    "commonEdit":  "Edit",
+    "@commonEdit":  {
+                        "description":  "Web key equivalent in key_map.json"
+                    },
+    "commonDelete":  "Delete",
+    "@commonDelete":  {
+                          "description":  "Web key equivalent in key_map.json"
+                      },
+    "commonClose":  "Close",
+    "@commonClose":  {
+                         "description":  "Web key equivalent in key_map.json"
+                     },
+    "commonYes":  "Yes",
+    "@commonYes":  {
+                       "description":  "Web key equivalent in key_map.json"
+                   },
+    "commonNo":  "No",
+    "@commonNo":  {
+                      "description":  "Web key equivalent in key_map.json"
+                  },
+    "commonDone":  "Done",
+    "@commonDone":  {
+                        "description":  "Web key equivalent in key_map.json"
+                    },
+    "commonNext":  "Next",
+    "@commonNext":  {
+                        "description":  "Web key equivalent in key_map.json"
+                    },
+    "commonLoading":  "Loading...",
+    "@commonLoading":  {
+                           "description":  "Web key equivalent in key_map.json"
+                       },
+    "commonError":  "Error",
+    "@commonError":  {
+                         "description":  "Web key equivalent in key_map.json"
+                     },
+    "commonSuccess":  "Success",
+    "@commonSuccess":  {
+                           "description":  "Web key equivalent in key_map.json"
+                       },
+    "loginPageTitle":  "Ingatkan Teman - Login",
+    "@loginPageTitle":  {
+                            "description":  "Web key equivalent in key_map.json"
+                        },
+    "loginScanning":  "Scanning your face...",
+    "@loginScanning":  {
+                           "description":  "Web key equivalent in key_map.json"
+                       },
+    "loginWelcomeBack":  "Welcome Back!",
+    "@loginWelcomeBack":  {
+                              "description":  "Web key equivalent in key_map.json"
+                          },
+    "loginEnterPin":  "Please enter your PIN",
+    "@loginEnterPin":  {
+                           "description":  "Web key equivalent in key_map.json"
+                       },
+    "homePageTitle":  "Ingatkan Teman - Home",
+    "@homePageTitle":  {
+                           "description":  "Web key equivalent in key_map.json"
+                       },
+    "homeWelcome":  "Selamat Datang, Nenek ❤️",
+    "@homeWelcome":  {
+                         "description":  "Web key equivalent in key_map.json"
+                     },
+    "homeMedicationReminder":  "Medication\nReminder",
+    "@homeMedicationReminder":  {
+                                    "description":  "Web key equivalent in key_map.json"
+                                },
+    "homeMedicationInventory":  "Medication\nInventory",
+    "@homeMedicationInventory":  {
+                                     "description":  "Web key equivalent in key_map.json"
+                                 },
+    "homeDailyHealthRecorder":  "Daily\nHealth\nRecorder",
+    "@homeDailyHealthRecorder":  {
+                                     "description":  "Web key equivalent in key_map.json"
+                                 },
+    "homeChitChat":  "Chit-Chat",
+    "@homeChitChat":  {
+                          "description":  "Web key equivalent in key_map.json"
+                      },
+    "homeConsulting":  "Consulting",
+    "@homeConsulting":  {
+                            "description":  "Web key equivalent in key_map.json"
+                        },
+    "homeFooter":  "May God be with you ❤️",
+    "@homeFooter":  {
+                        "description":  "Web key equivalent in key_map.json"
+                    },
+    "homeLogout":  "Logout",
+    "@homeLogout":  {
+                        "description":  "Web key equivalent in key_map.json"
+                    },
+    "homeLanguage":  "BM",
+    "@homeLanguage":  {
+                          "description":  "Web key equivalent in key_map.json"
+                      },
+    "medReminderPageTitle":  "Medication Reminder",
+    "@medReminderPageTitle":  {
+                                  "description":  "Web key equivalent in key_map.json"
+                              },
+    "medReminderGreeting":  "Hi Nenek! Have you taken your medicine this morning?",
+    "@medReminderGreeting":  {
+                                 "description":  "Web key equivalent in key_map.json"
+                             },
+    "medReminderBtnYes":  "✓ Sudah",
+    "@medReminderBtnYes":  {
+                               "description":  "Web key equivalent in key_map.json"
+                           },
+    "medReminderBtnNo":  "✗ Belum",
+    "@medReminderBtnNo":  {
+                              "description":  "Web key equivalent in key_map.json"
+                          },
+    "medReminderTaken":  "Taken",
+    "@medReminderTaken":  {
+                              "description":  "Web key equivalent in key_map.json"
+                          },
+    "medReminderUpcoming":  "Upcoming",
+    "@medReminderUpcoming":  {
+                                 "description":  "Web key equivalent in key_map.json"
+                             },
+    "medReminderMissed":  "Missed",
+    "@medReminderMissed":  {
+                               "description":  "Web key equivalent in key_map.json"
+                           },
+    "medReminderTodaySchedule":  "Today\u0027s Schedule",
+    "@medReminderTodaySchedule":  {
+                                      "description":  "Web key equivalent in key_map.json"
+                                  },
+    "medReminderAddSchedule":  "Add New Schedule",
+    "@medReminderAddSchedule":  {
+                                    "description":  "Web key equivalent in key_map.json"
+                                },
+    "medReminderScanPrescription":  "Scan Prescription",
+    "@medReminderScanPrescription":  {
+                                         "description":  "Web key equivalent in key_map.json"
+                                     },
+    "medReminderHistory":  "History",
+    "@medReminderHistory":  {
+                                "description":  "Web key equivalent in key_map.json"
+                            },
+    "medReminderSettings":  "Settings",
+    "@medReminderSettings":  {
+                                 "description":  "Web key equivalent in key_map.json"
+                             },
+    "medReminderScan":  "Scan",
+    "@medReminderScan":  {
+                             "description":  "Web key equivalent in key_map.json"
+                         },
+    "medReminderAdd":  "Add",
+    "@medReminderAdd":  {
+                            "description":  "Web key equivalent in key_map.json"
+                        },
+    "medReminderResponseTaken":  "Bagus, Nenek! Keep taking your medicine on time! 💪",
+    "@medReminderResponseTaken":  {
+                                      "description":  "Web key equivalent in key_map.json"
+                                  },
+    "medReminderResponseNotTaken":  "Jangan lupa ya, Nenek! Your next medicine is at 1:00 PM.",
+    "@medReminderResponseNotTaken":  {
+                                         "description":  "Web key equivalent in key_map.json"
+                                     },
+    "medReminderNext":  "Next",
+    "@medReminderNext":  {
+                             "description":  "Web key equivalent in key_map.json"
+                         },
+    "medReminderAfterBreakfast":  "After breakfast",
+    "@medReminderAfterBreakfast":  {
+                                       "description":  "Web key equivalent in key_map.json"
+                                   },
+    "medReminderAfterLunch":  "After lunch",
+    "@medReminderAfterLunch":  {
+                                   "description":  "Web key equivalent in key_map.json"
+                               },
+    "medReminderAfterDinner":  "After dinner",
+    "@medReminderAfterDinner":  {
+                                    "description":  "Web key equivalent in key_map.json"
+                                },
+    "medReminderBeforeBreakfast":  "Before breakfast",
+    "@medReminderBeforeBreakfast":  {
+                                        "description":  "Web key equivalent in key_map.json"
+                                    },
+    "medReminderBeforeLunch":  "Before lunch",
+    "@medReminderBeforeLunch":  {
+                                    "description":  "Web key equivalent in key_map.json"
+                                },
+    "medReminderBeforeDinner":  "Before dinner",
+    "@medReminderBeforeDinner":  {
+                                     "description":  "Web key equivalent in key_map.json"
+                                 },
+    "medReminderBeforeSleep":  "Before sleep",
+    "@medReminderBeforeSleep":  {
+                                    "description":  "Web key equivalent in key_map.json"
+                                },
+    "medReminderTablets":  "tablets",
+    "@medReminderTablets":  {
+                                "description":  "Web key equivalent in key_map.json"
+                            },
+    "medReminderTablet":  "tablet",
+    "@medReminderTablet":  {
+                               "description":  "Web key equivalent in key_map.json"
+                           },
+    "medReminderNoSchedules":  "No medication schedules yet. Tap Add to create one!",
+    "@medReminderNoSchedules":  {
+                                    "description":  "Web key equivalent in key_map.json"
+                                },
+    "medReminderMarkTaken":  "Mark as taken",
+    "@medReminderMarkTaken":  {
+                                  "description":  "Web key equivalent in key_map.json"
+                              },
+    "medReminderDelete":  "Delete",
+    "@medReminderDelete":  {
+                               "description":  "Web key equivalent in key_map.json"
+                           },
+    "medReminderMarkedTaken":  "Great job! {name} marked as taken! 💪",
+    "@medReminderMarkedTaken":  {
+                                    "description":  "Web key equivalent in key_map.json",
+                                    "placeholders":  {
+                                                         "name":  {
+                                                                      "type":  "String"
+                                                                  }
+                                                     }
+                                },
+    "addSchedulePageTitle":  "Add New Schedule",
+    "@addSchedulePageTitle":  {
+                                  "description":  "Web key equivalent in key_map.json"
+                              },
+    "addScheduleHelperText":  "Tell me about your medicine, Nenek. I\u0027ll help you remember!",
+    "@addScheduleHelperText":  {
+                                   "description":  "Web key equivalent in key_map.json"
+                               },
+    "addScheduleMedicineNumber":  "Medicine #",
+    "@addScheduleMedicineNumber":  {
+                                       "description":  "Web key equivalent in key_map.json"
+                                   },
+    "addScheduleMedicineName":  "Medicine Name",
+    "@addScheduleMedicineName":  {
+                                     "description":  "Web key equivalent in key_map.json"
+                                 },
+    "addScheduleMedicineNamePlaceholder":  "e.g., Paracetamol",
+    "@addScheduleMedicineNamePlaceholder":  {
+                                                "description":  "Web key equivalent in key_map.json"
+                                            },
+    "addScheduleDosage":  "Dosage",
+    "@addScheduleDosage":  {
+                               "description":  "Web key equivalent in key_map.json"
+                           },
+    "addScheduleDosagePlaceholder":  "e.g., 2 tablets",
+    "@addScheduleDosagePlaceholder":  {
+                                          "description":  "Web key equivalent in key_map.json"
+                                      },
+    "addScheduleReminderTime":  "Reminder Time",
+    "@addScheduleReminderTime":  {
+                                     "description":  "Web key equivalent in key_map.json"
+                                 },
+    "addScheduleInstructions":  "Instructions",
+    "@addScheduleInstructions":  {
+                                     "description":  "Web key equivalent in key_map.json"
+                                 },
+    "addScheduleRepeat":  "Repeat",
+    "@addScheduleRepeat":  {
+                               "description":  "Web key equivalent in key_map.json"
+                           },
+    "addScheduleAfterBreakfast":  "After Breakfast",
+    "@addScheduleAfterBreakfast":  {
+                                       "description":  "Web key equivalent in key_map.json"
+                                   },
+    "addScheduleBeforeBreakfast":  "Before Breakfast",
+    "@addScheduleBeforeBreakfast":  {
+                                        "description":  "Web key equivalent in key_map.json"
+                                    },
+    "addScheduleAfterLunch":  "After Lunch",
+    "@addScheduleAfterLunch":  {
+                                   "description":  "Web key equivalent in key_map.json"
+                               },
+    "addScheduleBeforeLunch":  "Before Lunch",
+    "@addScheduleBeforeLunch":  {
+                                    "description":  "Web key equivalent in key_map.json"
+                                },
+    "addScheduleAfterDinner":  "After Dinner",
+    "@addScheduleAfterDinner":  {
+                                    "description":  "Web key equivalent in key_map.json"
+                                },
+    "addScheduleBeforeDinner":  "Before Dinner",
+    "@addScheduleBeforeDinner":  {
+                                     "description":  "Web key equivalent in key_map.json"
+                                 },
+    "addScheduleBeforeSleep":  "Before Sleep",
+    "@addScheduleBeforeSleep":  {
+                                    "description":  "Web key equivalent in key_map.json"
+                                },
+    "addScheduleEveryDay":  "Every Day",
+    "@addScheduleEveryDay":  {
+                                 "description":  "Web key equivalent in key_map.json"
+                             },
+    "addScheduleWeekdaysOnly":  "Weekdays Only",
+    "@addScheduleWeekdaysOnly":  {
+                                     "description":  "Web key equivalent in key_map.json"
+                                 },
+    "addScheduleWeekly":  "Weekly",
+    "@addScheduleWeekly":  {
+                               "description":  "Web key equivalent in key_map.json"
+                           },
+    "addScheduleMonthly":  "Monthly",
+    "@addScheduleMonthly":  {
+                                "description":  "Web key equivalent in key_map.json"
+                            },
+    "addScheduleOneTimeOnly":  "One Time Only",
+    "@addScheduleOneTimeOnly":  {
+                                    "description":  "Web key equivalent in key_map.json"
+                                },
+    "addScheduleAddAnother":  "+ Add Another Medicine",
+    "@addScheduleAddAnother":  {
+                                   "description":  "Web key equivalent in key_map.json"
+                               },
+    "addScheduleSaveSchedule":  "✓ Save Schedule",
+    "@addScheduleSaveSchedule":  {
+                                     "description":  "Web key equivalent in key_map.json"
+                                 },
+    "addScheduleSavedMessage":  "Great! I\u0027ve saved your schedule. I\u0027ll remind you on time!",
+    "@addScheduleSavedMessage":  {
+                                     "description":  "Web key equivalent in key_map.json"
+                                 },
+    "ocrScanPageTitle":  "Scan Prescription",
+    "@ocrScanPageTitle":  {
+                              "description":  "Web key equivalent in key_map.json"
+                          },
+    "ocrScanAlignDocument":  "📄 Align prescription in frame",
+    "@ocrScanAlignDocument":  {
+                                  "description":  "Web key equivalent in key_map.json"
+                              },
+    "ocrScanCaptureAndScan":  "📸 Capture \u0026 Scan",
+    "@ocrScanCaptureAndScan":  {
+                                   "description":  "Web key equivalent in key_map.json"
+                               },
+    "ocrScanCancel":  "Cancel",
+    "@ocrScanCancel":  {
+                           "description":  "Web key equivalent in key_map.json"
+                       },
+    "ocrScanScanning":  "⏳ Scanning...",
+    "@ocrScanScanning":  {
+                             "description":  "Web key equivalent in key_map.json"
+                         },
+    "ocrScanReadingPrescription":  "Reading prescription...",
+    "@ocrScanReadingPrescription":  {
+                                        "description":  "Web key equivalent in key_map.json"
+                                    },
+    "inventoryPageTitle":  "Medicine Inventory",
+    "@inventoryPageTitle":  {
+                                "description":  "Web key equivalent in key_map.json"
+                            },
+    "inventoryWelcomeMessage":  "Selamat datang, Nenek! You have",
+    "@inventoryWelcomeMessage":  {
+                                     "description":  "Web key equivalent in key_map.json"
+                                 },
+    "inventoryToday":  "today.",
+    "@inventoryToday":  {
+                            "description":  "Web key equivalent in key_map.json"
+                        },
+    "inventoryTotalItems":  "Total Items",
+    "@inventoryTotalItems":  {
+                                 "description":  "Web key equivalent in key_map.json"
+                             },
+    "inventoryLowStock":  "Low Stock",
+    "@inventoryLowStock":  {
+                               "description":  "Web key equivalent in key_map.json"
+                           },
+    "inventoryExpiringSoon":  "Expiring Soon",
+    "@inventoryExpiringSoon":  {
+                                   "description":  "Web key equivalent in key_map.json"
+                               },
+    "inventoryAdd":  "Add",
+    "@inventoryAdd":  {
+                          "description":  "Web key equivalent in key_map.json"
+                      },
+    "inventoryEdit":  "Edit",
+    "@inventoryEdit":  {
+                           "description":  "Web key equivalent in key_map.json"
+                       },
+    "inventoryReport":  "Report",
+    "@inventoryReport":  {
+                             "description":  "Web key equivalent in key_map.json"
+                         },
+    "inventoryPharmacy":  "Pharmacy",
+    "@inventoryPharmacy":  {
+                               "description":  "Web key equivalent in key_map.json"
+                           },
+    "inventoryLeft":  "left",
+    "@inventoryLeft":  {
+                           "description":  "Web key equivalent in key_map.json"
+                       },
+    "inventoryLowStockBadge":  "Low Stock",
+    "@inventoryLowStockBadge":  {
+                                    "description":  "Web key equivalent in key_map.json"
+                                },
+    "inventoryExpiringBadge":  "Expiring",
+    "@inventoryExpiringBadge":  {
+                                    "description":  "Web key equivalent in key_map.json"
+                                },
+    "inventoryExpiredBadge":  "Expired!",
+    "@inventoryExpiredBadge":  {
+                                   "description":  "Web key equivalent in key_map.json"
+                               },
+    "inventoryAlert":  "alert",
+    "@inventoryAlert":  {
+                            "description":  "Web key equivalent in key_map.json"
+                        },
+    "inventoryAlerts":  "alerts",
+    "@inventoryAlerts":  {
+                             "description":  "Web key equivalent in key_map.json"
+                         },
+    "inventoryNeedsAttention":  "Needs Attention",
+    "@inventoryNeedsAttention":  {
+                                     "description":  "Web key equivalent in key_map.json"
+                                 },
+    "inventoryAllMedicines":  "All Medicines",
+    "@inventoryAllMedicines":  {
+                                   "description":  "Web key equivalent in key_map.json"
+                               },
+    "inventoryNoMedicines":  "No medicines in inventory yet.",
+    "@inventoryNoMedicines":  {
+                                  "description":  "Web key equivalent in key_map.json"
+                              },
+    "inventoryTapAddToStart":  "Tap Add below to get started!",
+    "@inventoryTapAddToStart":  {
+                                    "description":  "Web key equivalent in key_map.json"
+                                },
+    "inventoryAddNewMedicine":  "Add New Medicine",
+    "@inventoryAddNewMedicine":  {
+                                     "description":  "Web key equivalent in key_map.json"
+                                 },
+    "inventoryInputNewMedicine":  "Input New Medicine",
+    "@inventoryInputNewMedicine":  {
+                                       "description":  "Web key equivalent in key_map.json"
+                                   },
+    "inventoryMedicineNumber":  "Medicine #",
+    "@inventoryMedicineNumber":  {
+                                     "description":  "Web key equivalent in key_map.json"
+                                 },
+    "inventoryMedicineName":  "Medicine Name",
+    "@inventoryMedicineName":  {
+                                   "description":  "Web key equivalent in key_map.json"
+                               },
+    "inventorySelectOrTypeNew":  "Select or type new",
+    "@inventorySelectOrTypeNew":  {
+                                      "description":  "Web key equivalent in key_map.json"
+                                  },
+    "inventoryQuantity":  "Quantity",
+    "@inventoryQuantity":  {
+                               "description":  "Web key equivalent in key_map.json"
+                           },
+    "inventoryQuantityPlaceholder":  "e.g. 30",
+    "@inventoryQuantityPlaceholder":  {
+                                          "description":  "Web key equivalent in key_map.json"
+                                      },
+    "inventoryBatchNo":  "Batch No.",
+    "@inventoryBatchNo":  {
+                              "description":  "Web key equivalent in key_map.json"
+                          },
+    "inventoryBatchPlaceholder":  "e.g. 5",
+    "@inventoryBatchPlaceholder":  {
+                                       "description":  "Web key equivalent in key_map.json"
+                                   },
+    "inventoryExpiryDate":  "Expiry Date",
+    "@inventoryExpiryDate":  {
+                                 "description":  "Web key equivalent in key_map.json"
+                             },
+    "inventoryAddAnotherMedicine":  "Add Another Medicine",
+    "@inventoryAddAnotherMedicine":  {
+                                         "description":  "Web key equivalent in key_map.json"
+                                     },
+    "inventoryAddToInventory":  "Add to Inventory",
+    "@inventoryAddToInventory":  {
+                                     "description":  "Web key equivalent in key_map.json"
+                                 },
+    "inventoryPleaseFillin":  "Please fill in at least one medicine.",
+    "@inventoryPleaseFillin":  {
+                                   "description":  "Web key equivalent in key_map.json"
+                               },
+    "inventoryMedicineAdded":  "medicine added to inventory!",
+    "@inventoryMedicineAdded":  {
+                                    "description":  "Web key equivalent in key_map.json"
+                                },
+    "inventoryMedicinesAdded":  "medicines added to inventory!",
+    "@inventoryMedicinesAdded":  {
+                                     "description":  "Web key equivalent in key_map.json"
+                                 },
+    "inventoryEditInventory":  "Edit Inventory",
+    "@inventoryEditInventory":  {
+                                    "description":  "Web key equivalent in key_map.json"
+                                },
+    "inventoryEditInstructions":  "📝 Adjust the quantity for each medicine using + and − buttons.",
+    "@inventoryEditInstructions":  {
+                                       "description":  "Web key equivalent in key_map.json"
+                                   },
+    "inventorySeeMore":  "See More",
+    "@inventorySeeMore":  {
+                              "description":  "Web key equivalent in key_map.json"
+                          },
+    "inventoryConfirmEdit":  "Confirm Edit",
+    "@inventoryConfirmEdit":  {
+                                  "description":  "Web key equivalent in key_map.json"
+                              },
+    "inventoryConfirmChanges":  "Confirm",
+    "@inventoryConfirmChanges":  {
+                                     "description":  "Web key equivalent in key_map.json"
+                                 },
+    "inventoryChange":  "Change",
+    "@inventoryChange":  {
+                             "description":  "Web key equivalent in key_map.json"
+                         },
+    "inventoryChanges":  "Changes",
+    "@inventoryChanges":  {
+                              "description":  "Web key equivalent in key_map.json"
+                          },
+    "inventoryNoChangesToSave":  "No changes to save.",
+    "@inventoryNoChangesToSave":  {
+                                      "description":  "Web key equivalent in key_map.json"
+                                  },
+    "inventoryMedicineUpdated":  "medicine updated!",
+    "@inventoryMedicineUpdated":  {
+                                      "description":  "Web key equivalent in key_map.json"
+                                  },
+    "inventoryMedicinesUpdated":  "medicines updated!",
+    "@inventoryMedicinesUpdated":  {
+                                       "description":  "Web key equivalent in key_map.json"
+                                   },
+    "inventoryNoMedicinesToEdit":  "No medicines to edit.",
+    "@inventoryNoMedicinesToEdit":  {
+                                        "description":  "Web key equivalent in key_map.json"
+                                    },
+    "inventoryAddSomeMedicinesFirst":  "Add some medicines first!",
+    "@inventoryAddSomeMedicinesFirst":  {
+                                            "description":  "Web key equivalent in key_map.json"
+                                        },
+    "inventoryExpires":  "Expires:",
+    "@inventoryExpires":  {
+                              "description":  "Web key equivalent in key_map.json"
+                          },
+    "inventoryWas":  "Was:",
+    "@inventoryWas":  {
+                          "description":  "Web key equivalent in key_map.json"
+                      },
+    "inventoryStockReport":  "Stock Report",
+    "@inventoryStockReport":  {
+                                  "description":  "Web key equivalent in key_map.json"
+                              },
+    "inventoryReportGenerated":  "Report Generated:",
+    "@inventoryReportGenerated":  {
+                                      "description":  "Web key equivalent in key_map.json"
+                                  },
+    "inventoryMedicine":  "Medicine",
+    "@inventoryMedicine":  {
+                               "description":  "Web key equivalent in key_map.json"
+                           },
+    "inventoryQty":  "Qty",
+    "@inventoryQty":  {
+                          "description":  "Web key equivalent in key_map.json"
+                      },
+    "inventoryBatch":  "Batch",
+    "@inventoryBatch":  {
+                            "description":  "Web key equivalent in key_map.json"
+                        },
+    "inventoryStatus":  "Status",
+    "@inventoryStatus":  {
+                             "description":  "Web key equivalent in key_map.json"
+                         },
+    "inventoryStatusLegend":  "Status Legend:",
+    "@inventoryStatusLegend":  {
+                                   "description":  "Web key equivalent in key_map.json"
+                               },
+    "inventoryStatusOk":  "OK",
+    "@inventoryStatusOk":  {
+                               "description":  "Web key equivalent in key_map.json"
+                           },
+    "inventoryStatusLow":  "Low Stock",
+    "@inventoryStatusLow":  {
+                                "description":  "Web key equivalent in key_map.json"
+                            },
+    "inventoryStatusExpiring":  "Expiring",
+    "@inventoryStatusExpiring":  {
+                                     "description":  "Web key equivalent in key_map.json"
+                                 },
+    "inventoryStatusExpired":  "Expired",
+    "@inventoryStatusExpired":  {
+                                    "description":  "Web key equivalent in key_map.json"
+                                },
+    "inventoryDownloadReport":  "Download Report (PDF)",
+    "@inventoryDownloadReport":  {
+                                     "description":  "Web key equivalent in key_map.json"
+                                 },
+    "inventoryReportDownloaded":  "Report downloaded successfully!",
+    "@inventoryReportDownloaded":  {
+                                       "description":  "Web key equivalent in key_map.json"
+                                   },
+    "inventoryNearbyPharmacy":  "Nearby Pharmacy",
+    "@inventoryNearbyPharmacy":  {
+                                     "description":  "Web key equivalent in key_map.json"
+                                 },
+    "inventoryFindingLocation":  "Finding your location...",
+    "@inventoryFindingLocation":  {
+                                      "description":  "Web key equivalent in key_map.json"
+                                  },
+    "inventoryPharmaciesNearYou":  "Pharmacies Near You",
+    "@inventoryPharmaciesNearYou":  {
+                                        "description":  "Web key equivalent in key_map.json"
+                                    },
+    "inventoryTip":  "Tip:",
+    "@inventoryTip":  {
+                          "description":  "Web key equivalent in key_map.json"
+                      },
+    "inventoryPharmacyTip":  "Tap a pharmacy to call or get directions!",
+    "@inventoryPharmacyTip":  {
+                                  "description":  "Web key equivalent in key_map.json"
+                              },
+    "inventoryRefresh":  "Refresh",
+    "@inventoryRefresh":  {
+                              "description":  "Web key equivalent in key_map.json"
+                          },
+    "inventoryListView":  "List View",
+    "@inventoryListView":  {
+                               "description":  "Web key equivalent in key_map.json"
+                           },
+    "inventoryCall":  "Call",
+    "@inventoryCall":  {
+                           "description":  "Web key equivalent in key_map.json"
+                       },
+    "inventoryDirections":  "Directions",
+    "@inventoryDirections":  {
+                                 "description":  "Web key equivalent in key_map.json"
+                             },
+    "inventoryOpen":  "Open",
+    "@inventoryOpen":  {
+                           "description":  "Web key equivalent in key_map.json"
+                       },
+    "inventoryClosingSoon":  "Closing Soon",
+    "@inventoryClosingSoon":  {
+                                  "description":  "Web key equivalent in key_map.json"
+                              },
+    "inventoryClosed":  "Closed",
+    "@inventoryClosed":  {
+                             "description":  "Web key equivalent in key_map.json"
+                         },
+    "inventoryAway":  "away",
+    "@inventoryAway":  {
+                           "description":  "Web key equivalent in key_map.json"
+                       },
+    "inventoryYourLocation":  "Your Location",
+    "@inventoryYourLocation":  {
+                                   "description":  "Web key equivalent in key_map.json"
+                               },
+    "inventoryMapComingSoon":  "Map integration coming soon!",
+    "@inventoryMapComingSoon":  {
+                                    "description":  "Web key equivalent in key_map.json"
+                                },
+    "healthRecorderPageTitle":  "Daily Health Recorder",
+    "@healthRecorderPageTitle":  {
+                                     "description":  "Web key equivalent in key_map.json"
+                                 },
+    "healthRecorderYourHealthTeam":  "Your Health Team",
+    "@healthRecorderYourHealthTeam":  {
+                                          "description":  "Web key equivalent in key_map.json"
+                                      },
+    "healthRecorderReadyToHelp":  "Ready to Help",
+    "@healthRecorderReadyToHelp":  {
+                                       "description":  "Web key equivalent in key_map.json"
+                                   },
+    "healthRecorderToday":  "Today",
+    "@healthRecorderToday":  {
+                                 "description":  "Web key equivalent in key_map.json"
+                             },
+    "healthRecorderStartNewConversation":  "🔄 Start New Conversation",
+    "@healthRecorderStartNewConversation":  {
+                                                "description":  "Web key equivalent in key_map.json"
+                                            },
+    "healthRecorderGenerateReport":  "📊 Generate Health Report",
+    "@healthRecorderGenerateReport":  {
+                                          "description":  "Web key equivalent in key_map.json"
+                                      },
+    "healthRecorderHealthReport":  "📊 Health Report",
+    "@healthRecorderHealthReport":  {
+                                        "description":  "Web key equivalent in key_map.json"
+                                    },
+    "healthRecorderYourRecentReadings":  "Your recent health readings",
+    "@healthRecorderYourRecentReadings":  {
+                                              "description":  "Web key equivalent in key_map.json"
+                                          },
+    "healthRecorderSevenDayAverages":  "7-Day Averages",
+    "@healthRecorderSevenDayAverages":  {
+                                            "description":  "Web key equivalent in key_map.json"
+                                        },
+    "healthRecorderTypeMessage":  "Type your message...",
+    "@healthRecorderTypeMessage":  {
+                                       "description":  "Web key equivalent in key_map.json"
+                                   },
+    "chitChatPageTitle":  "Chit-Chat with Adik Aisya",
+    "@chitChatPageTitle":  {
+                               "description":  "Web key equivalent in key_map.json"
+                           },
+    "chitChatHeaderTitle":  "Adik Aisya",
+    "@chitChatHeaderTitle":  {
+                                 "description":  "Web key equivalent in key_map.json"
+                             },
+    "chitChatHeaderStatus":  "Online \u0026 Ready to Chat",
+    "@chitChatHeaderStatus":  {
+                                  "description":  "Web key equivalent in key_map.json"
+                              },
+    "chitChatStartNewChat":  "🔄 Start New Chat",
+    "@chitChatStartNewChat":  {
+                                  "description":  "Web key equivalent in key_map.json"
+                              },
+    "chitChatTypeMessage":  "Type your message...",
+    "@chitChatTypeMessage":  {
+                                 "description":  "Web key equivalent in key_map.json"
+                             },
+    "consultingPageTitle":  "Health Consulting - Encik Amirul",
+    "@consultingPageTitle":  {
+                                 "description":  "Web key equivalent in key_map.json"
+                             },
+    "consultingHeaderTitle":  "Encik Amirul",
+    "@consultingHeaderTitle":  {
+                                   "description":  "Web key equivalent in key_map.json"
+                               },
+    "consultingHeaderStatus":  "Health Consultant",
+    "@consultingHeaderStatus":  {
+                                    "description":  "Web key equivalent in key_map.json"
+                                },
+    "consultingStartNewConsultation":  "🔄 Start New Consultation",
+    "@consultingStartNewConsultation":  {
+                                            "description":  "Web key equivalent in key_map.json"
+                                        },
+    "consultingAskQuestion":  "Ask a health question...",
+    "@consultingAskQuestion":  {
+                                   "description":  "Web key equivalent in key_map.json"
+                               }
+}
